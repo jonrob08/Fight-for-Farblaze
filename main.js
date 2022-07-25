@@ -12,7 +12,7 @@ canvas.height = 576
 ctx.fillRect(0, 0, canvas.width, canvas.height)
 
 // Setting canvas gravity
-const gravity = .02
+const gravity = .05
 
 // Setting up Key monitor
 
@@ -150,7 +150,7 @@ window.addEventListener('keydown', (e) => {
             break
         case 'w':
             keys.w.pressed = true
-            playerOne.velocity.y = -2
+            playerOne.velocity.y = -6
             break
         // Player 2 Keys
             case 'ArrowRight':
@@ -163,7 +163,7 @@ window.addEventListener('keydown', (e) => {
             break
         case 'ArrowUp':
             keys.ArrowUp.pressed = true
-            playerTwo.velocity.y = -2
+            playerTwo.velocity.y = -6
             break
     }
 })
