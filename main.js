@@ -50,6 +50,7 @@ class Player {
     update() {
         this.draw()
 
+        this.position.x += this.velocity.x
         this.position.y += this.velocity.y
         if (this.position.y + this.height > canvas.height) {
             this.velocity.y = 0
@@ -96,3 +97,49 @@ function animate() {
 }
 
 animate()
+
+window.addEventListener('keydown', (e) => {
+    switch (e.key) {
+        // Player 1 Keys
+        case 'd':
+            playerOne.velocity.x = 2
+            break
+        case 'a':
+            playerOne.velocity.x = -2
+            break
+        case 'w':
+            playerOne.velocity.y = -2
+            break
+        // Player 2 Keys
+            case 'ArrowRight':
+            playerTwo.velocity.x = 2
+            break
+        case 'ArrowLeft':
+            playerTwo.velocity.x = -2
+            break
+        case 'ArrowUp':
+            playerTwo.velocity.y = -2
+            break
+    }
+})
+
+window.addEventListener('keyup', (e) => {
+    // Player 1 Keys
+    switch (e.key) {
+        case 'd':
+            playerOne.velocity.x = 0
+            break
+        case 'a':
+            playerOne.velocity.x = 0
+            break
+    }
+    // Player 2 Keys
+    switch (e.key) {
+        case 'ArrowLeft':
+            playerTwo.velocity.x = 0
+            break
+        case 'ArrowRight':
+            playerTwo.velocity.x = 0
+            break
+    }
+})
