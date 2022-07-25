@@ -24,3 +24,8 @@ Put code snippets here
 one player or two players start from the left and work their way to the end point, defeating all the enemies along the way.
 
 attack the other player until one wins or the time runs out
+
+### Dev Notes
+
+4 Elements of game design - Challenge, Choice, Change, Chance
+
