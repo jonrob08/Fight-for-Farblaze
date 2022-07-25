@@ -37,8 +37,6 @@ const keys = {
     }
 }
 
-let lastKey;
-
 /**
  * Creating Player Class
     Constructor -
@@ -65,6 +63,7 @@ class Player {
         this.velocity = velocity
         this.height = 100
         this.width = 50
+        this.lastKey
     }
 
     draw() {
@@ -123,10 +122,16 @@ function animate() {
     playerOne.velocity.x = 0
     playerTwo.velocity.x = 0
 
-    if (keys.a.pressed && lastKey === 'a') {
+    if (keys.a.pressed && playerOne.lastKey === 'a') {
         playerOne.velocity.x = -2
-    } else if (keys.d.pressed && lastKey === 'd') {
+    } else if (keys.d.pressed && playerOne.lastKey === 'd') {
         playerOne.velocity.x = 2
+    }
+
+    if (keys.ArrowRight.pressed && playerTwo.lastKey === 'ArrowRight') {
+        playerTwo.velocity.x = 2
+    } else if (keys.ArrowLeft.pressed && playerTwo.lastKey === 'ArrowLeft') {
+        playerTwo.velocity.x = -2
     }
 }
 
@@ -137,28 +142,28 @@ window.addEventListener('keydown', (e) => {
         // Player 1 Keys
         case 'd':
             keys.d.pressed = true
-            lastKey = 'd'
+            playerOne.lastKey = 'd'
             break
         case 'a':
             keys.a.pressed = true
-            lastKey = 'a'
+            playerOne.lastKey = 'a'
             break
         case 'w':
             keys.w.pressed = true
-            lastKey = 'w'
+            playerOne.velocity.y = -2
             break
         // Player 2 Keys
             case 'ArrowRight':
             keys.ArrowRight.pressed = true
-            lastKey = 'ArrowRight'
+            playerTwo.lastKey = 'ArrowRight'
             break
         case 'ArrowLeft':
             keys.ArrowLeft.pressed = true
-            lastKey = 'ArrowLeft'
+            playerTwo.lastKey = 'ArrowLeft'
             break
         case 'ArrowUp':
             keys.ArrowUp.pressed = true
-            lastKey = 'ArrowUp'
+            playerTwo.velocity.y = -2
             break
     }
 })
