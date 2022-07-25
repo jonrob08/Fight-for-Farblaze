@@ -11,6 +11,9 @@ canvas.height = 576
 // Filling in the canvas background with a black rectangle
 ctx.fillRect(0, 0, canvas.width, canvas.height)
 
+// Setting canvas gravity
+const gravity = .02
+
 /**
  * Creating Player Class
     Constructor -
@@ -46,6 +49,7 @@ class Player {
 
     update() {
         this.draw()
+        this.velocity.y += gravity
         this.position.y += this.velocity.y
         if (this.position.y + this.height > canvas.height) {
             this.velocity.y = 0
@@ -61,7 +65,7 @@ const playerOne = new Player({
     },
     velocity: {
         x: 0,
-        y: 2
+        y: 0
     }
 })
 
@@ -75,7 +79,7 @@ const playerTwo = new Player({
     },
     velocity: {
         x: 0,
-        y: 3
+        y: 0
     }
 })
 
