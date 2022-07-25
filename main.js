@@ -170,11 +170,11 @@ function animate() {
     }
 
     // Collision Detection
-    if (playerOne.hitBox.position.x + playerOne.hitBox.width >= enemy.position.x && playerOne.hitBox.position.x <= enemy.position.x + enemy.width) {
+    if (playerOne.hitBox.position.x + playerOne.hitBox.width >= enemy.position.x && playerOne.hitBox.position.x <= enemy.position.x + enemy.width && playerOne.hitBox.position.y + playerOne.hitBox.height >= enemy.position.y && playerOne.hitBox.position.y <= enemy.position.y + enemy.height) {
         console.log('Hit!')
     }
 
-    if (playerTwo.hitBox.position.x + playerTwo.hitBox.width >= enemy.position.x && playerTwo.hitBox.position.x <= enemy.position.x + enemy.width) {
+    if (playerTwo.hitBox.position.x + playerTwo.hitBox.width >= enemy.position.x && playerTwo.hitBox.position.x <= enemy.position.x + enemy.width && playerTwo.hitBox.position.y + playerTwo.hitBox.height >= enemy.position.y && playerTwo.hitBox.position.y <= enemy.position.y + enemy.height) {
         console.log('Hit!')
     }
 }
@@ -194,7 +194,7 @@ window.addEventListener('keydown', (e) => {
             break
         case 'w':
             keys.w.pressed = true
-            playerOne.velocity.y = -6
+            playerOne.velocity.y = -6.5
             break
         // Player 2 Keys
             case 'ArrowRight':
@@ -207,7 +207,7 @@ window.addEventListener('keydown', (e) => {
             break
         case 'ArrowUp':
             keys.ArrowUp.pressed = true
-            playerTwo.velocity.y = -6
+            playerTwo.velocity.y = -6.5
             break
     }
 })
