@@ -49,11 +49,11 @@ class Player {
 
     update() {
         this.draw()
-        this.velocity.y += gravity
+
         this.position.y += this.velocity.y
         if (this.position.y + this.height > canvas.height) {
             this.velocity.y = 0
-        }
+        } else this.velocity.y += gravity
     }
 }
 
