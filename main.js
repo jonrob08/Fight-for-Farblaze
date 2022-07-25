@@ -14,6 +14,31 @@ ctx.fillRect(0, 0, canvas.width, canvas.height)
 // Setting canvas gravity
 const gravity = .02
 
+// Setting up Key monitor
+
+const keys = {
+    a: {
+        pressed: false
+    },
+    d: {
+        pressed: false
+    },
+    w: {
+        pressed: false
+    },
+    ArrowLeft: {
+        pressed: false
+    },
+    ArrowRight: {
+        pressed: false
+    },
+    ArrowUp: {
+        pressed: false
+    }
+}
+
+let lastKey;
+
 /**
  * Creating Player Class
     Constructor -
@@ -94,6 +119,15 @@ function animate() {
     ctx.fillRect(0, 0, canvas.width, canvas.height)
     playerOne.update()
     playerTwo.update()
+
+    playerOne.velocity.x = 0
+    playerTwo.velocity.x = 0
+
+    if (keys.a.pressed && lastKey === 'a') {
+        playerOne.velocity.x = -2
+    } else if (keys.d.pressed && lastKey === 'd') {
+        playerOne.velocity.x = 2
+    }
 }
 
 animate()
@@ -102,23 +136,29 @@ window.addEventListener('keydown', (e) => {
     switch (e.key) {
         // Player 1 Keys
         case 'd':
-            playerOne.velocity.x = 2
+            keys.d.pressed = true
+            lastKey = 'd'
             break
         case 'a':
-            playerOne.velocity.x = -2
+            keys.a.pressed = true
+            lastKey = 'a'
             break
         case 'w':
-            playerOne.velocity.y = -2
+            keys.w.pressed = true
+            lastKey = 'w'
             break
         // Player 2 Keys
             case 'ArrowRight':
-            playerTwo.velocity.x = 2
+            keys.ArrowRight.pressed = true
+            lastKey = 'ArrowRight'
             break
         case 'ArrowLeft':
-            playerTwo.velocity.x = -2
+            keys.ArrowLeft.pressed = true
+            lastKey = 'ArrowLeft'
             break
         case 'ArrowUp':
-            playerTwo.velocity.y = -2
+            keys.ArrowUp.pressed = true
+            lastKey = 'ArrowUp'
             break
     }
 })
@@ -127,19 +167,23 @@ window.addEventListener('keyup', (e) => {
     // Player 1 Keys
     switch (e.key) {
         case 'd':
-            playerOne.velocity.x = 0
+            keys.d.pressed = false
             break
         case 'a':
-            playerOne.velocity.x = 0
+            keys.a.pressed = false
             break
-    }
-    // Player 2 Keys
-    switch (e.key) {
+        case 'w':
+            keys.w.pressed = false
+            break
+        // Player 2 Keys
+            case 'ArrowRight':
+            keys.ArrowRight.pressed = false
+            break
         case 'ArrowLeft':
-            playerTwo.velocity.x = 0
+            keys.ArrowLeft.pressed = false
             break
-        case 'ArrowRight':
-            playerTwo.velocity.x = 0
+        case 'ArrowUp':
+            keys.ArrowUp.pressed = false
             break
     }
 })
