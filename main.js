@@ -65,15 +65,19 @@ const keys = {
  */
 
 class Player {
-    // I changed the constructor to pass an object so it's easier to instantiate a Player
-    constructor({position, velocity}) {
+    constructor({position, velocity, offset}) {
         this.position = position
         this.velocity = velocity
         this.height = 150
         this.width = 50
         this.lastKey
         this.hitBox = {
-            position: this.position,
+            // Changing position to have it's own x and y instead of inheriting the parents, and adding an offset for when the character is facing backwards or forwards
+            position: {
+                x: this.position.x,
+                y: this.position.y
+            },
+            offset: offset,
             width: 100,
             height: 50
         }
@@ -91,6 +95,10 @@ class Player {
 
     update() {
         this.draw()
+
+        // Subtract the hitBox offset if there is one
+        this.hitBox.position.x = this.position.x - this.hitBox.offset.x
+        this.hitBox.position.y = this.position.y - this.hitBox.offset.y
 
         this.position.x += this.velocity.x
         this.position.y += this.velocity.y
@@ -117,6 +125,10 @@ const playerOne = new Player({
     velocity: {
         x: 0,
         y: 0
+    },
+    offset: {
+        x: 1,
+        y: 1
     }
 })
 
@@ -131,6 +143,10 @@ const playerTwo = new Player({
     velocity: {
         x: 0,
         y: 0
+    },
+    offset: {
+        x: 0,
+        y: 0
     }
 })
 
@@ -142,6 +158,10 @@ const enemy = new Player({
     },
     velocity: {
         x: 0,
+        y: 0
+    },
+    offset: {
+        x: 50,
         y: 0
     }
 })
@@ -181,17 +201,59 @@ function animate() {
         playerTwo.velocity.x = -2
     }
 
-    // Collision Detection
+    // Collision Detection - Player 1 / Player 2
     if (playerOne.hitBox.position.x + playerOne.hitBox.width >= enemy.position.x && playerOne.hitBox.position.x <= enemy.position.x + enemy.width && playerOne.hitBox.position.y + playerOne.hitBox.height >= enemy.position.y && playerOne.hitBox.position.y <= enemy.position.y + enemy.height && playerOne.isAttacking) {
         playerOne.isAttacking = false
-        console.log('Hit!')
+       
     }
 
     if (playerTwo.hitBox.position.x + playerTwo.hitBox.width >= enemy.position.x && playerTwo.hitBox.position.x <= enemy.position.x + enemy.width && playerTwo.hitBox.position.y + playerTwo.hitBox.height >= enemy.position.y && playerTwo.hitBox.position.y <= enemy.position.y + enemy.height && playerTwo.isAttacking) {
         playerTwo.isAttacking = false
+       
+    }
+
+    // Collision Detection - Enemy
+
+    if (enemy.hitBox.position.x + enemy.hitBox.width >= playerOne.position.x && enemy.hitBox.position.x <= playerOne.position.x + playerOne.width && enemy.hitBox.position.y + enemy.hitBox.height >= playerOne.position.y && enemy.hitBox.position.y <= playerOne.position.y + playerOne.height && enemy.isAttacking) {
+        enemy.isAttacking = false
         console.log('Hit!')
     }
+
+    if (enemy.hitBox.position.x + enemy.hitBox.width >= playerTwo.position.x && enemy.hitBox.position.x <= playerTwo.position.x + playerTwo.width && enemy.hitBox.position.y + enemy.hitBox.height >= playerTwo.position.y && enemy.hitBox.position.y <= playerTwo.position.y + playerTwo.height && enemy.isAttacking) {
+        enemy.isAttacking = false
+        console.log('Hit!')
+    }
+
+    // Hitbox Offset Detection
+    if (playerOne.position.x >= enemy.position.x  ){
+        console.log('change hitbox')
+        playerOne.hitBox.offset.x = 50
+    }  else {
+        playerOne.hitBox.offset.x = 0
+    }
+
+    if (playerTwo.position.x >= enemy.position.x  ){
+        console.log('change hitbox')
+        playerTwo.hitBox.offset.x = 50
+    }  else {
+        playerTwo.hitBox.offset.x = 0
+    }
+
+    if (enemy.position.x >= playerOne.position.x  ){
+        console.log('change hitbox')
+        enemy.hitBox.offset.x = 50
+    }  else {
+        enemy.hitBox.offset.x = 0
+    }
+
+    if (enemy.position.x >= playerTwo.position.x  ){
+        console.log('change hitbox')
+        enemy.hitBox.offset.x = 50
+    }  else {
+        enemy.hitBox.offset.x = 0
+    }
 }
+
 
 animate()
 
@@ -228,6 +290,10 @@ window.addEventListener('keydown', (e) => {
             break
         case '0':
             playerTwo.attack()
+            break
+        // test case for enemy attacks
+        case '9':
+            enemy.attack()
             break
     }
 })
