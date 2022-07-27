@@ -180,6 +180,20 @@ function decreaseTimer() {
         timer--
         document.getElementById('timer').innerHTML = timer
     }
+
+    if (timer === 0) {
+        if (playerOne.health && playerTwo.health === enemy.health) {
+            document.getElementById('results').innerHTML = 'Tie'
+        }
+
+        if (playerOne.health || playerTwo.health > enemy.health) {
+            document.getElementById('results').innerHTML = 'Heroes Win!'
+        }
+
+        if (playerOne.health || playerTwo.health < enemy.health) {
+            document.getElementById('results').innerHTML = 'Heroes Lose!'
+        }
+    }
 }
 
 /** Animate function - This recursive function "animates" the canvas in our browser window by calling itself and refreshes the frame by 

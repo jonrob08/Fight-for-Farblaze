@@ -46,3 +46,13 @@
     align-items: center;
     justify-content: center;
 }
+
+#results {
+    height: 100%; 
+    width: 100%; 
+    position: absolute; 
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
