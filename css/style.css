@@ -17,12 +17,18 @@
     padding: 20px
 }
 
-#player-health-container, #enemy-health-container {
+#player-health-container  {
     position: relative; 
     height: 30px; 
     width: 100%; 
     display: flex; 
     justify-content: flex-end;
+}
+
+#enemy-health-container {
+    position: relative; 
+    height: 30px; 
+    width: 100%; 
 }
 
 #player-max-health, #enemy-max-health {

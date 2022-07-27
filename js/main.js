@@ -82,6 +82,7 @@ class Player {
             height: 50
         }
         this.isAttacking
+        this.health = 100
     }
 
     draw() {
@@ -224,15 +225,17 @@ function animate() {
 
     // Collision Detection - Player 1 / Player 2
     if (playerOne.hitBox.position.x + playerOne.hitBox.width >= enemy.position.x && playerOne.hitBox.position.x <= enemy.position.x + enemy.width && playerOne.hitBox.position.y + playerOne.hitBox.height >= enemy.position.y && playerOne.hitBox.position.y <= enemy.position.y + enemy.height && playerOne.isAttacking) {
-        playerOne.isAttacking = false 
+        playerOne.isAttacking = false
+        enemy.health -= 10 
         document.querySelector('#enemy-current-health').style.width = enemy.health + "%"
         console.log('P1 Hit!')
     }
 
     if (playerTwo.hitBox.position.x + playerTwo.hitBox.width >= enemy.position.x && playerTwo.hitBox.position.x <= enemy.position.x + enemy.width && playerTwo.hitBox.position.y + playerTwo.hitBox.height >= enemy.position.y && playerTwo.hitBox.position.y <= enemy.position.y + enemy.height && playerTwo.isAttacking) {
         playerTwo.isAttacking = false 
-        console.log('Hit!')
-        document.querySelector('.enemy-current-health').style.width = enemy.health + "%"
+        enemy.health -= 10 
+        console.log('P2 Hit!')
+        document.querySelector('#enemy-current-health').style.width = enemy.health + "%"
     }
 
     // Collision Detection - Enemy
@@ -240,11 +243,17 @@ function animate() {
     if (enemy.hitBox.position.x + enemy.hitBox.width >= playerOne.position.x && enemy.hitBox.position.x <= playerOne.position.x + playerOne.width && enemy.hitBox.position.y + enemy.hitBox.height >= playerOne.position.y && enemy.hitBox.position.y <= playerOne.position.y + playerOne.height && enemy.isAttacking) {
         enemy.isAttacking = false
         console.log('Hit!')
+        enemy.health -= 5 
+        document.querySelector('#player-current-health').style.width = enemy.health + "%"
+        console.log('Enemy Hit!')
     }
 
     if (enemy.hitBox.position.x + enemy.hitBox.width >= playerTwo.position.x && enemy.hitBox.position.x <= playerTwo.position.x + playerTwo.width && enemy.hitBox.position.y + enemy.hitBox.height >= playerTwo.position.y && enemy.hitBox.position.y <= playerTwo.position.y + playerTwo.height && enemy.isAttacking) {
         enemy.isAttacking = false
         console.log('Hit!')
+        enemy.health -= 5
+        document.querySelector('#player-current-health').style.width = enemy.health + "%"
+        console.log('Enemy Hit!')
     }
 
     // Hitbox Offset Detection
