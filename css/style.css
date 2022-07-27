@@ -1,0 +1,66 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+#wrapper {
+    position: relative;
+}
+
+.header {
+    width: 100%;
+}
+
+.playerone-health {
+    display: inline-block;
+    background-color: gray;
+    height: 20px;
+    width: 425px;
+    position: absolute;
+    top: 95px;
+    left: 20px;
+}
+
+.playertwo-health {
+    display: inline-block;
+    background-color: gray;
+    height: 20px;
+    width: 425px;
+    position: absolute;
+    top: 130px;
+    left: 20px;
+}
+
+.timer {
+    display: inline-block;
+    background-color: red;
+    height: 100px;
+    width: 100px;
+    flex-shrink: 0;
+    position: absolute;
+    top: 70px;
+    left: 463px;
+}
+
+.enemyone-health {
+    display: inline-block;
+    background-color: gray;
+    height: 20px;
+    width: 425px;
+    position: absolute;
+    top: 95px;
+    left: 580px;
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.enemytwo-health {
+    display: inline-block;
+    background-color: yellow;
+    height: 20px;
+    width: 425px;
+    position: absolute;
+    top: 130px;
+    left: 580px;
+}

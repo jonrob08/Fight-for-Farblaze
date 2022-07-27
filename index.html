@@ -5,9 +5,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fight for Farblaze</title>
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-    <canvas></canvas>
-    <script src="main.js"></script>
+    <!-- container div -->
+    <div id="wrapper"> 
+        <!-- header containing status bars and timer -->
+        <div class="header">
+            <div class="playerone-health"></div><br>
+            <div class="playertwo-health"></div>
+            
+            <div class="timer"></div>
+            <div class="enemyone-health"></div>
+            <div class="enemytwo-health"></div>
+        </div>
+        <!-- game -->
+        <canvas></canvas>
+    </div>
+    <script src="./js/main.js"></script>
 </body>
 </html>
