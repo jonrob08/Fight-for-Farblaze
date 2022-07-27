@@ -169,21 +169,6 @@ const enemy = new Player({
     }
 })
 
-const block = new Player({
-    position: {
-        x: 600,
-        y: -200
-    },
-    velocity: {
-        x: 0,
-        y: 0
-    },
-    offset: {
-        x: 0,
-        y: 0
-    }
-})
-
 /** Animate function - This recursive function "animates" the canvas in our browser window by calling itself and refreshes the frame by 
 
     -Reference: https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame
@@ -226,14 +211,14 @@ function animate() {
     // Collision Detection - Player 1 / Player 2
     if (playerOne.hitBox.position.x + playerOne.hitBox.width >= enemy.position.x && playerOne.hitBox.position.x <= enemy.position.x + enemy.width && playerOne.hitBox.position.y + playerOne.hitBox.height >= enemy.position.y && playerOne.hitBox.position.y <= enemy.position.y + enemy.height && playerOne.isAttacking) {
         playerOne.isAttacking = false
-        enemy.health -= 10 
+        enemy.health -= 2
         document.querySelector('#enemy-current-health').style.width = enemy.health + "%"
         console.log('P1 Hit!')
     }
 
     if (playerTwo.hitBox.position.x + playerTwo.hitBox.width >= enemy.position.x && playerTwo.hitBox.position.x <= enemy.position.x + enemy.width && playerTwo.hitBox.position.y + playerTwo.hitBox.height >= enemy.position.y && playerTwo.hitBox.position.y <= enemy.position.y + enemy.height && playerTwo.isAttacking) {
         playerTwo.isAttacking = false 
-        enemy.health -= 10 
+        enemy.health -= 2 
         console.log('P2 Hit!')
         document.querySelector('#enemy-current-health').style.width = enemy.health + "%"
     }
@@ -243,16 +228,16 @@ function animate() {
     if (enemy.hitBox.position.x + enemy.hitBox.width >= playerOne.position.x && enemy.hitBox.position.x <= playerOne.position.x + playerOne.width && enemy.hitBox.position.y + enemy.hitBox.height >= playerOne.position.y && enemy.hitBox.position.y <= playerOne.position.y + playerOne.height && enemy.isAttacking) {
         enemy.isAttacking = false
         console.log('Hit!')
-        enemy.health -= 5 
-        document.querySelector('#player-current-health').style.width = enemy.health + "%"
+        playerOne.health -= 2
+        document.querySelector('#player-current-health').style.width = playerOne.health + "%"
         console.log('Enemy Hit!')
     }
 
     if (enemy.hitBox.position.x + enemy.hitBox.width >= playerTwo.position.x && enemy.hitBox.position.x <= playerTwo.position.x + playerTwo.width && enemy.hitBox.position.y + enemy.hitBox.height >= playerTwo.position.y && enemy.hitBox.position.y <= playerTwo.position.y + playerTwo.height && enemy.isAttacking) {
         enemy.isAttacking = false
         console.log('Hit!')
-        enemy.health -= 5
-        document.querySelector('#player-current-health').style.width = enemy.health + "%"
+        playerTwo.health -= 2
+        document.querySelector('#player-current-health').style.width = playerTwo.health + "%"
         console.log('Enemy Hit!')
     }
 
