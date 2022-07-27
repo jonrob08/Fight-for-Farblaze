@@ -12,7 +12,7 @@ canvas.height = 576
 ctx.fillRect(0, 0, canvas.width, canvas.height)
 
 // Setting canvas gravity
-const gravity = .05
+const gravity = .09
 
 // Setting up Key monitor
 
@@ -47,6 +47,7 @@ const background = new Sprite({
     scale: 1.4
 })
 
+
 // Creating Shop
 const shop = new Sprite({
     position: {
@@ -69,9 +70,12 @@ const playerOne = new Player({
         y: 0
     },
     offset: {
-        x: 1,
-        y: 1
-    }
+        x: 0,
+        y: 0
+    },
+    imageSrc: './img/Characters/Kiba/Idle.png',
+    scale: 3,
+    framesAmt: 4
 })
 
 console.log(playerOne)
@@ -157,9 +161,9 @@ function animate() {
     // Draw and animate player 1
     playerOne.update()
     // Draw and animate player 2
-    playerTwo.update()
+    //playerTwo.update()
     // Draw and animate enemy
-    enemy.update()
+    //enemy.update()
 
     // Set each player's velocity to 0 
     playerOne.velocity.x = 0
