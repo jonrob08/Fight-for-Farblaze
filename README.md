@@ -2,7 +2,7 @@
 Is a 2D multiplayer fighting game where you and your friend select your hero and battle enemies to save Farblaze! You can choose 1 player mode, 2 player mode, or versus??? mode (MAYBE). 
 
 ## Wire Frame
-![Screenshot](./img/wire-frame.png)
+![Screenshot](./img/wireframe.png)
 
 ## Installation Instructions
 Fork code from github and run the index.html file on chrome or play game from the link listed here: @todo add link
