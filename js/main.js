@@ -82,6 +82,7 @@ class Player {
             height: 50
         }
         this.isAttacking
+        this.health = 100
     }
 
     draw() {
@@ -89,8 +90,10 @@ class Player {
         ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
 
         // This is where the hitBox is drawn
-        ctx.fillStyle = 'red'
-        ctx.fillRect(this.hitBox.position.x, this.hitBox.position.y, this.hitBox.width, this.hitBox.height)
+        if(this.isAttacking){
+            ctx.fillStyle = 'red'
+            ctx.fillRect(this.hitBox.position.x, this.hitBox.position.y, this.hitBox.width, this.hitBox.height)
+        }
     }
 
     update() {
@@ -183,9 +186,11 @@ function animate() {
     playerTwo.update()
     // Draw and animate enemy
     enemy.update()
+
     // Set each player's velocity to 0 
     playerOne.velocity.x = 0
     playerTwo.velocity.x = 0
+  
 
     // Player 1 Movement
     if (keys.a.pressed && playerOne.lastKey === 'a') {
@@ -199,17 +204,23 @@ function animate() {
         playerTwo.velocity.x = 2
     } else if (keys.ArrowLeft.pressed && playerTwo.lastKey === 'ArrowLeft') {
         playerTwo.velocity.x = -2
+    } else {
+        playerTwo.velocity.x = 0
     }
 
     // Collision Detection - Player 1 / Player 2
     if (playerOne.hitBox.position.x + playerOne.hitBox.width >= enemy.position.x && playerOne.hitBox.position.x <= enemy.position.x + enemy.width && playerOne.hitBox.position.y + playerOne.hitBox.height >= enemy.position.y && playerOne.hitBox.position.y <= enemy.position.y + enemy.height && playerOne.isAttacking) {
         playerOne.isAttacking = false
-       document.querySelector('#enemyonetwo-health').style.width -= '10%'
+        enemy.health -= 2
+        document.querySelector('#enemy-current-health').style.width = enemy.health + "%"
+        console.log('P1 Hit!')
     }
 
     if (playerTwo.hitBox.position.x + playerTwo.hitBox.width >= enemy.position.x && playerTwo.hitBox.position.x <= enemy.position.x + enemy.width && playerTwo.hitBox.position.y + playerTwo.hitBox.height >= enemy.position.y && playerTwo.hitBox.position.y <= enemy.position.y + enemy.height && playerTwo.isAttacking) {
-        playerTwo.isAttacking = false
-       
+        playerTwo.isAttacking = false 
+        enemy.health -= 2 
+        console.log('P2 Hit!')
+        document.querySelector('#enemy-current-health').style.width = enemy.health + "%"
     }
 
     // Collision Detection - Enemy
@@ -217,43 +228,44 @@ function animate() {
     if (enemy.hitBox.position.x + enemy.hitBox.width >= playerOne.position.x && enemy.hitBox.position.x <= playerOne.position.x + playerOne.width && enemy.hitBox.position.y + enemy.hitBox.height >= playerOne.position.y && enemy.hitBox.position.y <= playerOne.position.y + playerOne.height && enemy.isAttacking) {
         enemy.isAttacking = false
         console.log('Hit!')
+        playerOne.health -= 2
+        document.querySelector('#player-current-health').style.width = playerOne.health + "%"
+        console.log('Enemy Hit!')
     }
 
     if (enemy.hitBox.position.x + enemy.hitBox.width >= playerTwo.position.x && enemy.hitBox.position.x <= playerTwo.position.x + playerTwo.width && enemy.hitBox.position.y + enemy.hitBox.height >= playerTwo.position.y && enemy.hitBox.position.y <= playerTwo.position.y + playerTwo.height && enemy.isAttacking) {
         enemy.isAttacking = false
         console.log('Hit!')
+        playerTwo.health -= 2
+        document.querySelector('#player-current-health').style.width = playerTwo.health + "%"
+        console.log('Enemy Hit!')
     }
 
     // Hitbox Offset Detection
     if (playerOne.position.x >= enemy.position.x  ){
-        console.log('change hitbox')
         playerOne.hitBox.offset.x = 50
     }  else {
         playerOne.hitBox.offset.x = 0
     }
 
     if (playerTwo.position.x >= enemy.position.x  ){
-        console.log('change hitbox')
         playerTwo.hitBox.offset.x = 50
     }  else {
         playerTwo.hitBox.offset.x = 0
     }
 
     if (enemy.position.x >= playerOne.position.x  ){
-        console.log('change hitbox')
         enemy.hitBox.offset.x = 50
     }  else {
         enemy.hitBox.offset.x = 0
     }
 
     if (enemy.position.x >= playerTwo.position.x  ){
-        console.log('change hitbox')
         enemy.hitBox.offset.x = 50
     }  else {
         enemy.hitBox.offset.x = 0
     }
 }
-
 
 animate()
 
@@ -288,7 +300,7 @@ window.addEventListener('keydown', (e) => {
             keys.ArrowUp.pressed = true
             playerTwo.velocity.y = -6.5
             break
-        case '0':
+        case 'ArrowDown':
             playerTwo.attack()
             break
         // test case for enemy attacks
