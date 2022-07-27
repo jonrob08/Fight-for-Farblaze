@@ -75,7 +75,11 @@ const playerOne = new Player({
     },
     imageSrc: './img/Characters/Kiba/Idle.png',
     scale: 3,
-    framesAmt: 4
+    framesAmt: 4,
+    offset: {
+        x: 25,
+        y: 5
+    }
 })
 
 console.log(playerOne)
@@ -93,7 +97,10 @@ const playerTwo = new Player({
     offset: {
         x: 0,
         y: 0
-    }
+    },
+    imageSrc: './img/Characters/Kiba/Idle.png',
+    scale: 3,
+    framesAmt: 4
 })
 
 // Creating Enemy
@@ -109,7 +116,10 @@ const enemy = new Player({
     offset: {
         x: 50,
         y: 0
-    }
+    },
+    imageSrc: './img/Characters/Kiba/Idle.png',
+    scale: 3,
+    framesAmt: 4
 })
 
 /**

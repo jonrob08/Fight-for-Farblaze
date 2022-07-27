@@ -1,3 +1,4 @@
+
 /**
  * Creating Sprites Class
     ** Constructor -------> 
@@ -15,6 +16,8 @@
 
         Frames Wait - Need this to stop the frames from animating so fast that it doesn't look right. We make the frames "wait" for a certain amount of frames in the canvas to pass and then it moves to the next frame within the sprite sheet. Effictively making it possible to speed up or slow down sprite animations. 
 
+        Offset - Need this because some of the animations in the sprite sheets are throwing off the measurments of the sprite during animation due to the padding around the sprite within any given frame. I'm offsetting the sprite in the frame to be in the top left corner everytime so it can have consistent animation.
+
         Height - Need this to set the height of Sprite on the y axis
 
         Width - Need this to set the width of Sprite on the x axis
@@ -27,7 +30,7 @@
 */
 
 class Sprite {
-    constructor({ position, imageSrc, scale = 1, framesAmt = 1 }) {
+    constructor({ position, imageSrc, scale = 1, framesAmt = 1, offset = {x: 0, y: 0} }) {
         this.position = position
         this.height = 150
         this.width = 50
@@ -38,6 +41,7 @@ class Sprite {
         this.framesCur = 0
         this.framesElapsed = 0
         this.framesWait = 10
+        this.offset = offset
     }
 
     draw() {
@@ -50,16 +54,16 @@ class Sprite {
             // Divide the width by however many images there are in the sprite sheet
             this.image.width / this.framesAmt,
             this.image.height,
-            this.position.x, 
-            this.position.y, 
+            // Subtracting the offset from the image position so I can place it on the screen where is looks best regardless of padding in the original image 
+            this.position.x - this.offset.x, 
+            this.position.y - this.offset.y, 
             // You also need to divide the entire sprite sheet image width by however many images there are in it, or else it tries to stretch the cropped immage to it's original width. Divide this before you scale the image. 
             (this.image.width / this.framesAmt) * this.scale, 
             this.image.height * this.scale
             )
     }
 
-    update() {
-        this.draw()
+    animateFrames() {
         this.framesElapsed++
 
         // First checking to see if the amount of frames elapsed divided by the framesWait remainder is equal to zero, if so move to the next frame within the sprite sheet. Slowing down or speeding up our animation based on the number we pass to framesWait. Ex. if it's 2, it will happen every 2 frames so the frames will be extremely fast, as opposed to 200, less things are divisible by that over time so the frames will change a lot slower.
@@ -72,7 +76,13 @@ class Sprite {
             }
         }
     }
-}
+    
+
+    update() {
+        this.draw()
+        this.animateFrames()
+    }   
+}   
 
 
 /**
@@ -109,13 +119,14 @@ class Sprite {
 */
 
 class Player extends Sprite {
-    constructor({position, velocity, offset, imageSrc, scale = 1, framesAmt = 1}) {
+    constructor({position, velocity, imageSrc, scale = 1, framesAmt = 1, offset = {x: 0, y: 0}}) {
         super({
             // Inherit all the following properties from the parent Class
             position,
             imageSrc, 
             scale, 
-            framesAmt
+            framesAmt,
+            offset
         })
         this.velocity = velocity
         this.height = 150
@@ -135,7 +146,7 @@ class Player extends Sprite {
         this.health = 100
         this.framesCur = 0
         this.framesElapsed = 0
-        this.framesWait = 10
+        this.framesWait = 60
     }
 
     // draw() {
@@ -149,7 +160,7 @@ class Player extends Sprite {
 
     update() {
         this.draw()
-
+        this.animateFrames()
         // Subtract the hitBox offset if there is one
         this.hitBox.position.x = this.position.x - this.hitBox.offset.x
         this.hitBox.position.y = this.position.y - this.hitBox.offset.y
@@ -169,3 +180,5 @@ class Player extends Sprite {
         }, 100)
     }
 }
+
+
