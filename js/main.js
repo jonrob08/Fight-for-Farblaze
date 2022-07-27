@@ -55,6 +55,8 @@ const keys = {
 
         isAttacking - Need this to check if a Player is attacking or not
 
+        health - Need this to keep track of Player's health. Utilizing this to update the health bars in-game
+
     Methods - 
         Draw() - For reference I am drawing a rectangle placeholder for my Player 1 and Player 2. I am using a fillStyle to make my rectangle blue
 
@@ -169,6 +171,37 @@ const enemy = new Player({
     }
 })
 
+/**
+ * Decreasing the timer function - I'm adding this function in so there is a sense of urgency, also so that there is a default win condition that will always happen. Also, because a timer in a fighting game is pretty standard.
+ */
+
+const displayResults = function() {
+    clearTimeout(timerId)
+    if (enemy.health === playerOne.health && playerTwo.health){
+        document.getElementById('results').innerHTML = 'Tie?? Are you even trying?'
+    } else if (enemy.health === 0) {
+        document.getElementById('results').innerHTML = 'Heroes Win!'
+    } else if (playerOne.health === 0 || playerTwo.health === 0) {
+        document.getElementById('results').innerHTML = 'Heroes Lose!'
+    }
+}
+
+let timer = 99
+let timerId = 0
+
+function decreaseTimer() {
+    timerId = setTimeout(decreaseTimer, 1000)
+    if (timer > 0) {
+        timer--
+        document.getElementById('timer').innerHTML = timer
+    }
+
+    // End the game based on time
+    if (timer === 0) {
+        displayResults()
+    }
+}
+
 /** Animate function - This recursive function "animates" the canvas in our browser window by calling itself and refreshes the frame by 
 
     -Reference: https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame
@@ -265,9 +298,15 @@ function animate() {
     }  else {
         enemy.hitBox.offset.x = 0
     }
+
+    // End the game based on health:
+    if (enemy.health <= 0 || playerOne.health <= 0 || playerTwo.health <=0){
+        displayResults()
+    }
 }
 
 animate()
+decreaseTimer()
 
 window.addEventListener('keydown', (e) => {
     switch (e.key) {
