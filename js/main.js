@@ -169,6 +169,19 @@ const enemy = new Player({
     }
 })
 
+/**
+ * Decreasing the timer function - I'm adding this function in so there is a sense of urgency, also so that there is a default win condition that will always happen. Also, because a timer in a fighting game is pretty standard.
+ */
+
+let timer = 10
+function decreaseTimer() {
+    setTimeout(decreaseTimer, 1000)
+    if (timer > 0) {
+        timer--
+        document.getElementById('timer').innerHTML = timer
+    }
+}
+
 /** Animate function - This recursive function "animates" the canvas in our browser window by calling itself and refreshes the frame by 
 
     -Reference: https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame
@@ -268,6 +281,7 @@ function animate() {
 }
 
 animate()
+decreaseTimer()
 
 window.addEventListener('keydown', (e) => {
     switch (e.key) {
