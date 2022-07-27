@@ -94,7 +94,11 @@ class Player {
 
         Frames Amount - Need this because I have to divide the amount of frames by the entire length of the sprite sheet in order to determine the length of one section. This has to be a parameter because sprite sheets have different amounts of frames. 
 
-        Current Frame - Need this to track the current frame and iterate through the frames to mimic the appearance of animation. We use this by multiplying this by the spritesheet width divided by the amount of frames inside the sprite sheet. 
+        Current Frame - Need this to track the current frame and iterate through the frames to mimic the appearance of animation. We use this by multiplying this by the spritesheet width divided by the amount of frames inside the sprite sheet.
+        
+        Frames Elapsed - Need this to track the amount of frames that have elapsed. 
+
+        Frames Wait - Need this to stop the frames from animating so fast that it doesn't look right. We make the frames "wait" for a certain amount of frames in the canvas to pass and then it moves to the next frame within the sprite sheet. Effictively making it possible to speed up or slow down sprite animations. 
 
         Height - Need this to set the height of Sprite on the y axis
 
@@ -117,6 +121,8 @@ class Sprite {
         this.scale = scale
         this.framesAmt = framesAmt
         this.framesCur = 0
+        this.framesElapsed = 0
+        this.framesWait = 10
     }
 
     draw() {
@@ -139,12 +145,18 @@ class Sprite {
 
     update() {
         this.draw()
-        // In order for us to animate through the frames we need to increment through framesCur but we also need to check and make sure that framesCur is less than the framesAmt. Once it hits the limit it should reset to 0. We subtract 1 at the end because there are cases where there is only 1 frame and we want to keep drawing that. 
-        if (this.framesCur < this.framesAmt - 1){
-            this.framesCur++
-        } else {
-            this.framesCur = 0
+        this.framesElapsed++
+
+        // First checking to see if the amount of frames elapsed divided by the framesWait remainder is equal to zero, if so move to the next frame within the sprite sheet. Slowing down or speeding up our animation based on the number we pass to framesWait. Ex. if it's 2, it will happen every 2 frames so the frames will be extremely fast, as opposed to 200, less things are divisible by that over time so the frames will change a lot slower.
+        if (this.framesElapsed % this.framesWait === 0) {
+            // In order for us to animate through the frames we need to increment through framesCur but we also need to check and make sure that framesCur is less than the framesAmt. Once it hits the limit it should reset to 0. We subtract 1 at the end because there are cases where there is only 1 frame and we want to keep drawing that. 
+            if (this.framesCur < this.framesAmt - 1){
+                this.framesCur++
+            } else {
+                this.framesCur = 0
+            }
         }
-        
+        console.log(this.framesElapsed)
+        console.log(this.framesWait)
     }
 }
