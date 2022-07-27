@@ -41,9 +41,21 @@ const keys = {
 const background = new Sprite({
     position: {
         x: 0,
-        y: 0
+        y: -200
     },
-    imageSrc: './img/Background.png'
+    imageSrc: './img/Background.png',
+    scale: 1.4
+})
+
+// Creating Shop
+const shop = new Sprite({
+    position: {
+        x: 650,
+        y: 155
+    },
+    imageSrc: './img/shop_anim.png',
+    scale: 3,
+    framesAmt: 6
 })
 
 // Creating Player One
@@ -140,6 +152,8 @@ function animate() {
     ctx.fillRect(0, 0, canvas.width, canvas.height)
     // Draw background continuously
     background.update()
+    // Draw shop
+    shop.update()
     // Draw and animate player 1
     playerOne.update()
     // Draw and animate player 2

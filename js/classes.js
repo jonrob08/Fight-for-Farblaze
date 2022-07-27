@@ -70,7 +70,7 @@ class Player {
         this.position.x += this.velocity.x
         this.position.y += this.velocity.y
 
-        if (this.position.y + this.height > canvas.height - 50) {
+        if (this.position.y + this.height > canvas.height - 39) {
             this.velocity.y = 0
         } else this.velocity.y += gravity
     }
@@ -86,35 +86,65 @@ class Player {
 /**
  * Creating Sprites Class
     ** Constructor -------> 
-        Position - Adding this because I need to be able to set the Sprite's positioning on the canvas and refer to it. It's in the constructor arguments because I will have multiple Sprites so the positions need to be independent of each other.
+        Position - Need this because I need to be able to set the Sprite's positioning on the canvas and refer to it. It's in the constructor arguments because I will have multiple Sprites so the positions need to be independent of each other.
 
-        Image Source - Adding this because I need to be able to swap out the source of my image depending on what Sprite it is, so I'm adding it to the constructor arguments so I can set the source individually on any Sprite.  
+        Image Source - Need this to be able to swap out the source of my image depending on what Sprite it is, so I'm adding it to the constructor arguments so I can set the source individually on any Sprite.  
+
+        Scale - Need this to have a way to scale up my images, so I'm adding an argument called scale that will multiply the current height and width. I set it equal to 1 so the original size of the image stays in tact if need be. It's a parameter because not every Sprite needs to be scaled. 
+
+        Frames Amount - Need this because I have to divide the amount of frames by the entire length of the sprite sheet in order to determine the length of one section. This has to be a parameter because sprite sheets have different amounts of frames. 
+
+        Current Frame - Need this to track the current frame and iterate through the frames to mimic the appearance of animation. We use this by multiplying this by the spritesheet width divided by the amount of frames inside the sprite sheet. 
 
         Height - Need this to set the height of Sprite on the y axis
 
         Width - Need this to set the width of Sprite on the x axis
 
     ** Methods ------> 
-        Draw() - Used to draw an image on the canvas
+        Draw() - Used to draw an image on the canvas. Using the draw image method I'm adding the first four arguments to crop sprite sheets and give the illusion of animation. 
 
         Update() - To be called on a Sprite object within the animate function, in updatehere I'm calling my draw() method first.
 
 */
 
 class Sprite {
-    constructor({ position, imageSrc }) {
+    constructor({ position, imageSrc, scale = 1, framesAmt = 1 }) {
         this.position = position
         this.height = 150
         this.width = 50
         this.image = new Image()
         this.image.src = imageSrc
+        this.scale = scale
+        this.framesAmt = framesAmt
+        this.framesCur = 0
     }
 
     draw() {
-        ctx.drawImage(this.image, this.position.x, this.position.y)
+        ctx.drawImage(
+            this.image,
+            // The width should be the image width(sprite sheet) divided by the max amount of frames within the image, then multiplied by the current frames. We start framesCur off at zero because we do not want there to be any crop at first, for instance if the width of the full sprite sheet was 800 and there were 4 different frames, we would have 0 * (800/4) which equals 0. Next framesCur will be 1 and it will move over 200px and start from the next available frame. Next it will be 2 and will move over 400px and display the next frame, and so on.
+            this.framesCur * (this.image.width / this.framesAmt),
+            // Start at the top left of the sprite sheet
+            0,
+            // Divide the width by however many images there are in the sprite sheet
+            this.image.width / this.framesAmt,
+            this.image.height,
+            this.position.x, 
+            this.position.y, 
+            // You also need to divide the entire sprite sheet image width by however many images there are in it, or else it tries to stretch the cropped immage to it's original width. Divide this before you scale the image. 
+            (this.image.width / this.framesAmt) * this.scale, 
+            this.image.height * this.scale
+            )
     }
 
     update() {
         this.draw()
+        // In order for us to animate through the frames we need to increment through framesCur but we also need to check and make sure that framesCur is less than the framesAmt. Once it hits the limit it should reset to 0. We subtract 1 at the end because there are cases where there is only 1 frame and we want to keep drawing that. 
+        if (this.framesCur < this.framesAmt - 1){
+            this.framesCur++
+        } else {
+            this.framesCur = 0
+        }
+        
     }
 }
