@@ -25,6 +25,10 @@ one player or two players start from the left and work their way to the end poin
 
 attack the other player until one wins or the time runs out
 
+### List of Assets Used
+#### Background Image
+Image Download: https://edermunizz.itch.io/free-pixel-art-forest
+Creator: https://edermunizz.itch.io
 ### Dev Notes
 
 4 Elements of game design - Challenge, Choice, Change, Chance

@@ -176,6 +176,7 @@ const enemy = new Player({
  */
 
 const displayResults = function() {
+    clearTimeout(timerId)
     if (enemy.health === playerOne.health && playerTwo.health){
         document.getElementById('results').innerHTML = 'Tie?? Are you even trying?'
     } else if (enemy.health === 0) {
@@ -186,9 +187,10 @@ const displayResults = function() {
 }
 
 let timer = 99
+let timerId = 0
 
 function decreaseTimer() {
-    setTimeout(decreaseTimer, 1000)
+    timerId = setTimeout(decreaseTimer, 1000)
     if (timer > 0) {
         timer--
         document.getElementById('timer').innerHTML = timer
