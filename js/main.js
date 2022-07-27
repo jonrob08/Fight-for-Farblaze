@@ -89,8 +89,10 @@ class Player {
         ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
 
         // This is where the hitBox is drawn
-        ctx.fillStyle = 'red'
-        ctx.fillRect(this.hitBox.position.x, this.hitBox.position.y, this.hitBox.width, this.hitBox.height)
+        if(this.isAttacking){
+            ctx.fillStyle = 'red'
+            ctx.fillRect(this.hitBox.position.x, this.hitBox.position.y, this.hitBox.width, this.hitBox.height)
+        }
     }
 
     update() {
@@ -166,6 +168,21 @@ const enemy = new Player({
     }
 })
 
+const block = new Player({
+    position: {
+        x: 600,
+        y: -200
+    },
+    velocity: {
+        x: 0,
+        y: 0
+    },
+    offset: {
+        x: 0,
+        y: 0
+    }
+})
+
 /** Animate function - This recursive function "animates" the canvas in our browser window by calling itself and refreshes the frame by 
 
     -Reference: https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame
@@ -183,9 +200,11 @@ function animate() {
     playerTwo.update()
     // Draw and animate enemy
     enemy.update()
+
     // Set each player's velocity to 0 
     playerOne.velocity.x = 0
     playerTwo.velocity.x = 0
+  
 
     // Player 1 Movement
     if (keys.a.pressed && playerOne.lastKey === 'a') {
@@ -199,17 +218,21 @@ function animate() {
         playerTwo.velocity.x = 2
     } else if (keys.ArrowLeft.pressed && playerTwo.lastKey === 'ArrowLeft') {
         playerTwo.velocity.x = -2
+    } else {
+        playerTwo.velocity.x = 0
     }
 
     // Collision Detection - Player 1 / Player 2
     if (playerOne.hitBox.position.x + playerOne.hitBox.width >= enemy.position.x && playerOne.hitBox.position.x <= enemy.position.x + enemy.width && playerOne.hitBox.position.y + playerOne.hitBox.height >= enemy.position.y && playerOne.hitBox.position.y <= enemy.position.y + enemy.height && playerOne.isAttacking) {
-        playerOne.isAttacking = false
-       document.querySelector('#enemyonetwo-health').style.width -= '10%'
+        playerOne.isAttacking = false 
+        document.querySelector('#enemy-current-health').style.width = enemy.health + "%"
+        console.log('P1 Hit!')
     }
 
     if (playerTwo.hitBox.position.x + playerTwo.hitBox.width >= enemy.position.x && playerTwo.hitBox.position.x <= enemy.position.x + enemy.width && playerTwo.hitBox.position.y + playerTwo.hitBox.height >= enemy.position.y && playerTwo.hitBox.position.y <= enemy.position.y + enemy.height && playerTwo.isAttacking) {
-        playerTwo.isAttacking = false
-       
+        playerTwo.isAttacking = false 
+        console.log('Hit!')
+        document.querySelector('.enemy-current-health').style.width = enemy.health + "%"
     }
 
     // Collision Detection - Enemy
@@ -226,34 +249,29 @@ function animate() {
 
     // Hitbox Offset Detection
     if (playerOne.position.x >= enemy.position.x  ){
-        console.log('change hitbox')
         playerOne.hitBox.offset.x = 50
     }  else {
         playerOne.hitBox.offset.x = 0
     }
 
     if (playerTwo.position.x >= enemy.position.x  ){
-        console.log('change hitbox')
         playerTwo.hitBox.offset.x = 50
     }  else {
         playerTwo.hitBox.offset.x = 0
     }
 
     if (enemy.position.x >= playerOne.position.x  ){
-        console.log('change hitbox')
         enemy.hitBox.offset.x = 50
     }  else {
         enemy.hitBox.offset.x = 0
     }
 
     if (enemy.position.x >= playerTwo.position.x  ){
-        console.log('change hitbox')
         enemy.hitBox.offset.x = 50
     }  else {
         enemy.hitBox.offset.x = 0
     }
 }
-
 
 animate()
 
@@ -288,7 +306,7 @@ window.addEventListener('keydown', (e) => {
             keys.ArrowUp.pressed = true
             playerTwo.velocity.y = -6.5
             break
-        case '0':
+        case 'ArrowDown':
             playerTwo.attack()
             break
         // test case for enemy attacks

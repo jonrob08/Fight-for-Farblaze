@@ -12,12 +12,14 @@
     <div id="wrapper"> 
         <!-- header containing status bars and timer -->
         <div class="header">
-            <div id="player-healthbar">
-                <div id="playeronetwo-health"></div>
+            <div id="player-health-container">
+                <div id="player-max-health"></div>
+                <div id="player-current-health" style="position:absolute; background: blue; top: 0; right: 0; bottom: 0; width: 100%"></div>
             </div>
-            <div class="timer"></div>
-            <div id="enemy-healthbar">
-                <div id="enemyonetwo-health"></div>
+            <div id="timer"></div>
+            <div id="enemy-health-container">
+                <div id="enemy-max-health" ></div>
+                <div id="enemy-current-health" style="position:absolute; background: blue; top: 0; right: 0; bottom: 0; width: 100%"></div>
             </div>
         </div>
         <!-- game -->
