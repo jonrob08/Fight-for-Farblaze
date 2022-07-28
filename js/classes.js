@@ -119,14 +119,24 @@ class Sprite {
 */
 
 class Player extends Sprite {
-    constructor({position, velocity, imageSrc, scale = 1, framesAmt = 1, offset = {x: 0, y: 0}}) {
+    constructor({ 
+        position, 
+        velocity,  
+        imageSrc, 
+        scale = 1, 
+        framesAmt = 1,
+        offset = {
+            x: 0, y: 0
+        },
+        sprites
+    }) {
         super({
             // Inherit all the following properties from the parent Class
             position,
             imageSrc, 
             scale, 
             framesAmt,
-            offset
+            offset,
         })
         this.velocity = velocity
         this.height = 150
@@ -146,7 +156,13 @@ class Player extends Sprite {
         this.health = 100
         this.framesCur = 0
         this.framesElapsed = 0
-        this.framesWait = 60
+        this.framesWait = 40
+        this.sprites = sprites
+
+        for (const sprite in this.sprites) {
+            sprites[sprite].image = new Image()
+            sprites[sprite].image.src = sprites[sprite].imageSrc
+        }
     }
 
     // draw() {
@@ -179,6 +195,34 @@ class Player extends Sprite {
             this.isAttacking = false
         }, 100)
     }
+
+    switchSprite(sprite) {
+        switch (sprite) {
+            case 'idle':
+                if(this.image !== this.sprites.idle.image)
+                {
+                    this.image = this.sprites.idle.image;
+                    this.framesAmt = this.sprites.idle.framesAmt;
+                    this.framesCurrent = 0;
+                }
+                break
+            case 'run':
+                if(this.image !== this.sprites.run.image)
+                {
+                    this.image = this.sprites.run.image;
+                    this.framesAmt = this.sprites.run.framesAmt;
+                    this.framesCurrent = 0;
+                }
+                break
+            case 'jump':
+                if(this.image !== this.sprites.jump.image)
+                {
+                    this.image = this.sprites.jump.image;
+                    this.framesAmt = this.sprites.jump.framesAmt;
+                    this.framesCurrent = 0;
+                }
+                break
+        }
+    }
+
 }
-
-

@@ -77,8 +77,18 @@ const playerOne = new Player({
     scale: 3,
     framesAmt: 4,
     offset: {
-        x: 25,
+        x: 0,
         y: 5
+    },
+    sprites: {
+        idle: {
+            imageSrc: './img/Characters/Kiba/Idle.png',
+            framesAmt: 4
+        },
+        run: {
+            imageSrc: './img/Characters/Kiba/Run.png',
+            framesAmt: 8
+        }
     }
 })
 
@@ -181,10 +191,13 @@ function animate() {
   
 
     // Player 1 Movement
+    playerOne.switchSprite('idle')
     if (keys.a.pressed && playerOne.lastKey === 'a') {
         playerOne.velocity.x = -2
+        playerOne.switchSprite('run')
     } else if (keys.d.pressed && playerOne.lastKey === 'd') {
         playerOne.velocity.x = 2
+        playerOne.switchSprite('run')
     }
 
     // Player 2 Movement
