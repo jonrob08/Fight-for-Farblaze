@@ -51,7 +51,7 @@ const playerOne = new Player({
     framesAmt: 4,
     offset: {
         x: 30,
-        y: 5
+        y: 0
     },
     sprites: {
         idle: {
@@ -95,15 +95,101 @@ const playerOne = new Player({
             framesAmt: 4
         },
     },
-    isFacing: 'right'
+    isFacing: 'right',
+    attackBox: {
+        offset: {
+            x: -50,
+            y: -120
+        },
+        width: 200,
+        height: 50
+    },
+    hitBox: {
+        offset: {
+            x: -100,
+            y: -100
+        },
+        width: 50,
+        height: 100
+    }
 })
 
 console.log(playerOne)
 
 // Creating Player Two
-const playerTwo = new Player({
+// const playerTwo = new Player({
+//     position: {
+//         x: 150,
+//         y: 0
+//     },
+//     velocity: {
+//         x: 0,
+//         y: 0
+//     },
+//     offset: {
+//         x: 0,
+//         y: 0
+//     },
+//     imageSrc: './img/Characters/Neji/Idle.png',
+//     scale: 3,
+//     framesAmt: 4,
+//     sprites: {
+//         idle: {
+//             imageSrc: './img/Characters/Neji/Idle.png',
+//             framesAmt: 4
+//         },
+//         revidle: {
+//             imageSrc: './img/Characters/Neji/rev_Idle.png',
+//             framesAmt: 4
+//         },
+//         run: {
+//             imageSrc: './img/Characters/Neji/Run.png',
+//             framesAmt: 8
+//         },
+//         revrun: {
+//             imageSrc: './img/Characters/Neji/rev_Run.png',
+//             framesAmt: 8
+//         },
+//         jump: {
+//             imageSrc: './img/Characters/Neji/Jump.png',
+//             framesAmt: 2
+//         },
+//         revjump: {
+//             imageSrc: './img/Characters/Neji/rev_Jump.png',
+//             framesAmt: 2
+//         },
+//         fall: {
+//             imageSrc: './img/Characters/Neji/Fall.png',
+//             framesAmt: 2
+//         },
+//         revfall: {
+//             imageSrc: './img/Characters/Neji/rev_Fall.png',
+//             framesAmt: 2
+//         },
+//         attack1: {
+//             imageSrc: './img/Characters/Neji/Attack1.png',
+//             framesAmt: 4
+//         },
+//         revattack1: {
+//             imageSrc: './img/Characters/Neji/rev_Attack1.png',
+//             framesAmt: 4
+//         },
+//     },
+//     isFacing: 'right',
+//     hitBox: {
+//         offset: {
+//             x: 0,
+//             y: 0
+//         },
+//         width: 100,
+//         height: 50
+//     }
+// })
+
+// Creating Enemy
+const enemy = new Player({
     position: {
-        x: 150,
+        x: 700,
         y: 0
     },
     velocity: {
@@ -112,63 +198,76 @@ const playerTwo = new Player({
     },
     offset: {
         x: 0,
-        y: 0
+        y: -8
     },
-    imageSrc: './img/Characters/Kiba/Idle.png',
+    imageSrc: './img/Characters/Major/Idle.png',
     scale: 3,
     framesAmt: 4,
     sprites: {
         idle: {
-            imageSrc: './img/Characters/Kiba/Idle.png',
+            imageSrc: './img/Characters/Major/Idle.png',
+            framesAmt: 4
+        },
+        revidle: {
+            imageSrc: './img/Characters/Major/rev_Idle.png',
             framesAmt: 4
         },
         run: {
-            imageSrc: './img/Characters/Kiba/Run.png',
+            imageSrc: './img/Characters/Major/Run.png',
             framesAmt: 8
         },
-        run: {
-            imageSrc: './img/Characters/Kiba/Jump.png',
+        revrun: {
+            imageSrc: './img/Characters/Major/rev_Run.png',
+            framesAmt: 8
+        },
+        jump: {
+            imageSrc: './img/Characters/Major/Jump.png',
             framesAmt: 2
-        }
+        },
+        revjump: {
+            imageSrc: './img/Characters/Major/rev_Jump.png',
+            framesAmt: 2
+        },
+        fall: {
+            imageSrc: './img/Characters/Major/Fall.png',
+            framesAmt: 2
+        },
+        revfall: {
+            imageSrc: './img/Characters/Major/rev_Fall.png',
+            framesAmt: 2
+        },
+        attack1: {
+            imageSrc: './img/Characters/Major/Attack1.png',
+            framesAmt: 4
+        },
+        revattack1: {
+            imageSrc: './img/Characters/Major/rev_Attack1.png',
+            framesAmt: 4
+        },
+    },
+    isFacing: 'left',
+    attackBox: {
+        offset: {
+            x: -40,
+            y: -80
+        },
+        width: 200, //200?
+        height: 80
+    },
+    hitBox: {
+        offset: {
+            x: -120,
+            y: -80
+        },
+        width: 50,
+        height: 120
     }
 })
-
-// Creating Enemy
-// const enemy = new Player({
-//     position: {
-//         x: 700,
-//         y: 0
-//     },
-//     velocity: {
-//         x: 0,
-//         y: 0
-//     },
-//     offset: {
-//         x: 50,
-//         y: 0
-//     },
-//     imageSrc: './img/Characters/Kiba/Idle.png',
-//     scale: 3,
-//     framesAmt: 4,
-//     sprites: {
-//         idle: {
-//             imageSrc: './img/Characters/Kiba/Idle.png',
-//             framesAmt: 4
-//         },
-//         run: {
-//             imageSrc: './img/Characters/Kiba/Run.png',
-//             framesAmt: 8
-//         },
-//         run: {
-//             imageSrc: './img/Characters/Kiba/Jump.png',
-//             framesAmt: 2
-//         }
-//     }
-// })
 
 // Setting up Key monitor
 
 const keys = {
+    // P1
     a: {
         pressed: false
     },
@@ -178,6 +277,7 @@ const keys = {
     w: {
         pressed: false
     },
+    // P2
     ArrowLeft: {
         pressed: false
     },
@@ -185,6 +285,16 @@ const keys = {
         pressed: false
     },
     ArrowUp: {
+        pressed: false
+    },
+    // Testing Enemy Movement
+    j: {
+        pressed: false
+    },
+    l: {
+        pressed: false
+    },
+    i: {
         pressed: false
     }
 }
@@ -238,16 +348,22 @@ function animate() {
     // Draw and animate player 1
     playerOne.update()
     // Draw and animate player 2
-    playerTwo.update()
+    // playerTwo.update()
     // Draw and animate enemy
-    // enemy.update()
+    enemy.update()
 
     // Set each player's velocity to 0 
     if(playerOne.velocity.x = 0){
         playerOne.switchSprite('idle')  
     }
-    // playerTwo.velocity.x = 0
-  
+
+    // if(playerTwo.velocity.x = 0){
+    //     playerTwo.switchSprite('idle')  
+    // }
+
+    if(enemy.velocity.x = 0 && enemy.isFacing === 'left'){
+        enemy.switchSprite('revidle')  
+    }
 
     // Player 1 Movement
   
@@ -275,14 +391,89 @@ function animate() {
 
     // Player 2 Movement
     
+    // if (keys.ArrowLeft.pressed && playerTwo.lastKey === 'ArrowLeft') {
+    //     playerTwo.velocity.x = -3
+    //     playerTwo.switchSprite('revrun')
+    // } else if (keys.ArrowRight.pressed && playerTwo.lastKey === 'ArrowRight') {
+    //     playerTwo.velocity.x = 3
+    //     playerTwo.switchSprite('run')
+    // } else if (playerTwo.lastKey === 'ArrowLeft') {
+    //     playerTwo.switchSprite('revidle')
+    // } else {
+    //     playerTwo.switchSprite('idle')
+    // }
+
+    // if (playerTwo.velocity.y < 0 && playerTwo.isFacing === 'right') {
+    //     playerTwo.switchSprite('jump')
+    // } else if (playerTwo.velocity.y < 0 && playerTwo.isFacing === 'left') {
+    //     playerTwo.switchSprite('revjump')
+    // } else if (playerTwo.velocity.y > 0 && playerTwo.isFacing === 'right') {
+    //     playerTwo.switchSprite('fall')
+    // } else if (playerTwo.velocity.y > 0 && playerTwo.isFacing === 'left') {
+    //     playerTwo.switchSprite('revfall')
+    // } 
+
+    // Enemy Movement
+    if (keys.j.pressed && enemy.lastKey === 'j') {
+        enemy.velocity.x = -3
+        enemy.switchSprite('revrun')
+    } else if (keys.l.pressed && enemy.lastKey === 'l') {
+        enemy.velocity.x = 3
+        enemy.switchSprite('run')
+    } else if (enemy.lastKey === 'j') {
+        enemy.switchSprite('revidle')
+    } else {
+        enemy.switchSprite('idle')
+    }
+
+    if (enemy.velocity.y < 0 && enemy.isFacing === 'right') {
+        enemy.switchSprite('jump')
+    } else if (enemy.velocity.y < 0 && enemy.isFacing === 'left') {
+        enemy.switchSprite('revjump')
+    } else if (enemy.velocity.y > 0 && enemy.isFacing === 'right') {
+        enemy.switchSprite('fall')
+    } else if (enemy.velocity.y > 0 && enemy.isFacing === 'left') {
+        enemy.switchSprite('revfall')
+    } 
 
     // Collision Detection - Player 1 / Player 2
-    // if (playerOne.hitBox.position.x + playerOne.hitBox.width >= enemy.position.x && playerOne.hitBox.position.x <= enemy.position.x + enemy.width && playerOne.hitBox.position.y + playerOne.hitBox.height >= enemy.position.y && playerOne.hitBox.position.y <= enemy.position.y + enemy.height && playerOne.isAttacking) {
+    // if (playerOne.attackBox.position.x + playerOne.attackBox.width >= enemy.hitBox.position.x && playerOne.hitBox.position.x <= enemy.position.x + enemy.width && playerOne.hitBox.position.y + playerOne.hitBox.height >= enemy.position.y && playerOne.hitBox.position.y <= enemy.position.y + enemy.height && playerOne.isAttacking) {
     //     playerOne.isAttacking = false
     //     enemy.health -= 2
     //     document.querySelector('#enemy-current-health').style.width = enemy.health + "%"
     //     console.log('P1 Hit!')
     // }
+
+    // if (
+    //     playerOne.attackBox.position.x + playerOne.attackBox.width >= enemy.hitBox.position.x && playerOne.attackBox.position.x + playerOne.attackBox.width <= enemy.hitBox.position.x + enemy.hitBox.width && playerOne.attackBox.position.y + playerOne.attackBox.height >= enemy.hitBox.position.y && playerOne.attackBox.position.y <= enemy.hitBox.position.y + enemy.height && playerOne.isFacing === 'right'
+    //     ) {
+    //     console.log('Winning!')
+    // } else if (
+    //     playerOne.attackBox.position.x >= enemy.hitBox.position.x + enemy.hitBox.width && playerOne.attackBox.position.x <= enemy.hitBox.position.x 
+    // ) {
+    //     console.log('Winning Backwards!')
+    // }
+
+    let ab = playerOne.attackBox.position.x
+    let ba = enemy.hitBox.position.x + enemy.hitBox.width
+    let ac = playerOne.attackBox.position.x + playerOne.attackBox.width
+    let ca = enemy.hitBox.position.x
+    let ad = playerOne.attackBox.position.y
+    let da = enemy.hitBox.position.y + enemy.height
+    let ae = playerOne.attackBox.position.y + playerOne.attackBox.height
+    let ea = enemy.hitBox.position.y
+
+    if ( ab < ba && ac > ca && ad < da && ae > ea && playerOne.isAttacking) 
+    {
+        playerOne.isAttacking = false
+        enemy.health -= 2
+        document.querySelector('#enemy-current-health').style.width = enemy.health + "%"
+        console.log('P1 Hit!')
+        }
+
+    // && playerOne.attackBox.position.x <= enemy.hitBox.position.x 
+    // && playerOne.attackBox.position.y + playerOne.attackBox.height >= enemy.hitBox.position.y 
+    // && playerOne.attackBox.position.y <= enemy.hitBox.position.y + enemy.height
 
     // if (playerTwo.hitBox.position.x + playerTwo.hitBox.width >= enemy.position.x && playerTwo.hitBox.position.x <= enemy.position.x + enemy.width && playerTwo.hitBox.position.y + playerTwo.hitBox.height >= enemy.position.y && playerTwo.hitBox.position.y <= enemy.position.y + enemy.height && playerTwo.isAttacking) {
     //     playerTwo.isAttacking = false 
@@ -292,6 +483,8 @@ function animate() {
     // }
 
     // Collision Detection - Enemy
+
+
 
     // if (enemy.hitBox.position.x + enemy.hitBox.width >= playerOne.position.x && enemy.hitBox.position.x <= playerOne.position.x + playerOne.width && enemy.hitBox.position.y + enemy.hitBox.height >= playerOne.position.y && enemy.hitBox.position.y <= playerOne.position.y + playerOne.height && enemy.isAttacking) {
     //     enemy.isAttacking = false
@@ -338,7 +531,26 @@ function animate() {
     // if (enemy.health <= 0 || playerOne.health <= 0 || playerTwo.health <=0){
     //     displayResults()
     // }
+   
 }
+
+function trackX() {
+    // top right
+    console.log('top right')
+console.log(playerOne.attackBox.position.x + playerOne.attackBox.width)
+    // bottom right
+    console.log('bottom right')
+console.log(playerOne.attackBox.position.x + playerOne.attackBox.width + playerOne.attackBox.height)
+ // top left
+ console.log('top left')
+console.log(playerOne.attackBox.position.x)
+// bottom left
+console.log('bottom left')
+console.log(playerOne.attackBox.position.x + playerOne.attackBox.height)
+
+}
+
+
 
 animate()
 decreaseTimer()
@@ -359,19 +571,19 @@ window.addEventListener('keydown', (e) => {
         case 'w':
             keys.w.pressed = true
             playerOne.velocity.y = -6.5
-            breakd
+            break
         case ' ':
             playerOne.attack()
-            console.log('attack')
-            playerOne.switchSprite('attack1')
             break
         // Player 2 Keys
             case 'ArrowRight':
             keys.ArrowRight.pressed = true
+            playerTwo.isFacing = 'right'
             playerTwo.lastKey = 'ArrowRight'
             break
         case 'ArrowLeft':
             keys.ArrowLeft.pressed = true
+            playerTwo.isFacing = 'left'
             playerTwo.lastKey = 'ArrowLeft'
             break
         case 'ArrowUp':
@@ -381,8 +593,22 @@ window.addEventListener('keydown', (e) => {
         case 'ArrowDown':
             playerTwo.attack()
             break
-        // test case for enemy attacks
-        case '9':
+        // test cases for enemy movement and attacks
+        case 'l':
+            keys.l.pressed = true
+            enemy.isFacing = 'right'
+            enemy.lastKey = 'l'
+            break
+        case 'j':
+            keys.j.pressed = true
+            enemy.isFacing = 'left'
+            enemy.lastKey = 'j'
+            break
+        case 'i':
+            keys.i.pressed = true
+            enemy.velocity.y = -6.5
+            break
+        case 'k':
             enemy.attack()
             break
     }
@@ -401,7 +627,7 @@ window.addEventListener('keyup', (e) => {
             keys.w.pressed = false
             break
         // Player 2 Keys
-            case 'ArrowRight':
+        case 'ArrowRight':
             keys.ArrowRight.pressed = false
             break
         case 'ArrowLeft':
@@ -409,6 +635,15 @@ window.addEventListener('keyup', (e) => {
             break
         case 'ArrowUp':
             keys.ArrowUp.pressed = false
+            break
+        case 'l':
+            keys.l.pressed = false
+            break
+        case 'j':
+            keys.j.pressed = false
+            break
+        case 'i':
+            keys.i.pressed = false
             break
     }
 })

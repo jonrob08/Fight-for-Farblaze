@@ -40,7 +40,7 @@ class Sprite {
         this.framesAmt = framesAmt
         this.framesCur = 0
         this.framesElapsed = 0
-        this.framesWait = 40
+        this.framesWait = 20
         this.offset = offset
     }
 
@@ -90,9 +90,15 @@ class Sprite {
  * -------
     ** Extends Sprite Class -------> 
         Needed to do this since our Players are no longer placeholder rectangles and I want to use the frames logic in my Sprite Class. A little refactoring and I'm able to create Players and give them all the properties that are available to a Sprite. 
+
+        *** Extended Props
+        Image Source - see Image Source in Sprite Class.  
+        Scale -  see Scale in Sprite Class.  
+        Frames Amount - see Frames Amount in Sprite Class.  
+        Offset - see Offset in Sprite Class, or the Migos.  
  * -------
     ** Constructor -------> 
-        Position - Adding this because I need to be able to track Player's positioning on the canvas and refer to it. It's in the constructor arguments because I will have multiple Players so the positions need to be independent of each other.
+        Position - Need this because I need to be able to track Player's positioning on the canvas and refer to it. It's in the constructor arguments because I will have multiple Players so the positions need to be independent of each other.
 
         Velocity - Utilizing this to add movement to our Players
         Reference: http://www.noxtar.net/2016/03/html5-canvas-tutorial-applying-velocity.html
@@ -103,11 +109,20 @@ class Sprite {
 
         lastKey - Need this to differentiate keys that are being held down, as multiple keys can be pressed down at once we also want to check which key was held down last. We instantiate it as a falsy value because when we press a key in the EventListener it becomes a string of that key which we can use later.
 
-        hitBox - Need this common property to determine if a player or enemy was hit or not. Each Player has an attack so if that crosses another persons hitbox they will be hit. hitBox is an object that has a position that is the Player's position, a width of 100 (subject to change depending on attack range and how bold I'm feeling), and a height of 30 (also subject to change).
+        hitBox - Need this to determine if a player or enemy was hit or not. Each Player has an attack so if that crosses another persons hitbox they will be hit. hitBox is a vertical rectangle that is at the Player's exact x and y position and width and height.
+
+        attackBox - Need this to determine if a Player's attack hit another Player's hitbox or not. Wanted to add this due to the varying lengths and movements of attacks.
 
         isAttacking - Need this to check if a Player is attacking or not
 
-        health - Need this to keep track of Player's health. Utilizing this to update the health bars in-game
+        Health - Need this to keep track of Player's health. Utilizing this to update the health bars in-game
+
+        Sprites - Need this as a way to organize every single sprite animation for a particular character. So sprites is an object that has an array of objects. This array of objects is comprised of the different animations we have available for each Player, such as 'run', 'jump', 'attack'. These animation objects have two properties, imageSrc and framesAmt.
+
+        isFacing - Need this to help determine which way the Player is facing, mainly to help with determining which animation to switch to.
+
+        // Potentially add an isMoving prop
+
  * -------
     ** Methods ------> 
         Draw() - For reference I am drawing a rectangle placeholder for my Player 1 and Player 2. I am using a fillStyle to make my rectangle blue
@@ -115,6 +130,8 @@ class Sprite {
         Update() - To be called in the animate function, here I'm calling my draw() method and adding velocity and gravity. The velocity gets added to the Player's position on the y axis and you can set individual velocities in the player objects. Next is an if statement that checks if the location of the bottom of the Player is greater than the location of the bottom of the canvas, if so, set the velocity to 0 stopping the Player.  
 
         Attack() - Sets isAttacking equal to true, and then sets it back to false after a setTimeout so the Player is not constantly attacking
+
+        switchSprite() - This method does all of our sprite switching logic, instead of manually switching them in the player/enemy movement section I'm using a method here that has all of them and are set by an argument called sprites. More info on sprites above. 
  * -------
 */
 
@@ -129,8 +146,10 @@ class Player extends Sprite {
             x: 0, y: 0
         },
         sprites,
-        isFacing
+        isFacing,
         // Potentially add an isMoving prop
+        attackBox = { offset: {}, width: undefined, height: undefined },
+        hitBox = { offset: {}, width: undefined, height: undefined }
     }) {
         super({
             // Inherit all the following properties from the parent Class
@@ -144,21 +163,31 @@ class Player extends Sprite {
         this.height = 150
         this.width = 50
         this.lastKey
-        this.hitBox = {
+        this.attackBox = {
             // Changing position to have it's own x and y instead of inheriting the parents, and adding an offset for when the character is facing backwards or forwards
             position: {
                 x: this.position.x,
                 y: this.position.y
             },
-            offset: offset,
-            width: 100,
-            height: 50
+            offset: attackBox.offset,
+            width: attackBox.width,
+            height: attackBox.height
+        }
+        this.hitBox = {
+            // Changing position to have it's own x and y instead of inheriting the parents, and adding an offset for when the character is facing backwards or forwards
+            position: {
+                x: this.position.x ,
+                y: this.position.y
+            },
+            offset: hitBox.offset,
+            width: hitBox.width,
+            height: hitBox.height
         }
         this.isAttacking
         this.health = 100
         this.framesCur = 0
         this.framesElapsed = 0
-        this.framesWait = 20
+        this.framesWait = 30
         this.sprites = sprites
         this.isFacing = isFacing
 
@@ -180,29 +209,50 @@ class Player extends Sprite {
     update() {
         this.draw()
         this.animateFrames()
+        
         // Subtract the hitBox offset if there is one
+        this.attackBox.position.x = this.position.x - this.attackBox.offset.x
+        this.attackBox.position.y = this.position.y - this.attackBox.offset.y
+
+        //Keep this to visualize attackbox location
+        ctx.fillRect(this.attackBox.position.x, this.attackBox.position.y, this.attackBox.width, this.attackBox.height)
+
         this.hitBox.position.x = this.position.x - this.hitBox.offset.x
         this.hitBox.position.y = this.position.y - this.hitBox.offset.y
+
+
+        //Keep this to visualize hitbox location
+        ctx.fillRect(this.hitBox.position.x, this.hitBox.position.y, this.hitBox.width, this.hitBox.height)
 
         this.position.x += this.velocity.x
         this.position.y += this.velocity.y
 
         // gravity function
-        if (this.position.y + this.height > canvas.height - 85) {
+        if (this.position.y + this.height + this.velocity.y > canvas.height - 85) {
             this.velocity.y = 0
             this.position.y = 342
         } else this.velocity.y += gravity
-        console.log(this.position.y)
     }
 
     attack() {
+        if(this.isFacing === 'right'){
+        this.switchSprite('attack1')
+        } else if (this.isFacing === 'left'){
+        this.switchSprite('revattack1')
+        }
         this.isAttacking = true
         setTimeout(() => {
             this.isAttacking = false
-        }, 100)
+        }, 10)
     }
 
     switchSprite(sprite) {
+        if (this.image === this.sprites.attack1.image && this.framesCur < this.sprites.attack1.framesAmt - 1) {
+            return
+        } else if (this.image === this.sprites.revattack1.image && this.framesCur < this.sprites.revattack1.framesAmt - 1) {
+            return
+        }
+
         switch (sprite) {
             case 'idle':
                 if(this.image !== this.sprites.idle.image)
