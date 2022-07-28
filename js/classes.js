@@ -40,7 +40,7 @@ class Sprite {
         this.framesAmt = framesAmt
         this.framesCur = 0
         this.framesElapsed = 0
-        this.framesWait = 10
+        this.framesWait = 40
         this.offset = offset
     }
 
@@ -128,7 +128,9 @@ class Player extends Sprite {
         offset = {
             x: 0, y: 0
         },
-        sprites
+        sprites,
+        isFacing
+        // Potentially add an isMoving prop
     }) {
         super({
             // Inherit all the following properties from the parent Class
@@ -156,8 +158,9 @@ class Player extends Sprite {
         this.health = 100
         this.framesCur = 0
         this.framesElapsed = 0
-        this.framesWait = 40
+        this.framesWait = 20
         this.sprites = sprites
+        this.isFacing = isFacing
 
         for (const sprite in this.sprites) {
             sprites[sprite].image = new Image()
@@ -184,9 +187,12 @@ class Player extends Sprite {
         this.position.x += this.velocity.x
         this.position.y += this.velocity.y
 
+        // gravity function
         if (this.position.y + this.height > canvas.height - 85) {
             this.velocity.y = 0
+            this.position.y = 342
         } else this.velocity.y += gravity
+        console.log(this.position.y)
     }
 
     attack() {
@@ -206,6 +212,14 @@ class Player extends Sprite {
                     this.framesCurrent = 0;
                 }
                 break
+            case 'revidle':
+                if(this.image !== this.sprites.revidle.image)
+                {
+                    this.image = this.sprites.revidle.image;
+                    this.framesAmt = this.sprites.revidle.framesAmt;
+                    this.framesCurrent = 0;
+                }
+                break
             case 'run':
                 if(this.image !== this.sprites.run.image)
                 {
@@ -213,6 +227,14 @@ class Player extends Sprite {
                     this.framesAmt = this.sprites.run.framesAmt;
                     this.framesCurrent = 0;
                 }
+                break
+            case 'revrun':
+                    if(this.image !== this.sprites.revrun.image)
+                    {
+                        this.image = this.sprites.revrun.image;
+                        this.framesAmt = this.sprites.revrun.framesAmt;
+                        this.framesCurrent = 0;
+                    }
                 break
             case 'jump':
                 if(this.image !== this.sprites.jump.image)
@@ -222,6 +244,46 @@ class Player extends Sprite {
                     this.framesCurrent = 0;
                 }
                 break
+            case 'revjump':
+                if(this.image !== this.sprites.revjump.image)
+                {
+                this.image = this.sprites.revjump.image;
+                this.framesAmt = this.sprites.revjump.framesAmt;
+                this.framesCurrent = 0;
+                }
+            break
+            case 'fall':
+                if(this.image !== this.sprites.fall.image)
+                {
+                this.image = this.sprites.fall.image;
+                this.framesAmt = this.sprites.fall.framesAmt;
+                this.framesCurrent = 0;
+                }
+            break
+            case 'revfall':
+                if(this.image !== this.sprites.revfall.image)
+                {
+                this.image = this.sprites.revfall.image;
+                this.framesAmt = this.sprites.revfall.framesAmt;
+                this.framesCurrent = 0;
+                }
+            break
+            case 'attack1':
+                if(this.image !== this.sprites.attack1.image)
+                {
+                this.image = this.sprites.attack1.image;
+                this.framesAmt = this.sprites.attack1.framesAmt;
+                this.framesCurrent = 0;
+                }
+            break
+            case 'revattack1':
+                if(this.image !== this.sprites.revattack1.image)
+                {
+                this.image = this.sprites.revattack1.image;
+                this.framesAmt = this.sprites.revattack1.framesAmt;
+                this.framesCurrent = 0;
+                }
+            break
         }
     }
 
