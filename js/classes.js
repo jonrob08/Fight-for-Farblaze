@@ -196,6 +196,7 @@ class Player extends Sprite {
     this.sprites = sprites;
     this.isFacing = isFacing;
     this.characterName = characterName;
+    this.dead = false;
 
     for (const sprite in this.sprites) {
       sprites[sprite].image = new Image();
@@ -205,7 +206,7 @@ class Player extends Sprite {
 
   update() {
     this.draw();
-    this.animateFrames();
+    if (!this.dead) this.animateFrames();
 
     // Subtract the hitBox offset if there is one
     this.attackBox.position.x = this.position.x - this.attackBox.offset.x;
@@ -240,6 +241,15 @@ class Player extends Sprite {
   }
 
   switchSprite(sprite) {
+     // Animation override - Death
+     if (this.image === this.sprites.death.image) {
+     if (this.framesCur === this.sprites.death.framesAmt - 1) 
+            this.dead = true
+            return;
+      }
+    
+
+    // Animation override - Attack
     if (
       this.image === this.sprites.attack1.image &&
       this.framesCur < this.sprites.attack1.framesAmt - 1
@@ -251,6 +261,14 @@ class Player extends Sprite {
     ) {
       return;
     }
+
+    // Animation override - Hit
+    if (
+        this.image === this.sprites.takehitflash.image &&
+        this.framesCur < this.sprites.takehitflash.framesAmt - 1
+      ) {
+        return;
+      }
 
     switch (sprite) {
       case "idle":
@@ -365,6 +383,29 @@ class Player extends Sprite {
           this.framesCur = 0;
         }
         break;
+      case "death":
+        if (this.image !== this.sprites.death.image) {
+          this.image = this.sprites.death.image;
+          this.framesAmt = this.sprites.death.framesAmt;
+          this.framesCur = 0;
+        }
+        break;
+      case "revdeath":
+        if (this.image !== this.sprites.revdeath.image) {
+          this.image = this.sprites.revdeath.image;
+          this.framesAmt = this.sprites.revdeath.framesAmt;
+          this.framesCur = 0;
+        }
+        break;
     }
   }
+
+  takehit() {
+    this.health -= 50
+    
+    if (this.health <= 0) {
+        this.switchSprite('death')
+    } else this.switchSprite('takehitflash')
+  }
+
 }
