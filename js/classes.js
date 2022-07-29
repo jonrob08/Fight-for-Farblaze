@@ -1,4 +1,3 @@
-
 /**
  * Creating Sprites Class
     ** Constructor -------> 
@@ -30,60 +29,64 @@
 */
 
 class Sprite {
-    constructor({ position, imageSrc, scale = 1, framesAmt = 1, offset = {x: 0, y: 0} }) {
-        this.position = position
-        this.height = 150
-        this.width = 50
-        this.image = new Image()
-        this.image.src = imageSrc
-        this.scale = scale
-        this.framesAmt = framesAmt
-        this.framesCur = 0
-        this.framesElapsed = 0
-        this.framesWait = 20
-        this.offset = offset
+  constructor({
+    position,
+    imageSrc,
+    scale = 1,
+    framesAmt = 1,
+    offset = { x: 0, y: 0 },
+  }) {
+    this.position = position;
+    this.height = 150;
+    this.width = 50;
+    this.image = new Image();
+    this.image.src = imageSrc;
+    this.scale = scale;
+    this.framesAmt = framesAmt;
+    this.framesCur = 0;
+    this.framesElapsed = 0;
+    this.framesWait = 20;
+    this.offset = offset;
+  }
+
+  draw() {
+    ctx.drawImage(
+      this.image,
+      // The width should be the image width(sprite sheet) divided by the max amount of frames within the image, then multiplied by the current frames. We start framesCur off at zero because we do not want there to be any crop at first, for instance if the width of the full sprite sheet was 800 and there were 4 different frames, we would have 0 * (800/4) which equals 0. Next framesCur will be 1 and it will move over 200px and start from the next available frame. Next it will be 2 and will move over 400px and display the next frame, and so on.
+      this.framesCur * (this.image.width / this.framesAmt),
+      // Start at the top left of the sprite sheet
+      0,
+      // Divide the width by however many images there are in the sprite sheet
+      this.image.width / this.framesAmt,
+      this.image.height,
+      // Subtracting the offset from the image position so I can place it on the screen where is looks best regardless of padding in the original image
+      this.position.x - this.offset.x,
+      this.position.y - this.offset.y,
+      // You also need to divide the entire sprite sheet image width by however many images there are in it, or else it tries to stretch the cropped immage to it's original width. Divide this before you scale the image.
+      (this.image.width / this.framesAmt) * this.scale,
+      this.image.height * this.scale
+    );
+  }
+
+  animateFrames() {
+    this.framesElapsed++;
+
+    // First checking to see if the amount of frames elapsed divided by the framesWait remainder is equal to zero, if so move to the next frame within the sprite sheet. Slowing down or speeding up our animation based on the number we pass to framesWait. Ex. if it's 2, it will happen every 2 frames so the frames will be extremely fast, as opposed to 200, less things are divisible by that over time so the frames will change a lot slower.
+    if (this.framesElapsed % this.framesWait === 0) {
+      // In order for us to animate through the frames we need to increment through framesCur but we also need to check and make sure that framesCur is less than the framesAmt. Once it hits the limit it should reset to 0. We subtract 1 at the end because there are cases where there is only 1 frame and we want to keep drawing that.
+      if (this.framesCur < this.framesAmt - 1) {
+        this.framesCur++;
+      } else {
+        this.framesCur = 0;
+      }
     }
+  }
 
-    draw() {
-        ctx.drawImage(
-            this.image,
-            // The width should be the image width(sprite sheet) divided by the max amount of frames within the image, then multiplied by the current frames. We start framesCur off at zero because we do not want there to be any crop at first, for instance if the width of the full sprite sheet was 800 and there were 4 different frames, we would have 0 * (800/4) which equals 0. Next framesCur will be 1 and it will move over 200px and start from the next available frame. Next it will be 2 and will move over 400px and display the next frame, and so on.
-            this.framesCur * (this.image.width / this.framesAmt),
-            // Start at the top left of the sprite sheet
-            0,
-            // Divide the width by however many images there are in the sprite sheet
-            this.image.width / this.framesAmt,
-            this.image.height,
-            // Subtracting the offset from the image position so I can place it on the screen where is looks best regardless of padding in the original image 
-            this.position.x - this.offset.x, 
-            this.position.y - this.offset.y, 
-            // You also need to divide the entire sprite sheet image width by however many images there are in it, or else it tries to stretch the cropped immage to it's original width. Divide this before you scale the image. 
-            (this.image.width / this.framesAmt) * this.scale, 
-            this.image.height * this.scale
-            )
-    }
-
-    animateFrames() {
-        this.framesElapsed++
-
-        // First checking to see if the amount of frames elapsed divided by the framesWait remainder is equal to zero, if so move to the next frame within the sprite sheet. Slowing down or speeding up our animation based on the number we pass to framesWait. Ex. if it's 2, it will happen every 2 frames so the frames will be extremely fast, as opposed to 200, less things are divisible by that over time so the frames will change a lot slower.
-        if (this.framesElapsed % this.framesWait === 0) {
-            // In order for us to animate through the frames we need to increment through framesCur but we also need to check and make sure that framesCur is less than the framesAmt. Once it hits the limit it should reset to 0. We subtract 1 at the end because there are cases where there is only 1 frame and we want to keep drawing that. 
-            if (this.framesCur < this.framesAmt - 1){
-                this.framesCur++
-            } else {
-                this.framesCur = 0
-            }
-        }
-    }
-    
-
-    update() {
-        this.draw()
-        this.animateFrames()
-    }   
-}   
-
+  update() {
+    this.draw();
+    this.animateFrames();
+  }
+}
 
 /**
  * Creating Player Class
@@ -136,205 +139,232 @@ class Sprite {
 */
 
 class Player extends Sprite {
-    constructor({ 
-        position, 
-        velocity,  
-        imageSrc, 
-        scale = 1, 
-        framesAmt = 1,
-        offset = {
-            x: 0, y: 0
-        },
-        sprites,
-        isFacing,
-        // Potentially add an isMoving prop
-        attackBox = { offset: {}, width: undefined, height: undefined },
-        hitBox = { offset: {}, width: undefined, height: undefined }
-    }) {
-        super({
-            // Inherit all the following properties from the parent Class
-            position,
-            imageSrc, 
-            scale, 
-            framesAmt,
-            offset,
-        })
-        this.velocity = velocity
-        this.height = 150
-        this.width = 50
-        this.lastKey
-        this.attackBox = {
-            // Changing position to have it's own x and y instead of inheriting the parents, and adding an offset for when the character is facing backwards or forwards
-            position: {
-                x: this.position.x,
-                y: this.position.y
-            },
-            offset: attackBox.offset,
-            width: attackBox.width,
-            height: attackBox.height
-        }
-        this.hitBox = {
-            // Changing position to have it's own x and y instead of inheriting the parents, and adding an offset for when the character is facing backwards or forwards
-            position: {
-                x: this.position.x ,
-                y: this.position.y
-            },
-            offset: hitBox.offset,
-            width: hitBox.width,
-            height: hitBox.height
-        }
-        this.isAttacking
-        this.health = 100
-        this.framesCur = 0
-        this.framesElapsed = 0
-        this.framesWait = 30
-        this.sprites = sprites
-        this.isFacing = isFacing
+  constructor({
+    position,
+    velocity,
+    imageSrc,
+    scale = 1,
+    framesAmt = 1,
+    offset = {
+      x: 0,
+      y: 0,
+    },
+    sprites,
+    isFacing,
+    // Potentially add an isMoving prop
+    attackBox = { offset: {}, width: undefined, height: undefined },
+    hitBox = { offset: {}, width: undefined, height: undefined },
+    characterName,
+  }) {
+    super({
+      // Inherit all the following properties from the parent Class
+      position,
+      imageSrc,
+      scale,
+      framesAmt,
+      offset,
+    });
+    this.velocity = velocity;
+    this.height = 150;
+    this.width = 50;
+    this.lastKey;
+    this.attackBox = {
+      // Changing position to have it's own x and y instead of inheriting the parents, and adding an offset for when the character is facing backwards or forwards
+      position: {
+        x: this.position.x,
+        y: this.position.y,
+      },
+      offset: attackBox.offset,
+      width: attackBox.width,
+      height: attackBox.height,
+    };
+    this.hitBox = {
+      // Changing position to have it's own x and y instead of inheriting the parents, and adding an offset for when the character is facing backwards or forwards
+      position: {
+        x: this.position.x,
+        y: this.position.y,
+      },
+      offset: hitBox.offset,
+      width: hitBox.width,
+      height: hitBox.height,
+    };
+    this.isAttacking;
+    this.health = 100;
+    this.framesCur = 0;
+    this.framesElapsed = 0;
+    this.framesWait = 30;
+    this.sprites = sprites;
+    this.isFacing = isFacing;
+    this.characterName = characterName;
 
-        for (const sprite in this.sprites) {
-            sprites[sprite].image = new Image()
-            sprites[sprite].image.src = sprites[sprite].imageSrc
-        }
+    for (const sprite in this.sprites) {
+      sprites[sprite].image = new Image();
+      sprites[sprite].image.src = sprites[sprite].imageSrc;
+    }
+  }
+
+  update() {
+    this.draw();
+    this.animateFrames();
+
+    // Subtract the hitBox offset if there is one
+    this.attackBox.position.x = this.position.x - this.attackBox.offset.x;
+    this.attackBox.position.y = this.position.y - this.attackBox.offset.y;
+
+    //Keep this to visualize attackbox location
+    // ctx.fillRect(this.attackBox.position.x, this.attackBox.position.y, this.attackBox.width, this.attackBox.height)
+
+    this.hitBox.position.x = this.position.x - this.hitBox.offset.x;
+    this.hitBox.position.y = this.position.y - this.hitBox.offset.y;
+
+    //Keep this to visualize hitbox location
+    // ctx.fillRect(this.hitBox.position.x, this.hitBox.position.y, this.hitBox.width, this.hitBox.height)
+
+    this.position.x += this.velocity.x;
+    this.position.y += this.velocity.y;
+
+    // gravity function
+    if (this.position.y + this.height + this.velocity.y > canvas.height - 85) {
+      this.velocity.y = 0;
+      this.position.y = 342;
+    } else this.velocity.y += gravity;
+  }
+
+  attack() {
+    if (this.isFacing === "right") {
+      this.switchSprite("attack1");
+    } else if (this.isFacing === "left") {
+      this.switchSprite("revattack1");
+    }
+    this.isAttacking = true;
+  }
+
+  switchSprite(sprite) {
+    if (
+      this.image === this.sprites.attack1.image &&
+      this.framesCur < this.sprites.attack1.framesAmt - 1
+    ) {
+      return;
+    } else if (
+      this.image === this.sprites.revattack1.image &&
+      this.framesCur < this.sprites.revattack1.framesAmt - 1
+    ) {
+      return;
     }
 
-    // draw() {
-
-    //     This is where the hitBox is drawn
-    //     if(this.isAttacking){
-    //         ctx.fillStyle = 'red'
-    //         ctx.fillRect(this.hitBox.position.x, this.hitBox.position.y, this.hitBox.width, this.hitBox.height)
-    //     }
-    // }
-
-    update() {
-        this.draw()
-        this.animateFrames()
-        
-        // Subtract the hitBox offset if there is one
-        this.attackBox.position.x = this.position.x - this.attackBox.offset.x
-        this.attackBox.position.y = this.position.y - this.attackBox.offset.y
-
-        //Keep this to visualize attackbox location
-        ctx.fillRect(this.attackBox.position.x, this.attackBox.position.y, this.attackBox.width, this.attackBox.height)
-
-        this.hitBox.position.x = this.position.x - this.hitBox.offset.x
-        this.hitBox.position.y = this.position.y - this.hitBox.offset.y
-
-
-        //Keep this to visualize hitbox location
-        ctx.fillRect(this.hitBox.position.x, this.hitBox.position.y, this.hitBox.width, this.hitBox.height)
-
-        this.position.x += this.velocity.x
-        this.position.y += this.velocity.y
-
-        // gravity function
-        if (this.position.y + this.height + this.velocity.y > canvas.height - 85) {
-            this.velocity.y = 0
-            this.position.y = 342
-        } else this.velocity.y += gravity
-    }
-
-    attack() {
-        if(this.isFacing === 'right'){
-        this.switchSprite('attack1')
-        } else if (this.isFacing === 'left'){
-        this.switchSprite('revattack1')
+    switch (sprite) {
+      case "idle":
+        if (this.image !== this.sprites.idle.image) {
+          this.image = this.sprites.idle.image;
+          this.framesAmt = this.sprites.idle.framesAmt;
+          this.framesCur = 0;
         }
-        this.isAttacking = true
-        setTimeout(() => {
-            this.isAttacking = false
-        }, 10)
-    }
-
-    switchSprite(sprite) {
-        if (this.image === this.sprites.attack1.image && this.framesCur < this.sprites.attack1.framesAmt - 1) {
-            return
-        } else if (this.image === this.sprites.revattack1.image && this.framesCur < this.sprites.revattack1.framesAmt - 1) {
-            return
+        break;
+      case "revidle":
+        if (this.image !== this.sprites.revidle.image) {
+          this.image = this.sprites.revidle.image;
+          this.framesAmt = this.sprites.revidle.framesAmt;
+          this.framesCur = 0;
         }
-
-        switch (sprite) {
-            case 'idle':
-                if(this.image !== this.sprites.idle.image)
-                {
-                    this.image = this.sprites.idle.image;
-                    this.framesAmt = this.sprites.idle.framesAmt;
-                    this.framesCurrent = 0;
-                }
-                break
-            case 'revidle':
-                if(this.image !== this.sprites.revidle.image)
-                {
-                    this.image = this.sprites.revidle.image;
-                    this.framesAmt = this.sprites.revidle.framesAmt;
-                    this.framesCurrent = 0;
-                }
-                break
-            case 'run':
-                if(this.image !== this.sprites.run.image)
-                {
-                    this.image = this.sprites.run.image;
-                    this.framesAmt = this.sprites.run.framesAmt;
-                    this.framesCurrent = 0;
-                }
-                break
-            case 'revrun':
-                    if(this.image !== this.sprites.revrun.image)
-                    {
-                        this.image = this.sprites.revrun.image;
-                        this.framesAmt = this.sprites.revrun.framesAmt;
-                        this.framesCurrent = 0;
-                    }
-                break
-            case 'jump':
-                if(this.image !== this.sprites.jump.image)
-                {
-                    this.image = this.sprites.jump.image;
-                    this.framesAmt = this.sprites.jump.framesAmt;
-                    this.framesCurrent = 0;
-                }
-                break
-            case 'revjump':
-                if(this.image !== this.sprites.revjump.image)
-                {
-                this.image = this.sprites.revjump.image;
-                this.framesAmt = this.sprites.revjump.framesAmt;
-                this.framesCurrent = 0;
-                }
-            break
-            case 'fall':
-                if(this.image !== this.sprites.fall.image)
-                {
-                this.image = this.sprites.fall.image;
-                this.framesAmt = this.sprites.fall.framesAmt;
-                this.framesCurrent = 0;
-                }
-            break
-            case 'revfall':
-                if(this.image !== this.sprites.revfall.image)
-                {
-                this.image = this.sprites.revfall.image;
-                this.framesAmt = this.sprites.revfall.framesAmt;
-                this.framesCurrent = 0;
-                }
-            break
-            case 'attack1':
-                if(this.image !== this.sprites.attack1.image)
-                {
-                this.image = this.sprites.attack1.image;
-                this.framesAmt = this.sprites.attack1.framesAmt;
-                this.framesCurrent = 0;
-                }
-            break
-            case 'revattack1':
-                if(this.image !== this.sprites.revattack1.image)
-                {
-                this.image = this.sprites.revattack1.image;
-                this.framesAmt = this.sprites.revattack1.framesAmt;
-                this.framesCurrent = 0;
-                }
-            break
+        break;
+      case "run":
+        if (this.image !== this.sprites.run.image) {
+          this.image = this.sprites.run.image;
+          this.framesAmt = this.sprites.run.framesAmt;
+          this.framesCur = 0;
         }
+        break;
+      case "revrun":
+        if (this.image !== this.sprites.revrun.image) {
+          this.image = this.sprites.revrun.image;
+          this.framesAmt = this.sprites.revrun.framesAmt;
+          this.framesCur = 0;
+        }
+        break;
+      case "jump":
+        if (this.image !== this.sprites.jump.image) {
+          this.image = this.sprites.jump.image;
+          this.framesAmt = this.sprites.jump.framesAmt;
+          this.framesCur = 0;
+        }
+        break;
+      case "revjump":
+        if (this.image !== this.sprites.revjump.image) {
+          this.image = this.sprites.revjump.image;
+          this.framesAmt = this.sprites.revjump.framesAmt;
+          this.framesCur = 0;
+        }
+        break;
+      case "fall":
+        if (this.image !== this.sprites.fall.image) {
+          this.image = this.sprites.fall.image;
+          this.framesAmt = this.sprites.fall.framesAmt;
+          this.framesCur = 0;
+        }
+        break;
+      case "revfall":
+        if (this.image !== this.sprites.revfall.image) {
+          this.image = this.sprites.revfall.image;
+          this.framesAmt = this.sprites.revfall.framesAmt;
+          this.framesCur = 0;
+        }
+        break;
+      case "attack1":
+        if (this.image !== this.sprites.attack1.image) {
+          this.image = this.sprites.attack1.image;
+          this.framesAmt = this.sprites.attack1.framesAmt;
+          this.framesCur = 0;
+        }
+        break;
+      case "revattack1":
+        if (this.image !== this.sprites.revattack1.image) {
+          this.image = this.sprites.revattack1.image;
+          this.framesAmt = this.sprites.revattack1.framesAmt;
+          this.framesCur = 0;
+        }
+        break;
+      case "attack2":
+        if (this.image !== this.sprites.attack2.image) {
+          this.image = this.sprites.attack2.image;
+          this.framesAmt = this.sprites.attack2.framesAmt;
+          this.framesCur = 0;
+        }
+        break;
+      case "revattack2":
+        if (this.image !== this.sprites.revattack2.image) {
+          this.image = this.sprites.revattack2.image;
+          this.framesAmt = this.sprites.revattack2.framesAmt;
+          this.framesCur = 0;
+        }
+        break;
+      case "takehit":
+        if (this.image !== this.sprites.takehit.image) {
+          this.image = this.sprites.takehit.image;
+          this.framesAmt = this.sprites.takehit.framesAmt;
+          this.framesCur = 0;
+        }
+        break;
+      case "revtakehit":
+        if (this.image !== this.sprites.revtakehit.image) {
+          this.image = this.sprites.revtakehit.image;
+          this.framesAmt = this.sprites.revtakehit.framesAmt;
+          this.framesCur = 0;
+        }
+        break;
+      case "takehitflash":
+        if (this.image !== this.sprites.takehitflash.image) {
+          this.image = this.sprites.takehitflash.image;
+          this.framesAmt = this.sprites.takehitflash.framesAmt;
+          this.framesCur = 0;
+        }
+        break;
+      case "revtakehitflash":
+        if (this.image !== this.sprites.revtakehitflash.image) {
+          this.image = this.sprites.revtakehitflash.image;
+          this.framesAmt = this.sprites.revtakehitflash.framesAmt;
+          this.framesCur = 0;
+        }
+        break;
     }
-
+  }
 }

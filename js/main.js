@@ -24,6 +24,15 @@ const background = new Sprite({
     scale: 1.4
 })
 
+// Character Select Screen
+const selectCharacter = new Sprite({
+    position: {
+        x: 0,
+        y: -200
+    },
+    imageSrc: './img/Background.png',
+    scale: 1.4
+})
 
 // Creating Shop
 const shop = new Sprite({
@@ -37,7 +46,7 @@ const shop = new Sprite({
 })
 
 // Creating Player One
-const playerOne = new Player({
+const kiba = new Player({
     position: {
         x: 0,
         y: 0
@@ -94,11 +103,35 @@ const playerOne = new Player({
             imageSrc: './img/Characters/Kiba/rev_attack1.png',
             framesAmt: 4
         },
+        attack2: {
+            imageSrc: './img/Characters/Kiba/attack2.png',
+            framesAmt: 4
+        },
+        revattack2: {
+            imageSrc: './img/Characters/Kiba/rev_attack2.png',
+            framesAmt: 4
+        },
+        takehit: {
+            imageSrc: './img/Characters/Kiba/Take_Hit.png',
+            framesAmt: 2
+        },
+        revtakehit: {
+            imageSrc: './img/Characters/Kiba/rev_Take_Hit.png',
+            framesAmt: 2
+        },
+        takehitflash: {
+            imageSrc: './img/Characters/Kiba/Take_Hit_w.png',
+            framesAmt: 2
+        },
+        revtakehitflash: {
+            imageSrc: './img/Characters/Kiba/rev_Take_Hit_w.png',
+            framesAmt: 2
+        },
     },
     isFacing: 'right',
     attackBox: {
         offset: {
-            x: -50,
+            x: -30,
             y: -120
         },
         width: 200,
@@ -111,10 +144,11 @@ const playerOne = new Player({
         },
         width: 50,
         height: 100
-    }
+    },
+    characterName: 'kiba'
 })
 
-console.log(playerOne)
+console.log(kiba)
 
 // Creating Player Two
 // const playerTwo = new Player({
@@ -187,7 +221,7 @@ console.log(playerOne)
 // })
 
 // Creating Enemy
-const enemy = new Player({
+const major = new Player({
     position: {
         x: 700,
         y: 0
@@ -261,7 +295,8 @@ const enemy = new Player({
         },
         width: 50,
         height: 120
-    }
+    },
+    characterName: 'major'
 })
 
 // Setting up Key monitor
@@ -275,6 +310,9 @@ const keys = {
         pressed: false
     },
     w: {
+        pressed: false
+    },
+    f: {
         pressed: false
     },
     // P2
@@ -299,20 +337,47 @@ const keys = {
     }
 }
 
+const rectCollisionDetect = function(attacker, target) {
+
+    let ab = attacker.attackBox.position.x
+    let ba = target.hitBox.position.x + target.hitBox.width
+    let ac = attacker.attackBox.position.x + attacker.attackBox.width
+    let ca = target.hitBox.position.x
+    let ad = attacker.attackBox.position.y
+    let da = target.hitBox.position.y + target.height
+    let ae = attacker.attackBox.position.y + attacker.attackBox.height
+    let ea = target.hitBox.position.y
+
+    
+    if ( ab < ba && ac > ca && ad < da && ae > ea && attacker.isAttacking && attacker.framesCur === 2) 
+    {
+        attacker.isAttacking = false
+        target.health -= 2
+        document.querySelector(`#${target.characterName}-current-health`).style.width = target.health + "%"
+        console.log('Attacker Hit!')
+        }
+
+    // If player misses
+    if (attacker.isAttacking && attacker.framesCur === 2){
+        attacker.isAttacking = false
+        console.log('missed')
+    }
+}
+
 /**
  * Decreasing the timer function - I'm adding this function in so there is a sense of urgency, also so that there is a default win condition that will always happen. Also, because a timer in a fighting game is pretty standard.
  */
 
-const displayResults = function() {
-    clearTimeout(timerId)
-    if (enemy.health === playerOne.health && playerTwo.health){
-        document.getElementById('results').innerHTML = 'Tie?? Are you even trying?'
-    } else if (enemy.health === 0) {
-        document.getElementById('results').innerHTML = 'Heroes Win!'
-    } else if (playerOne.health === 0 || playerTwo.health === 0) {
-        document.getElementById('results').innerHTML = 'Heroes Lose!'
-    }
-}
+// const displayResults = function() {
+//     clearTimeout(timerId)
+//     if (enemy.health === playerOne.health && playerTwo.health){
+//         document.getElementById('results').innerHTML = 'Tie?? Are you even trying?'
+//     } else if (enemy.health === 0) {
+//         document.getElementById('results').innerHTML = 'Heroes Win!'
+//     } else if (playerOne.health === 0 || playerTwo.health === 0) {
+//         document.getElementById('results').innerHTML = 'Heroes Lose!'
+//     }
+// }
 
 let timer = 99
 let timerId = 0
@@ -346,47 +411,47 @@ function animate() {
     // Draw shop
     shop.update()
     // Draw and animate player 1
-    playerOne.update()
+    kiba.update()
     // Draw and animate player 2
     // playerTwo.update()
     // Draw and animate enemy
-    enemy.update()
+    major.update()
 
     // Set each player's velocity to 0 
-    if(playerOne.velocity.x = 0){
-        playerOne.switchSprite('idle')  
+    if(kiba.velocity.x = 0){
+        kiba.switchSprite('idle')  
     }
 
     // if(playerTwo.velocity.x = 0){
     //     playerTwo.switchSprite('idle')  
     // }
 
-    if(enemy.velocity.x = 0 && enemy.isFacing === 'left'){
-        enemy.switchSprite('revidle')  
+    if(major.velocity.x = 0 && major.isFacing === 'left'){
+        major.switchSprite('revidle')  
     }
 
     // Player 1 Movement
   
-    if (keys.a.pressed && playerOne.lastKey === 'a') {
-        playerOne.velocity.x = -3
-        playerOne.switchSprite('revrun')
-    } else if (keys.d.pressed && playerOne.lastKey === 'd') {
-        playerOne.velocity.x = 3
-        playerOne.switchSprite('run')
-    } else if (playerOne.lastKey === 'a') {
-        playerOne.switchSprite('revidle')
+    if (keys.a.pressed && kiba.lastKey === 'a') {
+        kiba.velocity.x = -3
+        kiba.switchSprite('revrun')
+    } else if (keys.d.pressed && kiba.lastKey === 'd') {
+        kiba.velocity.x = 3
+        kiba.switchSprite('run')
+    } else if (kiba.lastKey === 'a') {
+        kiba.switchSprite('revidle')
     } else {
-        playerOne.switchSprite('idle')
+        kiba.switchSprite('idle')
     }
 
-    if (playerOne.velocity.y < 0 && playerOne.isFacing === 'right') {
-        playerOne.switchSprite('jump')
-    } else if (playerOne.velocity.y < 0 && playerOne.isFacing === 'left') {
-        playerOne.switchSprite('revjump')
-    } else if (playerOne.velocity.y > 0 && playerOne.isFacing === 'right') {
-        playerOne.switchSprite('fall')
-    } else if (playerOne.velocity.y > 0 && playerOne.isFacing === 'left') {
-        playerOne.switchSprite('revfall')
+    if (kiba.velocity.y < 0 && kiba.isFacing === 'right') {
+        kiba.switchSprite('jump')
+    } else if (kiba.velocity.y < 0 && kiba.isFacing === 'left') {
+        kiba.switchSprite('revjump')
+    } else if (kiba.velocity.y > 0 && kiba.isFacing === 'right') {
+        kiba.switchSprite('fall')
+    } else if (kiba.velocity.y > 0 && kiba.isFacing === 'left') {
+        kiba.switchSprite('revfall')
     } 
 
     // Player 2 Movement
@@ -414,76 +479,34 @@ function animate() {
     // } 
 
     // Enemy Movement
-    if (keys.j.pressed && enemy.lastKey === 'j') {
-        enemy.velocity.x = -3
-        enemy.switchSprite('revrun')
-    } else if (keys.l.pressed && enemy.lastKey === 'l') {
-        enemy.velocity.x = 3
-        enemy.switchSprite('run')
-    } else if (enemy.lastKey === 'j') {
-        enemy.switchSprite('revidle')
+    if (keys.j.pressed && major.lastKey === 'j') {
+        major.velocity.x = -3
+        major.switchSprite('revrun')
+    } else if (keys.l.pressed && major.lastKey === 'l') {
+        major.velocity.x = 3
+        major.switchSprite('run')
+    } else if (major.lastKey === 'j') {
+        major.switchSprite('revidle')
     } else {
-        enemy.switchSprite('idle')
+        major.switchSprite('idle')
     }
 
-    if (enemy.velocity.y < 0 && enemy.isFacing === 'right') {
-        enemy.switchSprite('jump')
-    } else if (enemy.velocity.y < 0 && enemy.isFacing === 'left') {
-        enemy.switchSprite('revjump')
-    } else if (enemy.velocity.y > 0 && enemy.isFacing === 'right') {
-        enemy.switchSprite('fall')
-    } else if (enemy.velocity.y > 0 && enemy.isFacing === 'left') {
-        enemy.switchSprite('revfall')
+    if (major.velocity.y < 0 && major.isFacing === 'right') {
+        major.switchSprite('jump')
+    } else if (major.velocity.y < 0 && major.isFacing === 'left') {
+        major.switchSprite('revjump')
+    } else if (major.velocity.y > 0 && major.isFacing === 'right') {
+        major.switchSprite('fall')
+    } else if (major.velocity.y > 0 && major.isFacing === 'left') {
+        major.switchSprite('revfall')
     } 
 
     // Collision Detection - Player 1 / Player 2
-    // if (playerOne.attackBox.position.x + playerOne.attackBox.width >= enemy.hitBox.position.x && playerOne.hitBox.position.x <= enemy.position.x + enemy.width && playerOne.hitBox.position.y + playerOne.hitBox.height >= enemy.position.y && playerOne.hitBox.position.y <= enemy.position.y + enemy.height && playerOne.isAttacking) {
-    //     playerOne.isAttacking = false
-    //     enemy.health -= 2
-    //     document.querySelector('#enemy-current-health').style.width = enemy.health + "%"
-    //     console.log('P1 Hit!')
-    // }
 
-    // if (
-    //     playerOne.attackBox.position.x + playerOne.attackBox.width >= enemy.hitBox.position.x && playerOne.attackBox.position.x + playerOne.attackBox.width <= enemy.hitBox.position.x + enemy.hitBox.width && playerOne.attackBox.position.y + playerOne.attackBox.height >= enemy.hitBox.position.y && playerOne.attackBox.position.y <= enemy.hitBox.position.y + enemy.height && playerOne.isFacing === 'right'
-    //     ) {
-    //     console.log('Winning!')
-    // } else if (
-    //     playerOne.attackBox.position.x >= enemy.hitBox.position.x + enemy.hitBox.width && playerOne.attackBox.position.x <= enemy.hitBox.position.x 
-    // ) {
-    //     console.log('Winning Backwards!')
-    // }
-
-    let ab = playerOne.attackBox.position.x
-    let ba = enemy.hitBox.position.x + enemy.hitBox.width
-    let ac = playerOne.attackBox.position.x + playerOne.attackBox.width
-    let ca = enemy.hitBox.position.x
-    let ad = playerOne.attackBox.position.y
-    let da = enemy.hitBox.position.y + enemy.height
-    let ae = playerOne.attackBox.position.y + playerOne.attackBox.height
-    let ea = enemy.hitBox.position.y
-
-    if ( ab < ba && ac > ca && ad < da && ae > ea && playerOne.isAttacking) 
-    {
-        playerOne.isAttacking = false
-        enemy.health -= 2
-        document.querySelector('#enemy-current-health').style.width = enemy.health + "%"
-        console.log('P1 Hit!')
-        }
-
-    // && playerOne.attackBox.position.x <= enemy.hitBox.position.x 
-    // && playerOne.attackBox.position.y + playerOne.attackBox.height >= enemy.hitBox.position.y 
-    // && playerOne.attackBox.position.y <= enemy.hitBox.position.y + enemy.height
-
-    // if (playerTwo.hitBox.position.x + playerTwo.hitBox.width >= enemy.position.x && playerTwo.hitBox.position.x <= enemy.position.x + enemy.width && playerTwo.hitBox.position.y + playerTwo.hitBox.height >= enemy.position.y && playerTwo.hitBox.position.y <= enemy.position.y + enemy.height && playerTwo.isAttacking) {
-    //     playerTwo.isAttacking = false 
-    //     enemy.health -= 2 
-    //     console.log('P2 Hit!')
-    //     document.querySelector('#enemy-current-health').style.width = enemy.health + "%"
-    // }
-
+    rectCollisionDetect(kiba, major)
+    
     // Collision Detection - Enemy
-
+    rectCollisionDetect(major, kiba)
 
 
     // if (enemy.hitBox.position.x + enemy.hitBox.width >= playerOne.position.x && enemy.hitBox.position.x <= playerOne.position.x + playerOne.width && enemy.hitBox.position.y + enemy.hitBox.height >= playerOne.position.y && enemy.hitBox.position.y <= playerOne.position.y + playerOne.height && enemy.isAttacking) {
@@ -534,46 +557,28 @@ function animate() {
    
 }
 
-function trackX() {
-    // top right
-    console.log('top right')
-console.log(playerOne.attackBox.position.x + playerOne.attackBox.width)
-    // bottom right
-    console.log('bottom right')
-console.log(playerOne.attackBox.position.x + playerOne.attackBox.width + playerOne.attackBox.height)
- // top left
- console.log('top left')
-console.log(playerOne.attackBox.position.x)
-// bottom left
-console.log('bottom left')
-console.log(playerOne.attackBox.position.x + playerOne.attackBox.height)
-
-}
-
-
-
 animate()
-decreaseTimer()
+// decreaseTimer()
 
 window.addEventListener('keydown', (e) => {
     switch (e.key) {
         // Player 1 Keys
         case 'd':
             keys.d.pressed = true
-            playerOne.isFacing = 'right'
-            playerOne.lastKey = 'd'
+            kiba.isFacing = 'right'
+            kiba.lastKey = 'd'
             break
         case 'a':
             keys.a.pressed = true
-            playerOne.isFacing = 'left'
-            playerOne.lastKey = 'a'
+            kiba.isFacing = 'left'
+            kiba.lastKey = 'a'
             break
         case 'w':
             keys.w.pressed = true
-            playerOne.velocity.y = -6.5
+            kiba.velocity.y = -6.5
             break
         case ' ':
-            playerOne.attack()
+            kiba.attack()
             break
         // Player 2 Keys
             case 'ArrowRight':
@@ -596,20 +601,20 @@ window.addEventListener('keydown', (e) => {
         // test cases for enemy movement and attacks
         case 'l':
             keys.l.pressed = true
-            enemy.isFacing = 'right'
-            enemy.lastKey = 'l'
+            major.isFacing = 'right'
+            major.lastKey = 'l'
             break
         case 'j':
             keys.j.pressed = true
-            enemy.isFacing = 'left'
-            enemy.lastKey = 'j'
+            major.isFacing = 'left'
+            major.lastKey = 'j'
             break
         case 'i':
             keys.i.pressed = true
-            enemy.velocity.y = -6.5
+            major.velocity.y = -6.5
             break
         case 'k':
-            enemy.attack()
+            major.attack()
             break
     }
 })
