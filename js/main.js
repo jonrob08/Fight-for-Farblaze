@@ -397,9 +397,7 @@ const rectCollisionDetect = function (attacker, target) {
   ) {
     target.takehit();
     attacker.isAttacking = false;
-    document.querySelector(
-      `#${target.characterName}-current-health`
-    ).style.width = target.health + "%";
+
     console.log("Attacker Hit!");
   }
 
@@ -665,10 +663,12 @@ function animate() {
   shop.update();
   // Draw and animate player 1
   kiba.update();
+  kiba.status = 'player1'
   // Draw and animate player 2
   // playerTwo.update()
   // Draw and animate enemy
   major.update();
+  major.status = 'player2'
   // Add player movement
   movement(kiba, major);
  

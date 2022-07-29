@@ -10,6 +10,14 @@ Fork code from github and run the index.html file on chrome or play game from th
 # Explanation of Technologies Used
 In this project, I use HTML and CSS mainly for adding different elements, formatting the game, and styling the game. I use Javascript to run the game, add in additional elements that need to be introduced during the game, create and animate objects, and determine win conditions of the game.
 
+# Technologies Used
+HTML
+CSS
+Google Fonts
+Javascript 
+Javascript Canvas
+Javascript GSAP library(https://cdnjs.com/libraries/gsap)
+
 ### HTML
 Put code snippets here
 

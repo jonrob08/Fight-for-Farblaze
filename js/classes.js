@@ -1,3 +1,4 @@
+
 /**
  * Creating Sprites Class
     ** Constructor -------> 
@@ -197,6 +198,7 @@ class Player extends Sprite {
     this.isFacing = isFacing;
     this.characterName = characterName;
     this.dead = false;
+    this.status 
 
     for (const sprite in this.sprites) {
       sprites[sprite].image = new Image();
@@ -402,6 +404,12 @@ class Player extends Sprite {
 
   takehit() {
     this.health -= 50
+
+
+    gsap.to(`#${this.status}-current-health`, {
+        width: this.health + "%"
+    })
+        
     
     if (this.health <= 0) {
         this.switchSprite('death')
