@@ -29,6 +29,9 @@ attack the other player until one wins or the time runs out
 #### Background Image
 Image Download: https://edermunizz.itch.io/free-pixel-art-forest
 Creator: https://edermunizz.itch.io
+#### Various Sprites
+Image Download: https://brullov.itch.io/oak-woods
+Creator: https://brullov.itch.io
 ### Dev Notes
 
 4 Elements of game design - Challenge, Choice, Change, Chance
