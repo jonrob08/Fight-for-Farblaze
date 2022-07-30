@@ -42,7 +42,9 @@ body {
 }
 
 #timer {
-    background-color: rgb(0, 0, 0);
+    font-family: 'Ceviche One', cursive;
+    font-size: 35px;
+    background-color: #0c1121;
     height: 60px;
     width: 100px;
     flex-shrink: 0;

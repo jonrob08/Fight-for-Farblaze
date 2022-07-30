@@ -99,7 +99,7 @@ class Sprite {
         Image Source - see Image Source in Sprite Class.  
         Scale -  see Scale in Sprite Class.  
         Frames Amount - see Frames Amount in Sprite Class.  
-        Offset - see Offset in Sprite Class, or the Migos.  
+        Offset - see Offset in Sprite Class.
  * -------
     ** Constructor -------> 
         Position - Need this because I need to be able to track Player's positioning on the canvas and refer to it. It's in the constructor arguments because I will have multiple Players so the positions need to be independent of each other.
@@ -234,10 +234,16 @@ class Player extends Sprite {
   }
 
   attack() {
-    if (this.isFacing === "right") {
+    if (this.isFacing === "right" && this.characterName === "neji") {
+        this.attackBox.offset.x = -150
+        this.switchSprite("attack1");
+    } else if (this.isFacing === "right") {
       this.switchSprite("attack1");
-    } else if (this.isFacing === "left") {
+    } else if (this.isFacing === "left" && this.characterName === "neji") {
+        this.attackBox.offset.x = -40
       this.switchSprite("revattack1");
+    } else if (this.isFacing === "left") {
+        this.switchSprite("revattack1");
     }
     this.isAttacking = true;
   }
@@ -403,7 +409,7 @@ class Player extends Sprite {
   }
 
   takehit() {
-    this.health -= 50
+    this.health -= 5
 
 
     gsap.to(`#${this.status}-current-health`, {
@@ -416,4 +422,10 @@ class Player extends Sprite {
     } else this.switchSprite('takehitflash')
   }
 
+}
+
+class AI extends Player {
+    // moveToPlayer() {
+    //     if()
+    // }
 }
