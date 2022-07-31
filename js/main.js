@@ -8,8 +8,26 @@ const ctx = canvas.getContext("2d");
 canvas.width = 1024;
 canvas.height = 576;
 
+
 // Filling in the canvas background with a black rectangle
 ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+// Cut canvas up into quadrants to be used later in AI functionality
+let quadrant1 = {
+    x: 0,
+    y: 0,
+    width: canvas.width / 2,
+    height: canvas.height
+}
+
+let quadrant2 = {
+    x: quadrant1.width,
+    y: 0,
+    width: canvas.width / 2,
+    height: canvas.height
+}
+
+
 
 // Setting canvas gravity
 const gravity = 0.08;
@@ -64,8 +82,8 @@ const kiba = new Player({
   },
   sprites: {
     idle: {
-      imageSrc: "./img/Characters/test/ezgif.com-gif-maker.png",
-      framesAmt: 7,
+      imageSrc: "./img/Characters/Kiba/Idle.png",
+      framesAmt: 4,
     },
     revidle: {
       imageSrc: "./img/Characters/Kiba/rev_Idle.png",
@@ -157,6 +175,7 @@ const kiba = new Player({
 });
 
 console.log(kiba);
+
 
 // Creating Player Two
 const neji = new Player({
@@ -378,7 +397,17 @@ const major = new AI({
     height: 120,
   },
   characterName: "major",
+  aggroBox: {
+    offset: {
+        x: -100,
+        y: -100
+    },
+    width: -450,
+    height: 30
+  }
 });
+
+console.log(major);
 
 // Setting up Key monitor
 
@@ -528,6 +557,20 @@ const rectCollisionDetect = function (player1, player2, ai) {
     console.log("missed");
   }
 };
+
+
+
+
+    // if (
+    //     ab > ba &&
+    //     ac < ca&&
+    //     ad > da &&
+    //     ae < ea 
+    //   ) {
+    //     // comp1.velocity.x = -2
+    //     console.log('move left')
+    //   } 
+
 
 /**
  * Decreasing the timer function - I'm adding this function in so there is a sense of urgency, also so that there is a default win condition that will always happen. Also, because a timer in a fighting game is pretty standard.
@@ -694,9 +737,9 @@ const movement = function (player1, player2) {
     player2.switchSprite("revidle");
   }
 
-  if (major.velocity.x = 0 && major.isFacing === "left") {
-    major.switchSprite("revidle");
-  }
+//   if (major.velocity.x = 0 && major.isFacing === "left") {
+//     major.switchSprite("revidle");
+//   }
     
       // Player 1 Movement
     
@@ -747,32 +790,34 @@ const movement = function (player1, player2) {
       }
     
       // AI test Movement
-      if (keys.j.pressed && major.lastKey === "j") {
-        major.velocity.x = -3;
-        major.switchSprite("revrun");
-      } else if (keys.l.pressed && major.lastKey === "l") {
-        major.velocity.x = 3;
-        major.switchSprite("run");
-      } else if (major.lastKey === "j") {
-        major.switchSprite("revidle");
-      } else {
-        major.switchSprite("idle");
-      }
+    //   if (keys.j.pressed && major.lastKey === "j") {
+    //     major.velocity.x = -3;
+    //     major.switchSprite("revrun");
+    //   } else if (keys.l.pressed && major.lastKey === "l") {
+    //     major.velocity.x = 3;
+    //     major.switchSprite("run");
+    //   } else if (major.lastKey === "j") {
+    //     major.switchSprite("revidle");
+    //   } else {
+    //     major.switchSprite("idle");
+    //   }
     
-      if (major.velocity.y < 0 && major.isFacing === "right") {
-        major.switchSprite("jump");
-      } else if (major.velocity.y < 0 && major.isFacing === "left") {
-        major.switchSprite("revjump");
-      } else if (major.velocity.y > 0 && major.isFacing === "right") {
-        major.switchSprite("fall");
-      } else if (major.velocity.y > 0 && major.isFacing === "left") {
-        major.switchSprite("revfall");
-      }
+    //   if (major.velocity.y < 0 && major.isFacing === "right") {
+    //     major.switchSprite("jump");
+    //   } else if (major.velocity.y < 0 && major.isFacing === "left") {
+    //     major.switchSprite("revjump");
+    //   } else if (major.velocity.y > 0 && major.isFacing === "right") {
+    //     major.switchSprite("fall");
+    //   } else if (major.velocity.y > 0 && major.isFacing === "left") {
+    //     major.switchSprite("revfall");
+    //   }
     
     
     
     }
-    
+
+
+
 
 
 /** Animate function - This recursive function "animates" the canvas in our browser window by calling itself and refreshes the frame by 
@@ -794,21 +839,19 @@ function animate() {
   kiba.update();
   kiba.status = 'player'
   // Draw and animate player 2
-  neji.update();
-  neji.status = 'player'
+//   neji.update();
+//   neji.status = 'player'
   // playerTwo.update()
   // Draw and animate enemy
   major.update()
   major.status = 'ai'
+  major.detectPlayerDirection()
   // Add player movement
   movement(kiba, neji);
- 
+  
   // Collision Detection - Player 1
   rectCollisionDetect(neji, kiba, major)
- 
-
   // Collision Detection - Player 2
-  
     
 
 

@@ -155,6 +155,7 @@ class Player extends Sprite {
     // Potentially add an isMoving prop
     attackBox = { offset: {}, width: undefined, height: undefined },
     hitBox = { offset: {}, width: undefined, height: undefined },
+    aggroBox = { offset: {}, width: undefined, height: undefined },
     characterName,
   }) {
     super({
@@ -189,6 +190,16 @@ class Player extends Sprite {
       width: hitBox.width,
       height: hitBox.height,
     };
+    this.aggroBox = {
+        // Changing position to have it's own x and y instead of inheriting the parents, and adding an offset for when the character is facing backwards or forwards
+        position: {
+          x: this.position.x,
+          y: this.position.y,
+        },
+        offset: aggroBox.offset,
+        width: aggroBox.width,
+        height: aggroBox.height,
+      };
     this.isAttacking;
     this.health = 100;
     this.framesCur = 0;
@@ -222,6 +233,14 @@ class Player extends Sprite {
 
     //Keep this to visualize hitbox location
     // ctx.fillRect(this.hitBox.position.x, this.hitBox.position.y, this.hitBox.width, this.hitBox.height)
+
+    this.aggroBox.position.x = this.position.x - this.aggroBox.offset.x;
+    this.aggroBox.position.y = this.position.y - this.aggroBox.offset.y;
+
+    //Keep this to visualize aggrobox location
+    // ctx.fillStyle = 'red'
+    // ctx.fillRect(this.aggroBox.position.x, this.aggroBox.position.y, this.aggroBox.width, this.aggroBox.height)
+
 
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
@@ -410,22 +429,50 @@ class Player extends Sprite {
 
   takehit() {
     this.health -= 5
-
+    console.log(canvas.width)
 
     gsap.to(`#${this.status}-current-health`, {
         width: this.health + "%"
     })
-        
     
     if (this.health <= 0) {
         this.switchSprite('death')
     } else this.switchSprite('takehitflash')
   }
-
 }
 
 class AI extends Player {
-    // moveToPlayer() {
-    //     if()
-    // }
+
+    attack() {
+        if (this.isFacing === "left") {
+          this.switchSprite("revattack1");
+        } else if (this.isFacing === "right") {
+            this.switchSprite("attack1");
+        }
+        this.isAttacking = true;
+      }
+
+    detectPlayerDirection() {
+        if (this.velocity.x = 0 && this.isFacing === "left") {
+            this.switchSprite("revidle");
+          }
+
+          if (
+            major.aggroBox.position.x >= kiba.hitBox.position.x + kiba.hitBox.width 
+            ) {
+            major.switchSprite('revrun')
+            major.velocity.x -= 1
+            if (major.aggroBox.position.x){
+                major.attack()
+                
+            }
+        } else {
+              major.velocity.x += 1
+              major.switchSprite('run')
+        }
+
+    }
+
+    
 }
+
