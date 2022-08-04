@@ -158,7 +158,7 @@ const kiba = new Player({
   attackBox: {
     offset: {
       x: -30,
-      y: -120,
+      y: -100,
     },
     width: 200,
     height: 50,
@@ -399,7 +399,7 @@ const major = new AI({
   characterName: "major",
   aggroBox: {
     offset: {
-        x: -100,
+        x: -50,
         y: -100
     },
     width: -450,
@@ -425,6 +425,9 @@ const keys = {
   f: {
     pressed: false,
   },
+  space: {
+    pressed: false,
+  },
   // P2
   ArrowLeft: {
     pressed: false,
@@ -447,116 +450,131 @@ const keys = {
   },
 };
 
-const rectCollisionDetect = function (player1, player2, ai) {
-  let ab = player1.attackBox.position.x;
-  let ba = ai.hitBox.position.x + ai.hitBox.width;
-  let ac = player1.attackBox.position.x + player1.attackBox.width;
-  let ca = ai.hitBox.position.x;
-  let ad = player1.attackBox.position.y;
-  let da = ai.hitBox.position.y + ai.height;
-  let ae = player1.attackBox.position.y + player1.attackBox.height;
-  let ea = ai.hitBox.position.y;
+const rectCollisionDetect = function ({rectangle1, rectangle2}) {
+    if (
+        rectangle1.position.x + rectangle1.width >= rectangle2.position.x && 
+        rectangle1.position.x <= rectangle2.position.x + rectangle2.width &&
+        rectangle1.position.y + rectangle1.height >= rectangle2.position.y &&
+        rectangle1.position.y <= rectangle2.position.y + rectangle2.height
+      ){
+        console.log('yep')
+      };
+    }
 
-  let zb = player2.attackBox.position.x;
-  let bz = ai.hitBox.position.x + ai.hitBox.width;
-  let zc = player2.attackBox.position.x + player2.attackBox.width;
-  let cz = ai.hitBox.position.x;
-  let zd = player2.attackBox.position.y;
-  let dz = ai.hitBox.position.y + ai.height;
-  let ze = player2.attackBox.position.y + player2.attackBox.height;
-  let ez = ai.hitBox.position.y;
+    
+const attackDetect = function ({rectangle1, rectangle2}) {
+    return (
+        rectangle1.attackBox.position.x <= rectangle2.hitBox.position.x + rectangle2.hitBox.width && rectangle1.attackBox.position.x + rectangle1.attackBox.width >= rectangle2.hitBox.position.x
+      )
+    }
 
-  let mb = ai.attackBox.position.x;
-  let bm = player1.hitBox.position.x + player1.hitBox.width;
-  let mc = ai.attackBox.position.x + ai.attackBox.width;
-  let cm = player1.hitBox.position.x;
-  let md = ai.attackBox.position.y;
-  let dm = player1.hitBox.position.y + player1.height;
-  let me = ai.attackBox.position.y + ai.attackBox.height;
-  let em = player1.hitBox.position.y;
+const aggroAICollisionDetect = function ({rectangle1, rectangle2}) {
+    // console.log(rectangle1.aggroBox.position.x, rectangle1.aggroBox.width, rectangle2.position.x)
+    // return (
+    //     rectangle1.aggroBox.position.x + rectangle1.aggroBox.width >= rectangle2.position.x && 
+    //     rectangle1.aggroBox.position.x <= rectangle2.position.x + rectangle2.width &&
+    //     rectangle1.aggroBox.position.y + rectangle1.aggroBox.height >= rectangle2.position.y &&
+    //     rectangle1.aggroBox.position.y <= rectangle2.position.y + rectangle2.height
+    //     );
+    return (
+        rectangle1.aggroBox.position.x >= rectangle2.hitBox.position.x + rectangle2.hitBox.width && rectangle1.aggroBox.position.x + rectangle1.aggroBox.width <= rectangle2.hitBox.position.x
+        )
+    }
 
-  let jb = ai.attackBox.position.x;
-  let bj = player2.hitBox.position.x + player2.hitBox.width;
-  let jc = ai.attackBox.position.x + ai.attackBox.width;
-  let cj = player2.hitBox.position.x;
-  let jd = ai.attackBox.position.y;
-  let dj = player2.hitBox.position.y + player2.height;
-  let je = ai.attackBox.position.y + ai.attackBox.height;
-  let ej = player2.hitBox.position.y;
-
-  if (
-    ab < ba &&
-    ac > ca &&
-    ad < da &&
-    ae > ea &&
-    player1.isAttacking &&
-    player1.framesCur === 2
-  ) {
-    ai.takehit();
-    player1.isAttacking = false;
-
-    console.log("player1 Hit!");
-  } 
+    const attackCollisionDetect = function (attacker, target) {
   
-  if (
-    zb < bz &&
-    zc > cz &&
-    zd < dz &&
-    ze > ez &&
-    player2.isAttacking &&
-    player2.framesCur === 2
-  ) {
-    ai.takehit();
-    player2.isAttacking = false;
+      
+        if (attackDetect({rectangle1: attacker, rectangle2: target}) &&
+          attacker.isAttacking &&
+          attacker.framesCur === 0
+        ) {
+          target.takehit();
+          gsap.to(`#${target.status}-current-health`, {
+            width: target.health + "%" 
+        })
+          target.velocity.x = 5
+          attacker.isAttacking = false;
+          console.log("Attacker Hit!");
+        }
+      
+        // If player misses
+        if (attacker.isAttacking && attacker.framesCur === 1) {
+          attacker.isAttacking = false;
+          console.log("missed");
+        }
+      };
+//   if (
+//     ab < ba &&
+//     ac > ca &&
+//     ad < da &&
+//     ae > ea &&
+//     player1.isAttacking &&
+//     player1.framesCur === 2
+//   ) {
+//     ai.takehit();
+//     player1.isAttacking = false;
 
-    console.log("player2 Hit!");
-  }
+//     console.log("player1 Hit!");
+//   } 
+  
+//   if (
+//     zb < bz &&
+//     zc > cz &&
+//     zd < dz &&
+//     ze > ez &&
+//     player2.isAttacking &&
+//     player2.framesCur === 2
+//   ) {
+//     ai.takehit();
+//     player2.isAttacking = false;
 
-  if (
-    mb < bm &&
-    mc > cm &&
-    md < dm &&
-    me > em &&
-    ai.isAttacking &&
-    ai.framesCur === 2
-  ) {
-    player1.takehit();
-    ai.isAttacking = false;
+//     console.log("player2 Hit!");
+//   }
 
-    console.log("AI Hit P1!");
-  }
+//   if (
+//     mb < bm &&
+//     mc > cm &&
+//     md < dm &&
+//     me > em &&
+//     ai.isAttacking &&
+//     ai.framesCur === 2
+//   ) {
+//     player1.takehit();
+//     ai.isAttacking = false;
 
-  if (
-    jb < bj &&
-    jc > cj &&
-    jd < dj &&
-    je > ej &&
-    ai.isAttacking &&
-    ai.framesCur === 2
-  ) {
-    player2.takehit();
-    ai.isAttacking = false;
+//     console.log("AI Hit P1!");
+//   }
 
-    console.log("AI Hit P2!");
-  }
+//   if (
+//     jb < bj &&
+//     jc > cj &&
+//     jd < dj &&
+//     je > ej &&
+//     ai.isAttacking &&
+//     ai.framesCur === 2
+//   ) {
+//     player2.takehit();
+//     ai.isAttacking = false;
+
+//     console.log("AI Hit P2!");
 
 
   // If player misses
-  if (player1.isAttacking && player1.framesCur === 2) {
-    player1.isAttacking = false;
-    console.log("missed");
-  }
+//   if (player1.isAttacking && player1.framesCur === 2) {
+//     player1.isAttacking = false;
+//     console.log("missed");
+//   }
   
-  if (player2.isAttacking && player2.framesCur === 2) {
-    player2.isAttacking = false;
-    console.log("missed");
-  } 
+//   if (player2.isAttacking && player2.framesCur === 2) {
+//     player2.isAttacking = false;
+//     console.log("missed");
+//   } 
   
-  if (ai.isAttacking && ai.framesCur === 2) {
-    ai.isAttacking = false;
-    console.log("missed");
-  }
-};
+//   if (ai.isAttacking && ai.framesCur === 2) {
+//     ai.isAttacking = false;
+//     console.log("missed");
+//   }
+
 
 
 
@@ -622,6 +640,7 @@ function winnerByCombat(player1, player2) {
 
 const movement = function (player1, player2) {
     window.addEventListener("keydown", (e) => {
+        
       if (!player1.dead) {
         switch (e.key) {
           // Player 1 Keys
@@ -640,6 +659,7 @@ const movement = function (player1, player2) {
             player1.velocity.y = -6.5;
             break;
           case " ":
+            keys.space.pressed = true;
             player1.attack();
             break;
         }
@@ -666,28 +686,29 @@ const movement = function (player1, player2) {
             break;
         }
       }
-      if (!major.dead) {
-        switch (e.key) {
-          // test cases for enemy movement and attacks
-          case "l":
-            keys.l.pressed = true;
-            major.isFacing = "right";
-            major.lastKey = "l";
-            break;
-          case "j":
-            keys.j.pressed = true;
-            major.isFacing = "left";
-            major.lastKey = "j";
-            break;
-          case "i":
-            keys.i.pressed = true;
-            major.velocity.y = -6.5;
-            break;
-          case "k":
-            major.attack();
-            break;
-        }
-      }
+    //   if (!major.dead) {
+    //     switch (e.keyCode) {
+    //       // test cases for enemy movement and attacks
+    //       case "l":
+    //         keys.l.pressed = true;
+    //         major.isFacing = "right";
+    //         major.lastKey = "l";
+    //         break;
+    //       case "j":
+    //         keys.j.pressed = true;
+    //         major.isFacing = "left";
+    //         major.lastKey = "j";
+    //         break;
+    //       case "i":
+    //         keys.i.pressed = true;
+    //         major.velocity.y = -6.5;
+    //         break;
+    //       case "k":
+    //         major.attack();
+    //         break;
+    //     }
+    //   }
+
     });
     
     window.addEventListener("keyup", (e) => {
@@ -702,6 +723,10 @@ const movement = function (player1, player2) {
         case "w":
           keys.w.pressed = false;
           break;
+        case " ":
+            keys.space.pressed = false;
+            break;
+        
         // Player 2 Keys
         case "ArrowRight":
           keys.ArrowRight.pressed = false;
@@ -737,9 +762,7 @@ const movement = function (player1, player2) {
     player2.switchSprite("revidle");
   }
 
-//   if (major.velocity.x = 0 && major.isFacing === "left") {
-//     major.switchSprite("revidle");
-//   }
+
     
       // Player 1 Movement
     
@@ -810,11 +833,14 @@ const movement = function (player1, player2) {
     //     major.switchSprite("fall");
     //   } else if (major.velocity.y > 0 && major.isFacing === "left") {
     //     major.switchSprite("revfall");
-    //   }
-    
-    
-    
+    //   }    
+
+    // ATTACKS -----
+
+    if (attackDetect({rectangle1: kiba, rectangle2: major}) && kiba.isAttacking){
+        major.takehit()
     }
+}
 
 
 
@@ -845,20 +871,19 @@ function animate() {
   // Draw and animate enemy
   major.update()
   major.status = 'ai'
-  major.detectPlayerDirection()
+  major.aiUpdate()
   // Add player movement
   movement(kiba, neji);
   
   // Collision Detection - Player 1
-  rectCollisionDetect(neji, kiba, major)
+  attackCollisionDetect(kiba, major)
   // Collision Detection - Player 2
-    
-
+  attackCollisionDetect(major, kiba)
 
   // End the game based on health:
 //   winnerByCombat(kiba, major)
 //   winnerByCombat(kiba, major)
-  
+
 }
 
 animate();
