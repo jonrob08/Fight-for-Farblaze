@@ -1,3 +1,4 @@
+
 /**
  * Creating Sprites Class
     ** Constructor -------> 
@@ -50,6 +51,7 @@ class Sprite {
   }
 
   draw() {
+    //console.log(this.position, this.offset);
     ctx.drawImage(
       this.image,
       // The width should be the image width(sprite sheet) divided by the max amount of frames within the image, then multiplied by the current frames. We start framesCur off at zero because we do not want there to be any crop at first, for instance if the width of the full sprite sheet was 800 and there were 4 different frames, we would have 0 * (800/4) which equals 0. Next framesCur will be 1 and it will move over 200px and start from the next available frame. Next it will be 2 and will move over 400px and display the next frame, and so on.
@@ -98,7 +100,7 @@ class Sprite {
         Image Source - see Image Source in Sprite Class.  
         Scale -  see Scale in Sprite Class.  
         Frames Amount - see Frames Amount in Sprite Class.  
-        Offset - see Offset in Sprite Class, or the Migos.  
+        Offset - see Offset in Sprite Class.
  * -------
     ** Constructor -------> 
         Position - Need this because I need to be able to track Player's positioning on the canvas and refer to it. It's in the constructor arguments because I will have multiple Players so the positions need to be independent of each other.
@@ -154,6 +156,7 @@ class Player extends Sprite {
     // Potentially add an isMoving prop
     attackBox = { offset: {}, width: undefined, height: undefined },
     hitBox = { offset: {}, width: undefined, height: undefined },
+    aggroBox = { offset: {}, width: undefined, height: undefined },
     characterName,
   }) {
     super({
@@ -188,6 +191,16 @@ class Player extends Sprite {
       width: hitBox.width,
       height: hitBox.height,
     };
+    this.aggroBox = {
+        // Changing position to have it's own x and y instead of inheriting the parents, and adding an offset for when the character is facing backwards or forwards
+        position: {
+          x: this.position.x,
+          y: this.position.y,
+        },
+        offset: aggroBox.offset,
+        width: aggroBox.width,
+        height: aggroBox.height,
+      };
     this.isAttacking;
     this.health = 100;
     this.framesCur = 0;
@@ -197,12 +210,22 @@ class Player extends Sprite {
     this.isFacing = isFacing;
     this.characterName = characterName;
     this.dead = false;
+    this.status 
 
     for (const sprite in this.sprites) {
       sprites[sprite].image = new Image();
       sprites[sprite].image.src = sprites[sprite].imageSrc;
     }
   }
+
+//   forwardsOffset(x_distance) {
+//     if (this.isFacing === 'right') {
+//         return x_distance;
+//     }
+//     else {
+//         return -x_distance;
+//     }
+//   }
 
   update() {
     this.draw();
@@ -211,6 +234,10 @@ class Player extends Sprite {
     // Subtract the hitBox offset if there is one
     this.attackBox.position.x = this.position.x - this.attackBox.offset.x;
     this.attackBox.position.y = this.position.y - this.attackBox.offset.y;
+    
+    // forward offset?
+    // this.attackBox.position.x = this.position.x + this.width/2 - this.forwardsOffset(this.attackBox.offset.x);
+    // this.attackBox.position.y = this.position.y + this.width/2 - this.attackBox.offset.y;
 
     //Keep this to visualize attackbox location
     // ctx.fillRect(this.attackBox.position.x, this.attackBox.position.y, this.attackBox.width, this.attackBox.height)
@@ -220,6 +247,14 @@ class Player extends Sprite {
 
     //Keep this to visualize hitbox location
     // ctx.fillRect(this.hitBox.position.x, this.hitBox.position.y, this.hitBox.width, this.hitBox.height)
+
+    this.aggroBox.position.x = this.position.x - this.aggroBox.offset.x;
+    this.aggroBox.position.y = this.position.y - this.aggroBox.offset.y;
+
+    //Keep this to visualize aggrobox location
+    ctx.fillStyle = 'red'
+    ctx.fillRect(this.aggroBox.position.x, this.aggroBox.position.y, this.aggroBox.width, this.aggroBox.height)
+
 
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
@@ -232,10 +267,16 @@ class Player extends Sprite {
   }
 
   attack() {
-    if (this.isFacing === "right") {
+    if (this.isFacing === "right" && this.characterName === "neji") {
+        this.attackBox.offset.x = -150
+        this.switchSprite("attack1");
+    } else if (this.isFacing === "right") {
       this.switchSprite("attack1");
-    } else if (this.isFacing === "left") {
+    } else if (this.isFacing === "left" && this.characterName === "neji") {
+        this.attackBox.offset.x = -40
       this.switchSprite("revattack1");
+    } else if (this.isFacing === "left") {
+        this.switchSprite("revattack1");
     }
     this.isAttacking = true;
   }
@@ -262,13 +303,21 @@ class Player extends Sprite {
       return;
     }
 
-    // Animation override - Hit
+    // Animation override - Take Hit
     if (
         this.image === this.sprites.takehitflash.image &&
         this.framesCur < this.sprites.takehitflash.framesAmt - 1
       ) {
+        this.velocity.x = 5
         return;
-      }
+      } else if 
+      (
+        this.image === this.sprites.revtakehitflash.image &&
+        this.framesCur < this.sprites.revtakehitflash.framesAmt - 1
+      ) {
+        this.velocity.x = -5
+        return;
+      } 
 
     switch (sprite) {
       case "idle":
@@ -401,11 +450,158 @@ class Player extends Sprite {
   }
 
   takehit() {
-    this.health -= 50
+    this.health -= 1
     
     if (this.health <= 0) {
         this.switchSprite('death')
-    } else this.switchSprite('takehitflash')
+    } else if (this.isFacing==='left'){
+        this.switchSprite('revtakehitflash')
+    } else if (this.isFacing==='right'){
+        this.switchSprite('takehitflash')
+    }
   }
-
 }
+
+class AI extends Player {
+    constructor(position){
+        super(position)
+        this.states = []
+        this.isMoving = false
+        this.isAttacking = false
+        this.hasAttacked = false
+        
+    }
+
+    attack() {
+        this.velocity.x = 0
+        this.isAttacking = true;
+        if (this.isAttacking === true && this.isFacing === "left") {
+          this.switchSprite("revattack1");
+          this.isAttacking = false;
+        } else if (this.isAttacking === true && this.isFacing === "right") {
+            this.switchSprite("attack1");
+            this.isAttacking = false;
+        }
+  
+        console.log('hit once')
+      }
+      
+
+      jumpBack() {
+        // this.velocity.x = 5
+      }
+
+      aiUpdate() {
+        
+        if (this.velocity.x === 0 && this.isFacing === 'left') {
+            this.switchSprite('revidle')
+          }
+
+          // If Player has gotten into Major's aggrobox Major starts walking towards Player
+          if (this.hitBox.position.x > kiba.hitBox.position.x) {
+            this.isFacing = "left"
+            this.aggroBox.offset.x = 0
+            
+            if (major.aggroBox.width < -100){
+                    
+            
+            if(aggroAICollisionDetect({rectangle1: major, rectangle2: kiba}) ){
+                major.aggroBox.width += 1
+            } else if(!aggroAICollisionDetect({rectangle1: major, rectangle2: kiba}) ){
+                major.aggroBox.width -= 1
+               
+            }
+
+            } else {
+                // random
+                major.attack()
+            }
+                    
+            }
+
+            if (this.hitBox.position.x < kiba.hitBox.position.x) {
+                this.isFacing = "right"
+                this.aggroBox.offset.x = 0
+               
+                if(aggroAICollisionDetect({rectangle1: major, rectangle2: kiba}) ){
+                    major.aggroBox.width += 1
+                } else if(!aggroAICollisionDetect({rectangle1: major, rectangle2: kiba}) ){
+                    major.aggroBox.width -= 1
+                }
+    
+                } 
+
+            
+            
+            
+            // if (this.hitBox.position.x > kiba.hitBox.position.x) { 
+            //     this.isFacing = "left"
+            //     this.aggroBox.offset.x = 0
+                
+            //     if(aggroAICollisionDetect({rectangle1: major, rectangle2: kiba}) ){
+            //         major.aggroBox.width -= 0
+            //     } 
+            // }
+                // else if(!aggroAICollisionDetect({rectangle1: major, rectangle2: kiba}) ){
+                //     major.aggroBox.width -= 1
+                // }
+
+          if (
+            aggroAICollisionDetect({
+              rectangle1: this,
+              rectangle2: kiba
+            }) && kiba.hitBox.position.x < this.hitBox.position.x 
+          ) {
+            this.switchSprite('revrun')
+            this.velocity.x -= 1
+
+            if (attackDetect({
+                rectangle1: this,
+                rectangle2: kiba
+            })) {
+                setTimeout(() => {
+                    // this.attack()
+                    this.isAttacking = false
+                }, 100)
+                this.isAttacking = false;
+                this.jumpBack()
+            }
+        } else if (
+            aggroAICollisionDetect({
+              rectangle1: this,
+              rectangle2: kiba
+            }) && kiba.hitBox.position.x > this.hitBox.position.x 
+          ) {
+            this.switchSprite('run')
+            this.velocity.x += 1
+
+            if (attackDetect({
+                rectangle1: this,
+                rectangle2: kiba
+            })) {
+                setTimeout(() => {
+                    // this.attack()
+                    this.isAttacking = false
+                }, 100)
+                this.isAttacking = false;
+                this.jumpBack()
+            }
+           
+        }
+
+        // !aggroAICollisionDetect({rectangle1: major, rectangle2: kiba}) && 
+
+        // if (major.isFacing === 'left') {
+        //     major.aggroBox.width -= 1
+        // } 
+        
+        // if (!aggroAICollisionDetect({rectangle1: major, rectangle2: kiba}) && major.isFacing === 'left') {
+        //     major.aggroBox.width += 1
+        // } else {
+        //     major.aggroBox.width -= 1
+        // }
+        this.isAttacking = false;
+        
+    }  
+}
+
