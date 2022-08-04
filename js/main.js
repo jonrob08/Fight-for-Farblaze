@@ -869,12 +869,14 @@ function animate() {
 //   neji.status = 'player'
   // playerTwo.update()
   // Draw and animate enemy
-  major.update()
-  major.status = 'ai'
+//   major.updateState(major, kiba)
+major.update()  
+
+major.status = 'ai'
   major.aiUpdate()
   // Add player movement
   movement(kiba, neji);
-  
+  major.calculateDistanceBetween(kiba)
   // Collision Detection - Player 1
   attackCollisionDetect(kiba, major)
   // Collision Detection - Player 2

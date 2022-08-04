@@ -28,7 +28,6 @@
         Update() - To be called on a Sprite object within the animate function, in updatehere I'm calling my draw() method first.
  *  -------
 */
-
 class Sprite {
   constructor({
     position,
@@ -461,15 +460,23 @@ class Player extends Sprite {
     }
   }
 }
-
+let distance = 0
 class AI extends Player {
+    
     constructor(position){
         super(position)
-        this.states = []
+        this.states = [new StandingLeft(this), new StandingRight(this)]
+        this.currentState = this.states[0]
         this.isMoving = false
         this.isAttacking = false
         this.hasAttacked = false
-        
+    }
+    calculateDistanceBetween(player){
+       
+       let distanceBetween = player.position.x - this.position.x
+       if (distanceBetween < -50){
+        this.velocity.x -= 1
+       }
     }
 
     attack() {
@@ -485,123 +492,42 @@ class AI extends Player {
   
         console.log('hit once')
       }
-      
 
-      jumpBack() {
-        // this.velocity.x = 5
+      updateState(ai, player) {
+        this.currentState.handleInput(ai, player)
+        this.draw();
+      }
+      
+      setState(state) {
+        this.currentState = this.states[state]
+        this.currentState.enter();
       }
 
-      aiUpdate() {
-        
-        if (this.velocity.x === 0 && this.isFacing === 'left') {
+      standingLeft(player){
+        if (this.velocity.x === 0 && player.position.x < this.position.x) {
+            this.isFacing = 'left'
             this.switchSprite('revidle')
           }
-
-          // If Player has gotten into Major's aggrobox Major starts walking towards Player
-          if (this.hitBox.position.x > kiba.hitBox.position.x) {
-            this.isFacing = "left"
-            this.aggroBox.offset.x = 0
-            
-            if (major.aggroBox.width < -100){
-                    
-            
-            if(aggroAICollisionDetect({rectangle1: major, rectangle2: kiba}) ){
-                major.aggroBox.width += 1
-            } else if(!aggroAICollisionDetect({rectangle1: major, rectangle2: kiba}) ){
-                major.aggroBox.width -= 1
-               
-            }
-
-            } else {
-                // random
-                major.attack()
-            }
-                    
-            }
-
-            if (this.hitBox.position.x < kiba.hitBox.position.x) {
-                this.isFacing = "right"
-                this.aggroBox.offset.x = 0
-               
-                if(aggroAICollisionDetect({rectangle1: major, rectangle2: kiba}) ){
-                    major.aggroBox.width += 1
-                } else if(!aggroAICollisionDetect({rectangle1: major, rectangle2: kiba}) ){
-                    major.aggroBox.width -= 1
-                }
-    
-                } 
-
-            
-            
-            
-            // if (this.hitBox.position.x > kiba.hitBox.position.x) { 
-            //     this.isFacing = "left"
-            //     this.aggroBox.offset.x = 0
-                
-            //     if(aggroAICollisionDetect({rectangle1: major, rectangle2: kiba}) ){
-            //         major.aggroBox.width -= 0
-            //     } 
-            // }
-                // else if(!aggroAICollisionDetect({rectangle1: major, rectangle2: kiba}) ){
-                //     major.aggroBox.width -= 1
-                // }
-
-          if (
-            aggroAICollisionDetect({
-              rectangle1: this,
-              rectangle2: kiba
-            }) && kiba.hitBox.position.x < this.hitBox.position.x 
-          ) {
-            this.switchSprite('revrun')
-            this.velocity.x -= 1
-
-            if (attackDetect({
-                rectangle1: this,
-                rectangle2: kiba
-            })) {
-                setTimeout(() => {
-                    // this.attack()
-                    this.isAttacking = false
-                }, 100)
-                this.isAttacking = false;
-                this.jumpBack()
-            }
-        } else if (
-            aggroAICollisionDetect({
-              rectangle1: this,
-              rectangle2: kiba
-            }) && kiba.hitBox.position.x > this.hitBox.position.x 
-          ) {
-            this.switchSprite('run')
-            this.velocity.x += 1
-
-            if (attackDetect({
-                rectangle1: this,
-                rectangle2: kiba
-            })) {
-                setTimeout(() => {
-                    // this.attack()
-                    this.isAttacking = false
-                }, 100)
-                this.isAttacking = false;
-                this.jumpBack()
-            }
-           
         }
+      standingRight(player){
+        if (this.velocity.x === 0 && player.position.x > this.position.x) {
+            this.isFacing = 'right'
+            this.switchSprite('idle')
+          }
+        }
+        moveToPlayer(player){
+            this.calculateDistanceBetween(player)
+            if (this.position.x > player.hitBox.position.x) {
+                this.velocity.x -1
+        }}
 
-        // !aggroAICollisionDetect({rectangle1: major, rectangle2: kiba}) && 
-
-        // if (major.isFacing === 'left') {
-        //     major.aggroBox.width -= 1
-        // } 
-        
-        // if (!aggroAICollisionDetect({rectangle1: major, rectangle2: kiba}) && major.isFacing === 'left') {
-        //     major.aggroBox.width += 1
-        // } else {
-        //     major.aggroBox.width -= 1
-        // }
-        this.isAttacking = false;
+     async aiUpdate() {
+        this.standingLeft(kiba)
+        this.standingRight(kiba)
+        this.moveToPlayer(kiba)
         
     }  
 }
+
+
 
