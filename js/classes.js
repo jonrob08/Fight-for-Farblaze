@@ -521,12 +521,12 @@ class AI extends Player {
                 this.velocity.x -1
         }}
 
-     async aiUpdate() {
-        this.standingLeft(kiba)
-        this.standingRight(kiba)
-        this.moveToPlayer(kiba)
+    //  async aiUpdate() {
+    //     await this.standingLeft(kiba)
+    //     this.standingRight(kiba)
+    //     this.moveToPlayer(kiba)
         
-    }  
+    // }  
 }
 
 

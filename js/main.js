@@ -860,7 +860,7 @@ function animate() {
   // Draw background continuously
   background.update();
   // Draw shop
-  shop.update();
+//   shop.update();
   // Draw and animate player 1
   kiba.update();
   kiba.status = 'player'
