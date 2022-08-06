@@ -246,7 +246,7 @@ const kiba = new Player({
     width: 50,
     height: 100,
   },
-  characterName: "kiba",
+  characterName: "Kiba",
 });
 
 console.log(kiba);
@@ -359,7 +359,7 @@ const neji = new Player({
     width: 50,
     height: 120,
   },
-  characterName: "neji",
+  characterName: "Neji",
 });
 
 const renji = new Player({
@@ -469,7 +469,7 @@ const renji = new Player({
     width: 50,
     height: 120,
   },
-  characterName: "renji",
+  characterName: "Renji",
 });
 
 // Creating Enemy
@@ -580,7 +580,7 @@ const major = new AI({
     width: 50,
     height: 120,
   },
-  characterName: "major",
+  characterName: "Major",
   aggroBox: {
     offset: {
       x: -50,
@@ -698,7 +698,7 @@ const vice = new AI({
     width: 50,
     height: 120,
   },
-  characterName: "vice",
+  characterName: "Vice",
   aggroBox: {
     offset: {
       x: -50,
@@ -816,7 +816,7 @@ const sora = new AI({
     width: 50,
     height: 120,
   },
-  characterName: "sora",
+  characterName: "Sora",
   aggroBox: {
     offset: {
       x: -50,
@@ -976,8 +976,8 @@ const aggroAICollisionDetect = function ({ rectangle1, rectangle2 }) {
 };
 
 const attackCollisionDetect = function (attacker, target) {
-  attacker.status = 'player'
-  target.status = 'ai'
+  // attacker.status = 'player'
+  // target.status = 'ai'
   if (
     attackDetect({ rectangle1: attacker, rectangle2: target }) &&
     attacker.isAttacking &&
@@ -1137,9 +1137,9 @@ function displayResults(player1, player2) {
   if (player2.health === player1.health) {
     document.getElementById("results").innerHTML = "<button id='restart' onclick='restartGame()'>Tie??</button>";
   } else if (player1.health <= 0) {
-    document.getElementById("results").innerHTML = "<button id='restart' onclick='restartGame()'>Heroes Win! </button>";
+    document.getElementById("results").innerHTML = `<button id='restart' onclick='restartGame()'>${player2.characterName} Wins! </button>`;
   } else if (player2.health <= 0) {
-    document.getElementById("results").innerHTML = "<button id='restart' onclick='restartGame()'>Heroes Lose! </button>";
+    document.getElementById("results").innerHTML = `<button id='restart' onclick='restartGame()'>${player1.characterName} Wins! </button>`;
   }
 };
 
@@ -1408,10 +1408,10 @@ const movement = function (player1, player2) {
   //     major.switchSprite("revfall");
   //   }
 
-  for (const enemy of enemies) {
-    attackCollisionDetect(player1, enemy);
-    attackCollisionDetect(player2, enemy);
-  }
+  // for (const enemy of enemies) {
+  //   attackCollisionDetect(player1, enemy);
+  //   attackCollisionDetect(player2, enemy);
+  // }
 };
 
 /** Animate function - This recursive function "animates" the canvas in our browser window by calling itself and refreshes the frame by 
@@ -1464,7 +1464,7 @@ function animateVS() {
   // Collision Detection - Player 2
 
   // End the game based on health:
-  // winnerByCombat(charOne, enemies)
+  winnerByCombat(charOne, charTwo)
   // winnerByCombat(enemies, charOne)
 }
 

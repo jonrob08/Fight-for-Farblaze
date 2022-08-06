@@ -132,7 +132,7 @@ class Attacking extends State {
       ) {
         {
           player.takehit();
-          gsap.to(`#${player.status}-current-health`, {
+          gsap.to(`#player-current-health`, {
             width: player.health + "%",
           });
           player.velocity.x = 5;
