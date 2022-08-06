@@ -1,4 +1,3 @@
-
 /**
  * Creating Sprites Class
     ** Constructor -------> 
@@ -90,10 +89,9 @@ class Sprite {
   update() {
     this.draw();
     this.animateFrames();
- 
-      this.position.x += this.velocity.x
 
- }
+    this.position.x += this.velocity.x;
+  }
 }
 
 /**
@@ -198,15 +196,15 @@ class Player extends Sprite {
       height: hitBox.height,
     };
     this.aggroBox = {
-        // Changing position to have it's own x and y instead of inheriting the parents, and adding an offset for when the character is facing backwards or forwards
-        position: {
-          x: this.position.x,
-          y: this.position.y,
-        },
-        offset: aggroBox.offset,
-        width: aggroBox.width,
-        height: aggroBox.height,
-      };
+      // Changing position to have it's own x and y instead of inheriting the parents, and adding an offset for when the character is facing backwards or forwards
+      position: {
+        x: this.position.x,
+        y: this.position.y,
+      },
+      offset: aggroBox.offset,
+      width: aggroBox.width,
+      height: aggroBox.height,
+    };
     this.isAttacking;
     this.health = 100;
     this.framesCur = 0;
@@ -216,22 +214,13 @@ class Player extends Sprite {
     this.isFacing = isFacing;
     this.characterName = characterName;
     this.dead = false;
-    this.status 
+    this.status;
 
     for (const sprite in this.sprites) {
       sprites[sprite].image = new Image();
       sprites[sprite].image.src = sprites[sprite].imageSrc;
     }
   }
-
-//   forwardsOffset(x_distance) {
-//     if (this.isFacing === 'right') {
-//         return x_distance;
-//     }
-//     else {
-//         return -x_distance;
-//     }
-//   }
 
   update() {
     this.draw();
@@ -240,7 +229,7 @@ class Player extends Sprite {
     // Subtract the hitBox offset if there is one
     this.attackBox.position.x = this.position.x - this.attackBox.offset.x;
     this.attackBox.position.y = this.position.y - this.attackBox.offset.y;
-    
+
     // forward offset?
     // this.attackBox.position.x = this.position.x + this.width/2 - this.forwardsOffset(this.attackBox.offset.x);
     // this.attackBox.position.y = this.position.y + this.width/2 - this.attackBox.offset.y;
@@ -258,9 +247,8 @@ class Player extends Sprite {
     this.aggroBox.position.y = this.position.y - this.aggroBox.offset.y;
 
     //Keep this to visualize aggrobox location
-    ctx.fillStyle = 'red'
-    ctx.fillRect(this.aggroBox.position.x, this.aggroBox.position.y, this.aggroBox.width, this.aggroBox.height)
-
+    // ctx.fillStyle = 'red'
+    // ctx.fillRect(this.aggroBox.position.x, this.aggroBox.position.y, this.aggroBox.width, this.aggroBox.height)
 
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
@@ -274,28 +262,26 @@ class Player extends Sprite {
 
   attack() {
     if (this.isFacing === "right" && this.characterName === "neji") {
-        this.attackBox.offset.x = -150
-        this.switchSprite("attack1");
+      this.attackBox.offset.x = -150;
+      this.switchSprite("attack1");
     } else if (this.isFacing === "right") {
       this.switchSprite("attack1");
     } else if (this.isFacing === "left" && this.characterName === "neji") {
-        this.attackBox.offset.x = -40
+      this.attackBox.offset.x = -40;
       this.switchSprite("revattack1");
     } else if (this.isFacing === "left") {
-        this.switchSprite("revattack1");
+      this.switchSprite("revattack1");
     }
     this.isAttacking = true;
   }
 
   switchSprite(sprite) {
     // console.log(sprite)
-     // Animation override - Death
-     if (this.image === this.sprites.death.image) {
-     if (this.framesCur === this.sprites.death.framesAmt - 1) 
-            this.dead = true
-            return;
-      }
-    
+    // Animation override - Death
+    if (this.image === this.sprites.death.image) {
+      if (this.framesCur === this.sprites.death.framesAmt - 1) this.dead = true;
+      return;
+    }
 
     // Animation override - Attack
     if (
@@ -312,19 +298,18 @@ class Player extends Sprite {
 
     // Animation override - Take Hit
     if (
-        this.image === this.sprites.takehitflash.image &&
-        this.framesCur < this.sprites.takehitflash.framesAmt - 1
-      ) {
-        this.velocity.x = 1
-        return;
-      } else if 
-      (
-        this.image === this.sprites.revtakehitflash.image &&
-        this.framesCur < this.sprites.revtakehitflash.framesAmt - 1
-      ) {
-        this.velocity.x = -1
-        return;
-      } 
+      this.image === this.sprites.takehitflash.image &&
+      this.framesCur < this.sprites.takehitflash.framesAmt - 1
+    ) {
+      this.velocity.x = 1;
+      return;
+    } else if (
+      this.image === this.sprites.revtakehitflash.image &&
+      this.framesCur < this.sprites.revtakehitflash.framesAmt - 1
+    ) {
+      this.velocity.x = -1;
+      return;
+    }
 
     switch (sprite) {
       case "idle":
@@ -457,82 +442,79 @@ class Player extends Sprite {
   }
 
   takehit() {
-    this.health -= .2
-    
+    this.health -= 0.2;
+
     if (this.health <= 0) {
-        this.switchSprite('death')
-    } else if (this.isFacing==='left'){
-        this.switchSprite('revtakehitflash')
-    } else if (this.isFacing==='right'){
-        this.switchSprite('takehitflash')
+      this.switchSprite("death");
+    } else if (this.isFacing === "left") {
+      this.switchSprite("revtakehitflash");
+    } else if (this.isFacing === "right") {
+      this.switchSprite("takehitflash");
     }
   }
 }
 
 // let distance = 0
 class AI extends Player {
-    
-    constructor(position){
-        super(position)
-        this.states = [
-          new Standing(this, 'left'), 
-        new Standing(this, 'right'), 
-        new Running(this, 'left'), 
-        new Running(this, 'right'), 
-        new Attacking(this, 'left'), 
-        new Attacking(this, 'right'),
-        new Jumping(this, 'left'), 
-        new Jumping(this, 'right'),
-        new Hit(this, 'left'), 
-        new Hit(this, 'right')]
-        this.setState(states.STANDING_LEFT)
-        this.isMoving = false
-        this.isAttacking = false
-        this.hasAttacked = false
-    }
+  constructor(position) {
+    super(position);
+    this.states = [
+      new Standing(this, "left"),
+      new Standing(this, "right"),
+      new Running(this, "left"),
+      new Running(this, "right"),
+      new Attacking(this, "left"),
+      new Attacking(this, "right"),
+      new Jumping(this, "left"),
+      new Jumping(this, "right"),
+      new Hit(this, "left"),
+      new Hit(this, "right"),
+    ];
+    this.setState(states.STANDING_LEFT);
+    this.isMoving = false;
+    this.isAttacking = false;
+    this.hasAttacked = false;
+  }
 
-    // calculateDistanceBetween(player){
-       
-    //    let distanceBetween = player.position.x - this.position.x
-    //    if (distanceBetween < -50 && player){
-    //     this.velocity.x -= 1
-    //    }
-    // }
+  // calculateDistanceBetween(player){
 
-      updateState(player) {
-        this.currentState.update(player)
-        this.draw();
-      }
-      
-      setState(state) {
-        this.currentState = this.states[state]
-        this.currentState.enter();
-      }
+  //    let distanceBetween = player.position.x - this.position.x
+  //    if (distanceBetween < -50 && player){
+  //     this.velocity.x -= 1
+  //    }
+  // }
 
-      takehit() {
-        this.health -= .2
-        this.setState(states.HIT_LEFT)
-        console.log('yep')
-      }
+  updateState(player) {
+    this.currentState.update(player);
+    this.draw();
+  }
 
-      // standingLeft(player){
-      //   if (this.velocity.x === 0 && player.position.x < this.position.x) {
-      //       this.isFacing = 'left'
-      //       this.switchSprite('revidle')
-      //     }
-      //   }
-      // standingRight(player){
-      //   if (this.velocity.x === 0 && player.position.x > this.position.x) {
-      //       this.isFacing = 'right'
-      //       this.switchSprite('idle')
-      //     }
-      //   }
-        // moveToPlayer(player){
-        //     this.calculateDistanceBetween(player)
-        //     if (this.position.x > player.hitBox.position.x) {
-        //         this.velocity.x -1
-        // }}
+  setState(state) {
+    this.currentState = this.states[state];
+    this.currentState.enter();
+  }
+
+  takehit() {
+    this.health -= 0.2;
+    this.setState(states.HIT_LEFT);
+    console.log("yep");
+  }
+
+  // standingLeft(player){
+  //   if (this.velocity.x === 0 && player.position.x < this.position.x) {
+  //       this.isFacing = 'left'
+  //       this.switchSprite('revidle')
+  //     }
+  //   }
+  // standingRight(player){
+  //   if (this.velocity.x === 0 && player.position.x > this.position.x) {
+  //       this.isFacing = 'right'
+  //       this.switchSprite('idle')
+  //     }
+  //   }
+  // moveToPlayer(player){
+  //     this.calculateDistanceBetween(player)
+  //     if (this.position.x > player.hitBox.position.x) {
+  //         this.velocity.x -1
+  // }}
 }
-
-
-

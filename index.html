@@ -1,51 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fight for Farblaze</title>
-    <link rel="stylesheet" href="./css/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Poller+One&family=Press+Start+2P&family=Shadows+Into+Light&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Ceviche+One&display=swap" rel="stylesheet">
-</head>
-<body>
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Poller+One&family=Press+Start+2P&family=Shadows+Into+Light&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ceviche+One&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
     <div id="game-screen">
-        <div id="menu" class="box">
-            <img src="./img/LogoSample_ByTailorBrands.jpg" alt="" id="game-img" class="box">
-            <button id="startmenu-btn" onclick="characterSelectStart()">Start</button>
+      <div id="menu" class="box">
+        <img
+          src="./img/LogoSample_ByTailorBrands.jpg"
+          alt=""
+          id="game-img"
+          class="box"
+        />
+        <button
+          id="startmenu-btn2"
+          class="menu-btn"
+          onclick="characterSelectStart()"
+        >
+          VS Mode
+        </button>
+        <button id="startmenu-btn" class="menu-btn" onclick="storyMode()">
+          Story Mode 1P
+        </button>
+        <button id="startmenu-btn3" class="menu-btn" onclick="storyMode()">
+          Story Mode 2P
+        </button>
+      </div>
+      <div id="character-select" class="charSel">
+        <button id="select-kiba">
+          <img src="img\Characters\misc\faces\kiba-face.png" alt="" />
+        </button>
+        <button id="select-neji">
+          <img src="img\Characters\misc\faces\neji-face.png" alt="" />
+        </button>
+        <button id="select-renji">
+          <img src="img\Characters\misc\faces\renji-face.png" alt="" />
+        </button>
+        <button id="select-major">
+          <img src="img\Characters\misc\faces\major-face.png" alt="" />
+        </button>
+        <button id="select-sora">
+          <img src="img\Characters\misc\faces\sora-face.png" alt="" />
+        </button>
+        <button id="select-vice">
+          <img src="img\Characters\misc\faces\vice-face.png" alt="" />
+        </button>
+        <button id="startchar-btn" class="menu-btn" onclick="gameStart()">FIGHT!!!</button>
+      </div>
+      <!-- container div -->
+      <div id="wrapper">
+        <!-- header containing status bars and timer -->
+        <div class="header">
+          <div
+            style="
+              position: relative;
+              height: 30px;
+              width: 100%;
+              border: 4px solid white;
+            "
+          >
+            <div
+              style="
+                background-color: rgb(255, 0, 0);
+                height: 30px;
+                width: 100%;
+                z-index: 2;
+              "
+            ></div>
+            <div
+              id="player-current-health"
+              style="
+                position: absolute;
+                background: #18402a;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                width: 100%;
+              "
+            ></div>
+          </div>
+          <div id="timer"></div>
+          <div
+            style="
+              position: relative;
+              height: 30px;
+              width: 100%;
+              border: 4px solid white;
+            "
+          >
+            <div
+              style="
+                background-color: rgb(255, 0, 0);
+                height: 30px;
+                width: 100%;
+                z-index: 2;
+              "
+            ></div>
+            <div
+              id="ai-current-health"
+              style="
+                position: absolute;
+                background: #18402a;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+              "
+            ></div>
+          </div>
         </div>
-        <div id="character-select" class="charSel">
-            <button id="select-kiba" ><img src="img\Characters\misc\faces\kiba-face.png" alt=""></button>
-            <button id="select-neji"><img src="img\Characters\misc\faces\neji-face.png" alt=""></button>
-            <button id="select-renji"><img src="img\Characters\misc\faces\renji-face.png" alt=""></button>
-            <button id="select-major"><img src="img\Characters\misc\faces\major-face.png" alt=""></button>
-            <button id="startchar-btn" onclick="gameStart()">Start</button>
-        </div>
-        <!-- container div -->
-        <div id="wrapper"> 
-            <!-- header containing status bars and timer -->
-            <div class="header">
-                <div style="position: relative; height: 30px; width: 100%; border: 4px solid white;">
-                    <div style="background-color: rgb(255, 0, 0); height: 30px; width: 100%; z-index: 2;"></div>
-                    <div id="player-current-health" style="position:absolute; background: #18402a; top: 0; right: 0; bottom: 0; width: 100%"></div>
-                </div>
-                <div id="timer"></div>
-                <div style="position: relative; height: 30px; width: 100%; border: 4px solid white;">
-                    <div style="background-color: rgb(255, 0, 0); height: 30px; width: 100%; z-index: 2;"></div>
-                    <div id="ai-current-health" style="position:absolute; background: #18402a; top: 0; right: 0; bottom: 0; left: 0; width: 100%"></div>
-                </div>
-            </div>
-            <div id="results"></div>
-            <!-- game -->
-            <canvas></canvas>
-        </div>
+        <div id="results"></div>
+        <!-- game -->
+        <canvas></canvas>
+      </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js" integrity="sha512-H6cPm97FAsgIKmlBA4s774vqoN24V5gSQL4yBTDOY2su2DeXZVhQPxFK4P6GPdnZqM9fg1G3cMv5wD7e6cFLZQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"
+      integrity="sha512-H6cPm97FAsgIKmlBA4s774vqoN24V5gSQL4yBTDOY2su2DeXZVhQPxFK4P6GPdnZqM9fg1G3cMv5wD7e6cFLZQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
     <script src="./js/classes.js"></script>
     <script src="./js/state.js"></script>
     <script src="./js/main.js"></script>
-</body> 
+  </body>
 </html>

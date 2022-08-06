@@ -19,9 +19,50 @@ body {
 }
 
 #startmenu-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    position: absolute;
+    top: 65%;
+    left: 25%;
+
+}
+
+#startmenu-btn2 {
+    position: absolute;
+    top: 70%;
+    left: 60%;
+}
+
+#startmenu-btn3 {
+    position: absolute;
+    top: 75%;
+    left: 25%;
+}
+
+.menu-btn {
+  background-color: #fbeee0;
+  border: 2px solid #000000;
+  border-radius: 30px;
+  box-shadow: #f3a200 4px 4px 0 0;
+  color: #ff0000;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 600;
+  font-size: 18px;
+  padding: 0 18px;
+  line-height: 50px;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.menu-btn:hover {
+  background-color: #fff;
+}
+
+.menu-btn:active {
+  box-shadow: #000000 2px 2px 0 0;
+  transform: translate(2px, 2px);
 }
 
 .box {
@@ -71,7 +112,25 @@ width: 100%
     height: 125px;
     border-radius: 100%;
     left: 785px;
+    top: 230px;
+    position: absolute;
+}
+
+#select-sora img{
+    width: 125px;
+    height: 125px;
+    border-radius: 100%;
+    left: 785px;
     top: 55px;
+    position: absolute;
+}
+
+#select-vice img{
+    width: 125px;
+    height: 125px;
+    border-radius: 100%;
+    left: 785px;
+    top: 400px;
     position: absolute;
 }
 
@@ -90,8 +149,9 @@ margin: 0 auto;
 
 #startchar-btn {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 40%;
+    left: 40%;
+    width: 200px
 }
 
 
