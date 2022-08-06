@@ -1,5 +1,6 @@
 console.log("connected");
 
+
 // Grabbing the canvas and setting/grabbing the context
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
@@ -12,25 +13,52 @@ canvas.height = 576;
 // Filling in the canvas background with a black rectangle
 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+
+const wrapper = document.querySelector("#wrapper");
+const cSS = document.querySelector("#character-select");
+const selectKiba = document.querySelector("#select-kiba");
+const selectMajor = document.querySelector("#select-major");
+const selectNeji = document.querySelector("#select-neji");
+const selectRenji= document.querySelector("#select-renji");
+const beginSelectBtn = document.querySelector("#startmenu-btn");
+const beginBattleBtn = document.querySelector("#startchar-btn");
+
+wrapper.style.display = "none"
+cSS.style.display = "none"
+
+function characterSelectStart() {
+  const mainmenu = document.getElementById("menu");
+
+  mainmenu.style.display = "none";
+  cSS.style.display = "block";
+}
+
+function gameStart() {
+
+  cSS.style.display = "none";
+  wrapper.style.display = "block";
+}
+
 // Cut canvas up into quadrants to be used later in AI functionality
 let quadrant1 = {
-    x: 0,
-    y: 0,
-    width: canvas.width / 2,
-    height: canvas.height
+  x: 0,
+  y: 0,
+  width: canvas.width / 2,
+  height: canvas.height
 }
 
 let quadrant2 = {
-    x: quadrant1.width,
-    y: 0,
-    width: canvas.width / 2,
-    height: canvas.height
+  x: quadrant1.width,
+  y: 0,
+  width: canvas.width / 2,
+  height: canvas.height
 }
 
 
-
-// Setting canvas gravity
+  
+  // Setting canvas gravity
 const gravity = 0.08;
+
 
 // Creating Background
 const background = new Sprite({
@@ -38,17 +66,51 @@ const background = new Sprite({
     x: 0,
     y: -200,
   },
+  velocity: {
+    x: 0,
+    y: 0,
+  },
   imageSrc: "./img/Background.png",
   scale: 1.4,
 });
 
-// Character Select Screen
-const selectCharacter = new Sprite({
+const background2 = new Sprite({
   position: {
-    x: 0,
+    x: 1024,
     y: -200,
   },
+  velocity: {
+    x: 0,
+    y: 0,
+  },
   imageSrc: "./img/Background.png",
+  scale: 1.4,
+});
+
+const background3 = new Sprite({
+  position: {
+    x: -1024,
+    y: -200,
+  },
+  velocity: {
+    x: 0,
+    y: 0,
+  },
+  imageSrc: "./img/Background.png",
+  scale: 1.4,
+});
+
+// Creating Scrolling Background
+const backgroundScroll = new Sprite({
+  position: {
+    x: 0,
+    y: -420,
+  },
+  velocity: {
+    x: 0,
+    y: 0,
+  },
+  imageSrc: "./img/scroll.png",
   scale: 1.4,
 });
 
@@ -57,6 +119,10 @@ const shop = new Sprite({
   position: {
     x: 650,
     y: 155,
+  },
+  velocity: {
+    x: 0,
+    y: 0,
   },
   imageSrc: "./img/shop_anim.png",
   scale: 3,
@@ -288,6 +354,116 @@ const neji = new Player({
     characterName: "neji",
 });
 
+const renji = new Player({
+  position: {
+      x: 150,
+      y: 0
+  },
+  velocity: {
+      x: 0,
+      y: 0
+  },
+  imageSrc: './img/Characters/Renji/Idle.png',
+  scale: 3,
+  framesAmt: 4,
+  offset: {
+      x: 0,
+      y: 0
+  },
+  sprites: {
+      idle: {
+          imageSrc: './img/Characters/Renji/Idle.png',
+          framesAmt: 4
+      },
+      revidle: {
+          imageSrc: './img/Characters/Renji/rev_Idle.png',
+          framesAmt: 4
+      },
+      run: {
+          imageSrc: './img/Characters/Renji/Run.png',
+          framesAmt: 8
+      },
+      revrun: {
+          imageSrc: './img/Characters/Renji/rev_Run.png',
+          framesAmt: 8
+      },
+      jump: {
+          imageSrc: './img/Characters/Renji/Jump.png',
+          framesAmt: 2
+      },
+      revjump: {
+          imageSrc: './img/Characters/Renji/rev_Jump.png',
+          framesAmt: 2
+      },
+      fall: {
+          imageSrc: './img/Characters/Renji/Fall.png',
+          framesAmt: 2
+      },
+      revfall: {
+          imageSrc: './img/Characters/Renji/rev_Fall.png',
+          framesAmt: 2
+      },
+      attack1: {
+          imageSrc: './img/Characters/Renji/Attack1.png',
+          framesAmt: 4
+      },
+      revattack1: {
+          imageSrc: './img/Characters/Renji/rev_Attack1.png',
+          framesAmt: 4
+      },
+      attack2: {
+          imageSrc: "./img/Characters/Renji/Attack2.png",
+          framesAmt: 4,
+      },
+      revattack2: {
+          imageSrc: "./img/Characters/Renji/rev_Attack2.png",
+          framesAmt: 4,
+      },
+      takehit: {
+          imageSrc: "./img/Characters/Renji/Take_Hit.png",
+          framesAmt: 4,
+      },
+      revtakehit: {
+          imageSrc: "./img/Characters/Renji/rev_Take_Hit.png",
+          framesAmt: 4,
+      },
+      takehitflash: {
+          imageSrc: "./img/Characters/Renji/Take_Hit_w.png",
+          framesAmt: 4,
+      },
+      revtakehitflash: {
+          imageSrc: "./img/Characters/Renji/rev_Take_Hit_w.png",
+          framesAmt: 4,
+      },
+      death: {
+          imageSrc: "./img/Characters/Renji/Death.png",
+          framesAmt: 4,
+      },
+      revdeath: {
+          imageSrc: "./img/Characters/Renji/rev_Death.png",
+          framesAmt: 4,
+      },
+  },
+  isFacing: "right",
+  attackBox: {
+      offset: {
+      x: -150,
+      y: -50,
+      },
+      width: 110,
+      height: 150,
+  },
+  hitBox: {
+      offset: {
+      x: -130,
+      y: -80,
+      },
+      width: 50,
+      height: 120,
+  },
+  characterName: "renji",
+});
+
 // Creating Enemy
 const major = new AI({
   position: {
@@ -407,7 +583,281 @@ const major = new AI({
   }
 });
 
+const vice = new AI({
+  position: {
+    x: 600,
+    y: 0,
+  },
+  velocity: {
+    x: 0,
+    y: 0,
+  },
+  offset: {
+    x: 0,
+    y: 25,
+  },
+  imageSrc: "./img/Characters/Vice/Idle.png",
+  scale: 3,
+  framesAmt: 4,
+  sprites: {
+    idle: {
+      imageSrc: "./img/Characters/Vice/Idle.png",
+      framesAmt: 4,
+    },
+    revidle: {
+      imageSrc: "./img/Characters/Vice/rev_Idle.png",
+      framesAmt: 4,
+    },
+    run: {
+      imageSrc: "./img/Characters/Vice/Run.png",
+      framesAmt: 8,
+    },
+    revrun: {
+      imageSrc: "./img/Characters/Vice/rev_Run.png",
+      framesAmt: 8,
+    },
+    jump: {
+      imageSrc: "./img/Characters/Vice/Jump.png",
+      framesAmt: 2,
+    },
+    revjump: {
+      imageSrc: "./img/Characters/Vice/rev_Jump.png",
+      framesAmt: 2,
+    },
+    fall: {
+      imageSrc: "./img/Characters/Vice/Fall.png",
+      framesAmt: 2,
+    },
+    revfall: {
+      imageSrc: "./img/Characters/Vice/rev_Fall.png",
+      framesAmt: 2,
+    },
+    attack1: {
+      imageSrc: "./img/Characters/Vice/Attack1.png",
+      framesAmt: 4,
+    },
+    revattack1: {
+      imageSrc: "./img/Characters/Vice/rev_Attack1.png",
+      framesAmt: 4,
+    },
+    attack2: {
+      imageSrc: "./img/Characters/Vice/Attack2.png",
+      framesAmt: 4,
+    },
+    revattack2: {
+      imageSrc: "./img/Characters/Vice/rev_Attack2.png",
+      framesAmt: 4,
+    },
+    takehit: {
+      imageSrc: "./img/Characters/Vice/Take_Hit.png",
+      framesAmt: 4,
+    },
+    revtakehit: {
+      imageSrc: "./img/Characters/Vice/rev_Take_Hit.png",
+      framesAmt: 4,
+    },
+    takehitflash: {
+      imageSrc: "./img/Characters/Vice/Take_Hit_w.png",
+      framesAmt: 4,
+    },
+    revtakehitflash: {
+      imageSrc: "./img/Characters/Vice/rev_Take_Hit_w.png",
+      framesAmt: 4,
+    },
+    death: {
+      imageSrc: "./img/Characters/Vice/Death.png",
+      framesAmt: 4,
+    },
+    revdeath: {
+      imageSrc: "./img/Characters/Vice/rev_Death.png",
+      framesAmt: 4,
+    },
+  },
+  isFacing: "left",
+  attackBox: {
+    offset: {
+      x: -40,
+      y: -80,
+    },
+    width: 200, //200?
+    height: 80,
+  },
+  hitBox: {
+    offset: {
+      x: -120,
+      y: -80,
+    },
+    width: 50,
+    height: 120,
+  },
+  characterName: "vice",
+  aggroBox: {
+    offset: {
+        x: -50,
+        y: -100
+    },
+    width: -450,
+    height: 30
+  }
+});
+
+const sora = new AI({
+  position: {
+    x: 600,
+    y: 0,
+  },
+  velocity: {
+    x: 0,
+    y: 0,
+  },
+  offset: {
+    x: 0,
+    y: 10,
+  },
+  imageSrc: "./img/Characters/Sora/Idle.png",
+  scale: 3,
+  framesAmt: 4,
+  sprites: {
+    idle: {
+      imageSrc: "./img/Characters/Sora/Idle.png",
+      framesAmt: 4,
+    },
+    revidle: {
+      imageSrc: "./img/Characters/Sora/rev_Idle.png",
+      framesAmt: 4,
+    },
+    run: {
+      imageSrc: "./img/Characters/Sora/Run.png",
+      framesAmt: 8,
+    },
+    revrun: {
+      imageSrc: "./img/Characters/Sora/rev_Run.png",
+      framesAmt: 8,
+    },
+    jump: {
+      imageSrc: "./img/Characters/Sora/Jump.png",
+      framesAmt: 2,
+    },
+    revjump: {
+      imageSrc: "./img/Characters/Sora/rev_Jump.png",
+      framesAmt: 2,
+    },
+    fall: {
+      imageSrc: "./img/Characters/Sora/Fall.png",
+      framesAmt: 2,
+    },
+    revfall: {
+      imageSrc: "./img/Characters/Sora/rev_Fall.png",
+      framesAmt: 2,
+    },
+    attack1: {
+      imageSrc: "./img/Characters/Sora/Attack1.png",
+      framesAmt: 4,
+    },
+    revattack1: {
+      imageSrc: "./img/Characters/Sora/rev_Attack1.png",
+      framesAmt: 4,
+    },
+    attack2: {
+      imageSrc: "./img/Characters/Sora/Attack2.png",
+      framesAmt: 4,
+    },
+    revattack2: {
+      imageSrc: "./img/Characters/Sora/rev_Attack2.png",
+      framesAmt: 4,
+    },
+    takehit: {
+      imageSrc: "./img/Characters/Sora/Take_Hit.png",
+      framesAmt: 4,
+    },
+    revtakehit: {
+      imageSrc: "./img/Characters/Sora/rev_Take_Hit.png",
+      framesAmt: 4,
+    },
+    takehitflash: {
+      imageSrc: "./img/Characters/Sora/Take_Hit_w.png",
+      framesAmt: 4,
+    },
+    revtakehitflash: {
+      imageSrc: "./img/Characters/Sora/rev_Take_Hit_w.png",
+      framesAmt: 4,
+    },
+    death: {
+      imageSrc: "./img/Characters/Sora/Death.png",
+      framesAmt: 4,
+    },
+    revdeath: {
+      imageSrc: "./img/Characters/Sora/rev_Death.png",
+      framesAmt: 4,
+    },
+  },
+  isFacing: "left",
+  attackBox: {
+    offset: {
+      x: -40,
+      y: -80,
+    },
+    width: 200, //200?
+    height: 80,
+  },
+  hitBox: {
+    offset: {
+      x: -120,
+      y: -80,
+    },
+    width: 50,
+    height: 120,
+  },
+  characterName: "sora",
+  aggroBox: {
+    offset: {
+        x: -50,
+        y: -100
+    },
+    width: -450,
+    height: 30
+  }
+});
+
+
 console.log(major);
+
+// Character Select Screen Event Listeners
+let charOne = null
+let charTwo = null
+let enemies = [major, vice, sora]
+
+selectKiba.addEventListener('click', () => {
+  if(charOne === null){
+    charOne = kiba
+  } else {
+    charTwo = kiba
+  }
+})
+
+selectNeji.addEventListener('click', () => {
+  if(charOne === null){
+    charOne = neji
+  } else {
+    charTwo = neji
+  }
+})
+
+selectRenji.addEventListener('click', () => {
+  if(charOne === null){
+    charOne = renji
+  } else {
+    charTwo = renji
+  }
+})
+
+beginBattleBtn.addEventListener('click', () => {
+  if (charOne === null || charTwo === null){
+    return;
+  } else {
+    animate(charOne, charTwo, enemies)
+  }
+})
 
 // Setting up Key monitor
 
@@ -451,58 +901,96 @@ const keys = {
 };
 
 const rectCollisionDetect = function ({rectangle1, rectangle2}) {
-    if (
-        rectangle1.position.x + rectangle1.width >= rectangle2.position.x && 
-        rectangle1.position.x <= rectangle2.position.x + rectangle2.width &&
-        rectangle1.position.y + rectangle1.height >= rectangle2.position.y &&
-        rectangle1.position.y <= rectangle2.position.y + rectangle2.height
-      ){
-        console.log('yep')
-      };
-    }
+  if (
+      rectangle1.position.x + rectangle1.width >= rectangle2.position.x && 
+      rectangle1.position.x <= rectangle2.position.x + rectangle2.width &&
+      rectangle1.position.y + rectangle1.height >= rectangle2.position.y &&
+      rectangle1.position.y <= rectangle2.position.y + rectangle2.height
+    ){
+      console.log('yep')
+    };
+  }
 
-    
+  
 const attackDetect = function ({rectangle1, rectangle2}) {
-    return (
-        rectangle1.attackBox.position.x <= rectangle2.hitBox.position.x + rectangle2.hitBox.width && rectangle1.attackBox.position.x + rectangle1.attackBox.width >= rectangle2.hitBox.position.x
-      )
-    }
+  return (
+      rectangle1.attackBox.position.x <= rectangle2.hitBox.position.x + rectangle2.hitBox.width && rectangle1.attackBox.position.x + rectangle1.attackBox.width >= rectangle2.hitBox.position.x
+    )
+  }
 
 const aggroAICollisionDetect = function ({rectangle1, rectangle2}) {
-    // console.log(rectangle1.aggroBox.position.x, rectangle1.aggroBox.width, rectangle2.position.x)
-    // return (
-    //     rectangle1.aggroBox.position.x + rectangle1.aggroBox.width >= rectangle2.position.x && 
-    //     rectangle1.aggroBox.position.x <= rectangle2.position.x + rectangle2.width &&
-    //     rectangle1.aggroBox.position.y + rectangle1.aggroBox.height >= rectangle2.position.y &&
-    //     rectangle1.aggroBox.position.y <= rectangle2.position.y + rectangle2.height
-    //     );
-    return (
-        rectangle1.aggroBox.position.x >= rectangle2.hitBox.position.x + rectangle2.hitBox.width && rectangle1.aggroBox.position.x + rectangle1.aggroBox.width <= rectangle2.hitBox.position.x
-        )
-    }
+  // console.log(rectangle1.aggroBox.position.x, rectangle1.aggroBox.width, rectangle2.position.x)
+  // return (
+  //     rectangle1.aggroBox.position.x + rectangle1.aggroBox.width >= rectangle2.position.x && 
+  //     rectangle1.aggroBox.position.x <= rectangle2.position.x + rectangle2.width &&
+  //     rectangle1.aggroBox.position.y + rectangle1.aggroBox.height >= rectangle2.position.y &&
+  //     rectangle1.aggroBox.position.y <= rectangle2.position.y + rectangle2.height
+  //     );
+  return (
+      rectangle1.aggroBox.position.x >= rectangle2.hitBox.position.x + rectangle2.hitBox.width && rectangle1.aggroBox.position.x + rectangle1.aggroBox.width <= rectangle2.hitBox.position.x
+      )
+  }
 
-    const attackCollisionDetect = function (attacker, target) {
-  
-      
-        if (attackDetect({rectangle1: attacker, rectangle2: target}) &&
-          attacker.isAttacking &&
-          attacker.framesCur === 0
-        ) {
-          target.takehit();
-          gsap.to(`#${target.status}-current-health`, {
-            width: target.health + "%" 
-        })
-          target.velocity.x = 5
-          attacker.isAttacking = false;
-          console.log("Attacker Hit!");
-        }
-      
-        // If player misses
-        if (attacker.isAttacking && attacker.framesCur === 1) {
-          attacker.isAttacking = false;
-          console.log("missed");
-        }
-      };
+  const attackCollisionDetect = function (attacker, target) {
+
+    
+      if (attackDetect({rectangle1: attacker, rectangle2: target}) &&
+        attacker.isAttacking &&
+        attacker.framesCur === 1
+      ) {
+        target.takehit();
+        gsap.to(`#${target.status}-current-health`, {
+          width: target.health + "%" 
+      })
+          
+        attacker.isAttacking = false;
+        console.log("Attacker Hit!");
+      }
+    
+      // If player misses
+      if (attacker.isAttacking && attacker.framesCur === 1) {
+        attacker.isAttacking = false;
+        console.log("missed");
+      }
+    };
+
+// const rectCollisionDetect = function (player1, player2, ai) {
+//   let ab = player1.attackBox.position.x;
+//   let ba = ai.hitBox.position.x + ai.hitBox.width;
+//   let ac = player1.attackBox.position.x + player1.attackBox.width;
+//   let ca = ai.hitBox.position.x;
+//   let ad = player1.attackBox.position.y;
+//   let da = ai.hitBox.position.y + ai.height;
+//   let ae = player1.attackBox.position.y + player1.attackBox.height;
+//   let ea = ai.hitBox.position.y;
+
+//   let zb = player2.attackBox.position.x;
+//   let bz = ai.hitBox.position.x + ai.hitBox.width;
+//   let zc = player2.attackBox.position.x + player2.attackBox.width;
+//   let cz = ai.hitBox.position.x;
+//   let zd = player2.attackBox.position.y;
+//   let dz = ai.hitBox.position.y + ai.height;
+//   let ze = player2.attackBox.position.y + player2.attackBox.height;
+//   let ez = ai.hitBox.position.y;
+
+//   let mb = ai.attackBox.position.x;
+//   let bm = player1.hitBox.position.x + player1.hitBox.width;
+//   let mc = ai.attackBox.position.x + ai.attackBox.width;
+//   let cm = player1.hitBox.position.x;
+//   let md = ai.attackBox.position.y;
+//   let dm = player1.hitBox.position.y + player1.height;
+//   let me = ai.attackBox.position.y + ai.attackBox.height;
+//   let em = player1.hitBox.position.y;
+
+//   let jb = ai.attackBox.position.x;
+//   let bj = player2.hitBox.position.x + player2.hitBox.width;
+//   let jc = ai.attackBox.position.x + ai.attackBox.width;
+//   let cj = player2.hitBox.position.x;
+//   let jd = ai.attackBox.position.y;
+//   let dj = player2.hitBox.position.y + player2.height;
+//   let je = ai.attackBox.position.y + ai.attackBox.height;
+//   let ej = player2.hitBox.position.y;
+
 //   if (
 //     ab < ba &&
 //     ac > ca &&
@@ -559,7 +1047,8 @@ const aggroAICollisionDetect = function ({rectangle1, rectangle2}) {
 //     console.log("AI Hit P2!");
 
 
-  // If player misses
+
+// If player misses
 //   if (player1.isAttacking && player1.framesCur === 2) {
 //     player1.isAttacking = false;
 //     console.log("missed");
@@ -640,7 +1129,7 @@ function winnerByCombat(player1, player2) {
 
 const movement = function (player1, player2) {
     window.addEventListener("keydown", (e) => {
-        
+
       if (!player1.dead) {
         switch (e.key) {
           // Player 1 Keys
@@ -686,7 +1175,7 @@ const movement = function (player1, player2) {
             break;
         }
       }
-    //   if (!major.dead) {
+ //   if (!major.dead) {
     //     switch (e.keyCode) {
     //       // test cases for enemy movement and attacks
     //       case "l":
@@ -716,23 +1205,41 @@ const movement = function (player1, player2) {
       switch (e.key) {
         case "d":
           keys.d.pressed = false;
+          background.velocity.x = 0
+          background2.velocity.x = 0
+          background3.velocity.x = 0
+          backgroundScroll.velocity.x = 0
           break;
         case "a":
           keys.a.pressed = false;
+          background.velocity.x = 0
+          background2.velocity.x = 0
+          background3.velocity.x = 0
+          backgroundScroll.velocity.x = 0
           break;
         case "w":
           keys.w.pressed = false;
           break;
-        case " ":
+          case " ":
             keys.space.pressed = false;
             break;
-        
+      
         // Player 2 Keys
         case "ArrowRight":
           keys.ArrowRight.pressed = false;
+          background.velocity.x = 0
+          background2.velocity.x = 0
+          background3.velocity.x = 0
+          backgroundScroll.velocity.x = 0
+          shop.velocity.x = 0
           break;
         case "ArrowLeft":
           keys.ArrowLeft.pressed = false;
+          background.velocity.x = 0
+          background2.velocity.x = 0
+          background3.velocity.x = 0
+          backgroundScroll.velocity.x = 0
+          shop.velocity.x = 0
           break;
         case "ArrowUp":
           keys.ArrowUp.pressed = false;
@@ -762,15 +1269,31 @@ const movement = function (player1, player2) {
     player2.switchSprite("revidle");
   }
 
-
+  
+      
+  
     
       // Player 1 Movement
     
-      if (keys.a.pressed && player1.lastKey === "a") {
+      if (keys.a.pressed && player1.position.x >= 100) {
         player1.velocity.x = -3;
         player1.switchSprite("revrun");
-      } else if (keys.d.pressed && player1.lastKey === "d") {
+      } else if (keys.a.pressed && player1.position.x <= 100){
+        background.velocity.x += .002
+        background2.velocity.x += .002
+        background3.velocity.x += .002
+        shop.velocity.x += .002
+        // backgroundScroll.velocity.x += .001
+        player1.switchSprite("revrun");
+      } else if (keys.d.pressed && player1.position.x < 700) {
         player1.velocity.x = 3;
+        player1.switchSprite("run");
+      } else if (keys.d.pressed && player1.position.x >= 700) {
+        background.velocity.x -= .002
+        background2.velocity.x -= .002
+        background3.velocity.x -= .002
+        shop.velocity.x -= .002
+        // backgroundScroll.velocity.x -= .001
         player1.switchSprite("run");
       } else if (player1.lastKey === "a") {
         player1.switchSprite("revidle");
@@ -790,16 +1313,30 @@ const movement = function (player1, player2) {
     
       // Player 2 Movement
     
-      if (keys.ArrowLeft.pressed && player2.lastKey === 'ArrowLeft') {
-          player2.velocity.x = -3
-          player2.switchSprite('revrun')
-      } else if (keys.ArrowRight.pressed && player2.lastKey === 'ArrowRight') {
-          player2.velocity.x = 3
-          player2.switchSprite('run')
-      } else if (player2.lastKey === 'ArrowLeft') {
-          player2.switchSprite('revidle')
+      if (keys.ArrowLeft.pressed && player2.position.x >= 100) {
+        player2.velocity.x = -3;
+        player2.switchSprite("ArrowLeft");
+      } else if (keys.ArrowLeft.pressed && player2.position.x <= 100){
+        background.velocity.x += .002
+        background2.velocity.x += .002
+        background3.velocity.x += .002
+        shop.velocity.x += .002
+        // backgroundScroll.velocity.x += .001
+        player2.switchSprite("revrun");
+      } else if (keys.ArrowRight.pressed && player2.position.x < 700) {
+        player2.velocity.x = 3;
+        player2.switchSprite("run");
+      } else if (keys.ArrowRight.pressed && player2.position.x >= 700) {
+        background.velocity.x -= .002
+        background2.velocity.x -= .002
+        background3.velocity.x -= .002
+        shop.velocity.x -= .002
+        // backgroundScroll.velocity.x -= .001
+        player2.switchSprite("run");
+      } else if (player2.lastKey === "a") {
+        player2.switchSprite("revidle");
       } else {
-          player2.switchSprite('idle')
+        player2.switchSprite("idle");
       }
     
       if (player2.velocity.y < 0 && player2.isFacing === 'right') {
@@ -812,18 +1349,18 @@ const movement = function (player1, player2) {
           player2.switchSprite('revfall')
       }
     
-      // AI test Movement
-    //   if (keys.j.pressed && major.lastKey === "j") {
-    //     major.velocity.x = -3;
-    //     major.switchSprite("revrun");
-    //   } else if (keys.l.pressed && major.lastKey === "l") {
-    //     major.velocity.x = 3;
-    //     major.switchSprite("run");
-    //   } else if (major.lastKey === "j") {
-    //     major.switchSprite("revidle");
-    //   } else {
-    //     major.switchSprite("idle");
-    //   }
+      // Enemy test Movement
+      // if (keys.j.pressed && major.lastKey === "j") {
+      //   major.velocity.x = -3;
+      //   major.switchSprite("revrun");
+      // } else if (keys.l.pressed && major.lastKey === "l") {
+      //   major.velocity.x = 3;
+      //   major.switchSprite("run");
+      // } else if (major.lastKey === "j") {
+      //   major.switchSprite("revidle");
+      // } else {
+      //   major.switchSprite("idle");
+      // }
     
     //   if (major.velocity.y < 0 && major.isFacing === "right") {
     //     major.switchSprite("jump");
@@ -834,14 +1371,16 @@ const movement = function (player1, player2) {
     //   } else if (major.velocity.y > 0 && major.isFacing === "left") {
     //     major.switchSprite("revfall");
     //   }    
+   
 
-    // ATTACKS -----
-
-    if (attackDetect({rectangle1: kiba, rectangle2: major}) && kiba.isAttacking){
-        major.takehit()
+    
+    for(const enemy of enemies){
+      attackCollisionDetect(player1, enemy)
+      attackCollisionDetect(player2, enemy)
     }
-}
-
+    
+  }
+    
 
 
 
@@ -859,36 +1398,70 @@ function animate() {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   // Draw background continuously
   background.update();
+  background2.update();
+  background3.update();
+  // if (background.position.x)
   // Draw shop
-//   shop.update();
+  shop.update();
   // Draw and animate player 1
-  kiba.update();
-  kiba.status = 'player'
+  charOne.update();
+  charOne.status = 'player'
   // Draw and animate player 2
-//   neji.update();
-//   neji.status = 'player'
-  // playerTwo.update()
+  charTwo.update();
+  charTwo.status = 'player'
+ 
   // Draw and animate enemy
-//   major.updateState(major, kiba)
-major.update()  
+  if (!major.dead) {
+    major.status = 'ai'
+    major.updateState(charOne)
+    major.updateState(charTwo)
+    major.update()
+  } else if (major.dead) {
+    vice.status = 'ai'
+    vice.updateState(charOne)
+    vice.updateState(charTwo)
+    vice.update()
+  } else if (vice.dead) {
+    sora.status = 'ai'
+    sora.updateState(charOne)
+    sora.updateState(charTwo)
+    sora.update()
+  }
+  // for (const enemy of enemies){
+  //   if(!enemy.dead)
+  //   enemy.status = 'ai'
+  //   enemy.updateState(charOne)
+  //   enemy.updateState(charTwo)
+  //   enemy.update()
+  //   // console.log(enemies[0])
+  // }
 
-major.status = 'ai'
-  major.aiUpdate()
+  
   // Add player movement
-  movement(kiba, neji);
-  major.calculateDistanceBetween(kiba)
+  movement(charOne, charTwo);
+  // backgroundScroll.update();
+  // major.calculateDistanceBetween(kiba)
   // Collision Detection - Player 1
-  attackCollisionDetect(kiba, major)
+  // rectCollisionDetect(neji, kiba, major)
+   // Collision Detection - Player 1
+  //  attackCollisionDetect(kiba, major)
+   // Collision Detection - Player 2
+  //  attackCollisionDetect(major, kiba)
+ 
+
   // Collision Detection - Player 2
-  attackCollisionDetect(major, kiba)
+  
+    
+
 
   // End the game based on health:
-//   winnerByCombat(kiba, major)
-//   winnerByCombat(kiba, major)
-
+  // winnerByCombat(charOne, enemies)
+  // winnerByCombat(enemies, charOne)
+  
 }
 
-animate();
+// decreaseTimer(kiba, major)
 
-decreaseTimer(kiba, major)
+
+
 

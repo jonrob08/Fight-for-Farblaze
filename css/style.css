@@ -5,12 +5,100 @@
 }
 
 body {
-    font-family: 'Press Start 2P', cursive;
+    font-family: 'Street Figher', cursive;
 }
+
+#game-screen {
+    width: 1024px;
+    height: 546px;
+    margin: 30px auto;
+}
+
+#game-img {
+    margin: 30px auto;
+}
+
+#startmenu-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.box {
+    background: linear-gradient(to right, rgb(0, 0, 0), rgb(255, 255, 255) 400px, black);
+    transition: all 3s linear;
+    display: block;
+    height: 100%;
+  }
+
+.charSel {
+background: linear-gradient(to right, rgb(255, 255, 255), rgb(0, 0, 0) 600px);
+transition: all 1s linear;
+display: flex;
+height: 100%;
+width: 100%
+}
+
+#select-kiba img{
+    width: 125px;
+    height: 125px;
+    border-radius: 100%;
+    left: 160px;
+    top: 55px;
+    position: absolute;
+}
+
+#select-neji img{
+    width: 125px;
+    height: 125px;
+    border-radius: 100%;
+    left: 160px;
+    top: 230px;
+    position: absolute;
+}
+
+#select-renji img{
+    width: 125px;
+    height: 125px;
+    border-radius: 100%;
+    left: 160px;
+    top: 400px;
+    position: absolute;
+}
+
+#select-major img{
+    width: 125px;
+    height: 125px;
+    border-radius: 100%;
+    left: 785px;
+    top: 55px;
+    position: absolute;
+}
+
+.hidden {
+display: none;
+}
+
+.visuallyhidden {
+opacity: 0;
+}
+
+/* button {
+display: block;
+margin: 0 auto;
+} */
+
+#startchar-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+
 
 #wrapper {
     position: relative;
     display: inline-block;
+    width: 1024px;
 }
 
 .header {
