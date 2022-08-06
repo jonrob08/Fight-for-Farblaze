@@ -1155,8 +1155,14 @@ function decreaseTimer(player1, player2) {
 
   // End the game based on time
   if (timer === 0) {
-    displayResults(player1, player2);
-  }
+    if (player2.health === player1.health) {
+      document.getElementById("results").innerHTML = "<button id='restart' onclick='restartGame()'>Tie??</button>";
+    } else if (player1.health < player2.health) {
+      document.getElementById("results").innerHTML = `<button id='restart' onclick='restartGame()'>${player2.characterName} Wins! </button>`;
+    } else if (player1.health < player2.health) {
+      document.getElementById("results").innerHTML = `<button id='restart' onclick='restartGame()'>${player1.characterName} Wins! </button>`;
+    }
+}
 }
 
 function winnerByCombat(player1, player2) {
@@ -1408,10 +1414,7 @@ const movement = function (player1, player2) {
   //     major.switchSprite("revfall");
   //   }
 
-  // for (const enemy of enemies) {
-  //   attackCollisionDetect(player1, enemy);
-  //   attackCollisionDetect(player2, enemy);
-  // }
+
 };
 
 /** Animate function - This recursive function "animates" the canvas in our browser window by calling itself and refreshes the frame by 
@@ -1507,6 +1510,9 @@ function animateStoryOneP() {
   //   sora.update();
   // }
 
+  for (const enemy of enemies) {
+    attackCollisionDetect(kiba, enemy);
+  }
 
   // for (const enemy of enemies){
   //   if(!enemy.dead)
@@ -1526,6 +1532,8 @@ function animateStoryOneP() {
   // Collision Detection - Player 1
    attackCollisionDetect(kiba, vice)
    attackCollisionDetect(kiba, sora)
+   attackCollisionDetect(kiba, major)
+   attackCollisionDetect(major, kiba)
   // Collision Detection - Player 2
   //  attackCollisionDetect(major, kiba)
 
@@ -1582,6 +1590,23 @@ function animateStoryTwoP() {
   //   enemy.update()
   //   // console.log(enemies[0])
   // }
+
+  attackCollisionDetect(kiba, major);
+  attackCollisionDetect(neji, major);
+  attackCollisionDetect(major, kiba);
+  attackCollisionDetect(major, neji);
+
+  // for (const enemy of enemies) {
+    attackCollisionDetect(kiba, vice);
+    attackCollisionDetect(neji, vice);
+    attackCollisionDetect(vice, kiba);
+    attackCollisionDetect(vice, neji);
+  // }
+
+  attackCollisionDetect(kiba, sora);
+  attackCollisionDetect(neji, sora);
+  attackCollisionDetect(sora, kiba);
+  attackCollisionDetect(sora, neji);
 
   // Add player movement
   movement(kiba, neji);
