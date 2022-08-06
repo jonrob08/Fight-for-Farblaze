@@ -89,12 +89,12 @@ class Running extends State {
 
     if (
       this.direction == "left" &&
-      this.ai.position.x <= player.position.x + 1000
+      this.ai.position.x <= player.position.x + 50
     ) {
       this.ai.setState(states.ATTACKING_LEFT);
     } else if (
       this.direction == "right" &&
-      this.ai.position.x >= player.position.x - 1000
+      this.ai.position.x >= player.position.x - 50
     ) {
       this.ai.setState(states.ATTACKING_RIGHT);
     }

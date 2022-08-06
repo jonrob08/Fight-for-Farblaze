@@ -495,7 +495,7 @@ class AI extends Player {
   }
 
   takehit() {
-    this.health -= 2;
+    this.health -= 15;
     this.setState(states.HIT_LEFT);
     console.log("yep");
   }
