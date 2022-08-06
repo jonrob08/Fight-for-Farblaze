@@ -19,6 +19,7 @@ const cSS = document.querySelector("#character-select");
 const selectKiba = document.querySelector("#select-kiba");
 const selectMajor = document.querySelector("#select-major");
 const selectNeji = document.querySelector("#select-neji");
+const selectRenji= document.querySelector("#select-renji");
 const beginSelectBtn = document.querySelector("#startmenu-btn");
 const beginBattleBtn = document.querySelector("#startchar-btn");
 
@@ -113,21 +114,15 @@ const backgroundScroll = new Sprite({
   scale: 1.4,
 });
 
-// Character Select Screen
-const selectCharacter = new Sprite({
-  position: {
-    x: 0,
-    y: -200,
-  },
-  imageSrc: "./img/Background.png",
-  scale: 1.4,
-});
-
 // Creating Shop
 const shop = new Sprite({
   position: {
     x: 650,
     y: 155,
+  },
+  velocity: {
+    x: 0,
+    y: 0,
   },
   imageSrc: "./img/shop_anim.png",
   scale: 3,
@@ -359,6 +354,116 @@ const neji = new Player({
     characterName: "neji",
 });
 
+const renji = new Player({
+  position: {
+      x: 150,
+      y: 0
+  },
+  velocity: {
+      x: 0,
+      y: 0
+  },
+  imageSrc: './img/Characters/Renji/Idle.png',
+  scale: 3,
+  framesAmt: 4,
+  offset: {
+      x: 0,
+      y: 0
+  },
+  sprites: {
+      idle: {
+          imageSrc: './img/Characters/Renji/Idle.png',
+          framesAmt: 4
+      },
+      revidle: {
+          imageSrc: './img/Characters/Renji/rev_Idle.png',
+          framesAmt: 4
+      },
+      run: {
+          imageSrc: './img/Characters/Renji/Run.png',
+          framesAmt: 8
+      },
+      revrun: {
+          imageSrc: './img/Characters/Renji/rev_Run.png',
+          framesAmt: 8
+      },
+      jump: {
+          imageSrc: './img/Characters/Renji/Jump.png',
+          framesAmt: 2
+      },
+      revjump: {
+          imageSrc: './img/Characters/Renji/rev_Jump.png',
+          framesAmt: 2
+      },
+      fall: {
+          imageSrc: './img/Characters/Renji/Fall.png',
+          framesAmt: 2
+      },
+      revfall: {
+          imageSrc: './img/Characters/Renji/rev_Fall.png',
+          framesAmt: 2
+      },
+      attack1: {
+          imageSrc: './img/Characters/Renji/Attack1.png',
+          framesAmt: 4
+      },
+      revattack1: {
+          imageSrc: './img/Characters/Renji/rev_Attack1.png',
+          framesAmt: 4
+      },
+      attack2: {
+          imageSrc: "./img/Characters/Renji/Attack2.png",
+          framesAmt: 4,
+      },
+      revattack2: {
+          imageSrc: "./img/Characters/Renji/rev_Attack2.png",
+          framesAmt: 4,
+      },
+      takehit: {
+          imageSrc: "./img/Characters/Renji/Take_Hit.png",
+          framesAmt: 4,
+      },
+      revtakehit: {
+          imageSrc: "./img/Characters/Renji/rev_Take_Hit.png",
+          framesAmt: 4,
+      },
+      takehitflash: {
+          imageSrc: "./img/Characters/Renji/Take_Hit_w.png",
+          framesAmt: 4,
+      },
+      revtakehitflash: {
+          imageSrc: "./img/Characters/Renji/rev_Take_Hit_w.png",
+          framesAmt: 4,
+      },
+      death: {
+          imageSrc: "./img/Characters/Renji/Death.png",
+          framesAmt: 4,
+      },
+      revdeath: {
+          imageSrc: "./img/Characters/Renji/rev_Death.png",
+          framesAmt: 4,
+      },
+  },
+  isFacing: "right",
+  attackBox: {
+      offset: {
+      x: -150,
+      y: -50,
+      },
+      width: 110,
+      height: 150,
+  },
+  hitBox: {
+      offset: {
+      x: -130,
+      y: -80,
+      },
+      width: 50,
+      height: 120,
+  },
+  characterName: "renji",
+});
+
 // Creating Enemy
 const major = new AI({
   position: {
@@ -478,19 +583,272 @@ const major = new AI({
   }
 });
 
+const vice = new AI({
+  position: {
+    x: 600,
+    y: 0,
+  },
+  velocity: {
+    x: 0,
+    y: 0,
+  },
+  offset: {
+    x: 0,
+    y: 25,
+  },
+  imageSrc: "./img/Characters/Vice/Idle.png",
+  scale: 3,
+  framesAmt: 4,
+  sprites: {
+    idle: {
+      imageSrc: "./img/Characters/Vice/Idle.png",
+      framesAmt: 4,
+    },
+    revidle: {
+      imageSrc: "./img/Characters/Vice/rev_Idle.png",
+      framesAmt: 4,
+    },
+    run: {
+      imageSrc: "./img/Characters/Vice/Run.png",
+      framesAmt: 8,
+    },
+    revrun: {
+      imageSrc: "./img/Characters/Vice/rev_Run.png",
+      framesAmt: 8,
+    },
+    jump: {
+      imageSrc: "./img/Characters/Vice/Jump.png",
+      framesAmt: 2,
+    },
+    revjump: {
+      imageSrc: "./img/Characters/Vice/rev_Jump.png",
+      framesAmt: 2,
+    },
+    fall: {
+      imageSrc: "./img/Characters/Vice/Fall.png",
+      framesAmt: 2,
+    },
+    revfall: {
+      imageSrc: "./img/Characters/Vice/rev_Fall.png",
+      framesAmt: 2,
+    },
+    attack1: {
+      imageSrc: "./img/Characters/Vice/Attack1.png",
+      framesAmt: 4,
+    },
+    revattack1: {
+      imageSrc: "./img/Characters/Vice/rev_Attack1.png",
+      framesAmt: 4,
+    },
+    attack2: {
+      imageSrc: "./img/Characters/Vice/Attack2.png",
+      framesAmt: 4,
+    },
+    revattack2: {
+      imageSrc: "./img/Characters/Vice/rev_Attack2.png",
+      framesAmt: 4,
+    },
+    takehit: {
+      imageSrc: "./img/Characters/Vice/Take_Hit.png",
+      framesAmt: 4,
+    },
+    revtakehit: {
+      imageSrc: "./img/Characters/Vice/rev_Take_Hit.png",
+      framesAmt: 4,
+    },
+    takehitflash: {
+      imageSrc: "./img/Characters/Vice/Take_Hit_w.png",
+      framesAmt: 4,
+    },
+    revtakehitflash: {
+      imageSrc: "./img/Characters/Vice/rev_Take_Hit_w.png",
+      framesAmt: 4,
+    },
+    death: {
+      imageSrc: "./img/Characters/Vice/Death.png",
+      framesAmt: 4,
+    },
+    revdeath: {
+      imageSrc: "./img/Characters/Vice/rev_Death.png",
+      framesAmt: 4,
+    },
+  },
+  isFacing: "left",
+  attackBox: {
+    offset: {
+      x: -40,
+      y: -80,
+    },
+    width: 200, //200?
+    height: 80,
+  },
+  hitBox: {
+    offset: {
+      x: -120,
+      y: -80,
+    },
+    width: 50,
+    height: 120,
+  },
+  characterName: "vice",
+  aggroBox: {
+    offset: {
+        x: -50,
+        y: -100
+    },
+    width: -450,
+    height: 30
+  }
+});
+
+const sora = new AI({
+  position: {
+    x: 600,
+    y: 0,
+  },
+  velocity: {
+    x: 0,
+    y: 0,
+  },
+  offset: {
+    x: 0,
+    y: 10,
+  },
+  imageSrc: "./img/Characters/Sora/Idle.png",
+  scale: 3,
+  framesAmt: 4,
+  sprites: {
+    idle: {
+      imageSrc: "./img/Characters/Sora/Idle.png",
+      framesAmt: 4,
+    },
+    revidle: {
+      imageSrc: "./img/Characters/Sora/rev_Idle.png",
+      framesAmt: 4,
+    },
+    run: {
+      imageSrc: "./img/Characters/Sora/Run.png",
+      framesAmt: 8,
+    },
+    revrun: {
+      imageSrc: "./img/Characters/Sora/rev_Run.png",
+      framesAmt: 8,
+    },
+    jump: {
+      imageSrc: "./img/Characters/Sora/Jump.png",
+      framesAmt: 2,
+    },
+    revjump: {
+      imageSrc: "./img/Characters/Sora/rev_Jump.png",
+      framesAmt: 2,
+    },
+    fall: {
+      imageSrc: "./img/Characters/Sora/Fall.png",
+      framesAmt: 2,
+    },
+    revfall: {
+      imageSrc: "./img/Characters/Sora/rev_Fall.png",
+      framesAmt: 2,
+    },
+    attack1: {
+      imageSrc: "./img/Characters/Sora/Attack1.png",
+      framesAmt: 4,
+    },
+    revattack1: {
+      imageSrc: "./img/Characters/Sora/rev_Attack1.png",
+      framesAmt: 4,
+    },
+    attack2: {
+      imageSrc: "./img/Characters/Sora/Attack2.png",
+      framesAmt: 4,
+    },
+    revattack2: {
+      imageSrc: "./img/Characters/Sora/rev_Attack2.png",
+      framesAmt: 4,
+    },
+    takehit: {
+      imageSrc: "./img/Characters/Sora/Take_Hit.png",
+      framesAmt: 4,
+    },
+    revtakehit: {
+      imageSrc: "./img/Characters/Sora/rev_Take_Hit.png",
+      framesAmt: 4,
+    },
+    takehitflash: {
+      imageSrc: "./img/Characters/Sora/Take_Hit_w.png",
+      framesAmt: 4,
+    },
+    revtakehitflash: {
+      imageSrc: "./img/Characters/Sora/rev_Take_Hit_w.png",
+      framesAmt: 4,
+    },
+    death: {
+      imageSrc: "./img/Characters/Sora/Death.png",
+      framesAmt: 4,
+    },
+    revdeath: {
+      imageSrc: "./img/Characters/Sora/rev_Death.png",
+      framesAmt: 4,
+    },
+  },
+  isFacing: "left",
+  attackBox: {
+    offset: {
+      x: -40,
+      y: -80,
+    },
+    width: 200, //200?
+    height: 80,
+  },
+  hitBox: {
+    offset: {
+      x: -120,
+      y: -80,
+    },
+    width: 50,
+    height: 120,
+  },
+  characterName: "sora",
+  aggroBox: {
+    offset: {
+        x: -50,
+        y: -100
+    },
+    width: -450,
+    height: 30
+  }
+});
+
+
 console.log(major);
 
 // Character Select Screen Event Listeners
 let charOne = null
 let charTwo = null
-let enemies = [major]
+let enemies = [major, vice, sora]
 
 selectKiba.addEventListener('click', () => {
-  charOne = kiba
+  if(charOne === null){
+    charOne = kiba
+  } else {
+    charTwo = kiba
+  }
 })
 
 selectNeji.addEventListener('click', () => {
-  charTwo = neji
+  if(charOne === null){
+    charOne = neji
+  } else {
+    charTwo = neji
+  }
+})
+
+selectRenji.addEventListener('click', () => {
+  if(charOne === null){
+    charOne = renji
+  } else {
+    charTwo = renji
+  }
 })
 
 beginBattleBtn.addEventListener('click', () => {
@@ -869,9 +1227,19 @@ const movement = function (player1, player2) {
         // Player 2 Keys
         case "ArrowRight":
           keys.ArrowRight.pressed = false;
+          background.velocity.x = 0
+          background2.velocity.x = 0
+          background3.velocity.x = 0
+          backgroundScroll.velocity.x = 0
+          shop.velocity.x = 0
           break;
         case "ArrowLeft":
           keys.ArrowLeft.pressed = false;
+          background.velocity.x = 0
+          background2.velocity.x = 0
+          background3.velocity.x = 0
+          backgroundScroll.velocity.x = 0
+          shop.velocity.x = 0
           break;
         case "ArrowUp":
           keys.ArrowUp.pressed = false;
@@ -914,6 +1282,7 @@ const movement = function (player1, player2) {
         background.velocity.x += .002
         background2.velocity.x += .002
         background3.velocity.x += .002
+        shop.velocity.x += .002
         // backgroundScroll.velocity.x += .001
         player1.switchSprite("revrun");
       } else if (keys.d.pressed && player1.position.x < 700) {
@@ -923,6 +1292,7 @@ const movement = function (player1, player2) {
         background.velocity.x -= .002
         background2.velocity.x -= .002
         background3.velocity.x -= .002
+        shop.velocity.x -= .002
         // backgroundScroll.velocity.x -= .001
         player1.switchSprite("run");
       } else if (player1.lastKey === "a") {
@@ -943,16 +1313,30 @@ const movement = function (player1, player2) {
     
       // Player 2 Movement
     
-      if (keys.ArrowLeft.pressed && player2.lastKey === 'ArrowLeft') {
-          player2.velocity.x = -3
-          player2.switchSprite('revrun')
-      } else if (keys.ArrowRight.pressed && player2.lastKey === 'ArrowRight') {
-          player2.velocity.x = 3
-          player2.switchSprite('run')
-      } else if (player2.lastKey === 'ArrowLeft') {
-          player2.switchSprite('revidle')
+      if (keys.ArrowLeft.pressed && player2.position.x >= 100) {
+        player2.velocity.x = -3;
+        player2.switchSprite("ArrowLeft");
+      } else if (keys.ArrowLeft.pressed && player2.position.x <= 100){
+        background.velocity.x += .002
+        background2.velocity.x += .002
+        background3.velocity.x += .002
+        shop.velocity.x += .002
+        // backgroundScroll.velocity.x += .001
+        player2.switchSprite("revrun");
+      } else if (keys.ArrowRight.pressed && player2.position.x < 700) {
+        player2.velocity.x = 3;
+        player2.switchSprite("run");
+      } else if (keys.ArrowRight.pressed && player2.position.x >= 700) {
+        background.velocity.x -= .002
+        background2.velocity.x -= .002
+        background3.velocity.x -= .002
+        shop.velocity.x -= .002
+        // backgroundScroll.velocity.x -= .001
+        player2.switchSprite("run");
+      } else if (player2.lastKey === "a") {
+        player2.switchSprite("revidle");
       } else {
-          player2.switchSprite('idle')
+        player2.switchSprite("idle");
       }
     
       if (player2.velocity.y < 0 && player2.isFacing === 'right') {
@@ -987,17 +1371,6 @@ const movement = function (player1, player2) {
     //   } else if (major.velocity.y > 0 && major.isFacing === "left") {
     //     major.switchSprite("revfall");
     //   }    
-
-        // ATTACKS -----
-
-    //     if (attackDetect({rectangle1: kiba, rectangle2: major}) && kiba.isAttacking){
-    //       major.takehit()
-    //   }
-
-    //   if (attackDetect({rectangle1: major, rectangle2: kiba}) && major.isAttacking){
-    //     kiba.takehit()
-    // }
-    // Scrolling
    
 
     
@@ -1029,22 +1402,39 @@ function animate() {
   background3.update();
   // if (background.position.x)
   // Draw shop
-  //   shop.update();
+  shop.update();
   // Draw and animate player 1
   charOne.update();
   charOne.status = 'player'
+  // Draw and animate player 2
   charTwo.update();
   charTwo.status = 'player'
-  // Draw and animate player 2
-  //   neji.update();
-  //   neji.status = 'player'
-  // playerTwo.update()
+ 
   // Draw and animate enemy
-  for (const enemy of enemies){
-    enemy.updateState(charOne)
-    enemy.update()
-    enemy.status = 'ai'
+  if (!major.dead) {
+    major.status = 'ai'
+    major.updateState(charOne)
+    major.updateState(charTwo)
+    major.update()
+  } else if (major.dead) {
+    vice.status = 'ai'
+    vice.updateState(charOne)
+    vice.updateState(charTwo)
+    vice.update()
+  } else if (vice.dead) {
+    sora.status = 'ai'
+    sora.updateState(charOne)
+    sora.updateState(charTwo)
+    sora.update()
   }
+  // for (const enemy of enemies){
+  //   if(!enemy.dead)
+  //   enemy.status = 'ai'
+  //   enemy.updateState(charOne)
+  //   enemy.updateState(charTwo)
+  //   enemy.update()
+  //   // console.log(enemies[0])
+  // }
 
   
   // Add player movement
