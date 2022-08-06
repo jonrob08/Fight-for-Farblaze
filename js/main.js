@@ -24,6 +24,7 @@ const beginBattleBtn = document.querySelector("#startchar-btn");
 const mainmenu = document.getElementById("menu");
 const storyOneP = document.querySelector("#startmenu-btn");
 const storyTwoP = document.querySelector("#startmenu-btn3");
+const restart = document.querySelector("#restart");
 const aiHealth = document.querySelector("#ai-current-health");
 
 wrapper.style.display = "none";
@@ -42,6 +43,12 @@ function gameStart() {
 function storyMode() {
   mainmenu.style.display = "none";
   wrapper.style.display = "block";
+}
+
+function restartGame() {
+  mainmenu.style.display = "block";
+  wrapper.style.display = "none";
+  window.location.reload()
 }
 
 // Cut canvas up into quadrants to be used later in AI functionality
@@ -1125,14 +1132,14 @@ const attackCollisionDetect = function (attacker, target) {
 //     }
 // }
 
-const displayResults = function (player1, player2) {
+function displayResults(player1, player2) {
   clearTimeout(timerId);
   if (player2.health === player1.health) {
-    document.getElementById("results").innerHTML = "Tie?? Are you even trying?";
-  } else if (player1.health === 0) {
-    document.getElementById("results").innerHTML = "Heroes Win!";
-  } else if (player2.health === 0) {
-    document.getElementById("results").innerHTML = "Heroes Lose!";
+    document.getElementById("results").innerHTML = "<button id='restart' onclick='restartGame()'>Tie??</button>";
+  } else if (player1.health <= 0) {
+    document.getElementById("results").innerHTML = "<button id='restart' onclick='restartGame()'>Heroes Win! </button>";
+  } else if (player2.health <= 0) {
+    document.getElementById("results").innerHTML = "<button id='restart' onclick='restartGame()'>Heroes Lose! </button>";
   }
 };
 
@@ -1480,25 +1487,27 @@ function animateStoryOneP() {
   kiba.status = "player";
 
   // Draw and animate enemy
-  if (!major.dead) {
+  // if (!major.dead) {
     major.status = "ai";
     major.updateState(kiba);
     major.updateState(neji);
     major.update();
-  } else if (major.dead) {
-    gsap.to(`#ai-current-health`, {
-      width: vice.health + "%",
-    });
-    vice.status = "ai";
-    vice.updateState(kiba);
-    vice.updateState(neji);
-    vice.update();
-  } else if (vice.dead) {
-    sora.status = "ai";
-    sora.updateState(kiba);
-    sora.updateState(neji);
-    sora.update();
-  }
+  // } else if (major.dead) {
+  //   gsap.to(`#ai-current-health`, {
+  //     width: vice.health + "%",
+  //   });
+  //   vice.status = "ai";
+  //   vice.updateState(kiba);
+  //   vice.updateState(neji);
+  //   vice.update();
+  // } else if (vice.dead) {
+  //   sora.status = "ai";
+  //   sora.updateState(kiba);
+  //   sora.updateState(neji);
+  //   sora.update();
+  // }
+
+
   // for (const enemy of enemies){
   //   if(!enemy.dead)
   //   enemy.status = 'ai'
@@ -1523,8 +1532,8 @@ function animateStoryOneP() {
   // Collision Detection - Player 2
 
   // End the game based on health:
-  // winnerByCombat(charOne, enemies)
-  // winnerByCombat(enemies, charOne)
+  winnerByCombat(kiba, major)
+  winnerByCombat(major, kiba)
 }
 
 function animateStoryTwoP() {
