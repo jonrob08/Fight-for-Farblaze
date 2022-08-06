@@ -24,6 +24,7 @@ const beginBattleBtn = document.querySelector("#startchar-btn");
 const mainmenu = document.getElementById("menu");
 const storyOneP = document.querySelector("#startmenu-btn");
 const storyTwoP = document.querySelector("#startmenu-btn3");
+const aiHealth = document.querySelector("#ai-current-health");
 
 wrapper.style.display = "none";
 cSS.style.display = "none";
@@ -1485,6 +1486,9 @@ function animateStoryOneP() {
     major.updateState(neji);
     major.update();
   } else if (major.dead) {
+    gsap.to(`#ai-current-health`, {
+      width: vice.health + "%",
+    });
     vice.status = "ai";
     vice.updateState(kiba);
     vice.updateState(neji);
@@ -1511,7 +1515,8 @@ function animateStoryOneP() {
   // Collision Detection - Player 1
   // rectCollisionDetect(neji, kiba, major)
   // Collision Detection - Player 1
-  //  attackCollisionDetect(kiba, major)
+   attackCollisionDetect(kiba, vice)
+   attackCollisionDetect(kiba, sora)
   // Collision Detection - Player 2
   //  attackCollisionDetect(major, kiba)
 
