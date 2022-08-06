@@ -852,25 +852,25 @@ selectRenji.addEventListener("click", () => {
 
 selectMajor.addEventListener("click", () => {
   if (charOne === null) {
-    charOne = renji;
+    charOne = major;
   } else {
-    charTwo = renji;
+    charTwo = major;
   }
 });
 
 selectSora.addEventListener("click", () => {
   if (charOne === null) {
-    charOne = renji;
+    charOne = sora;
   } else {
-    charTwo = renji;
+    charTwo = sora;
   }
 });
 
 selectVice.addEventListener("click", () => {
   if (charOne === null) {
-    charOne = renji;
+    charOne = vice;
   } else {
-    charTwo = renji;
+    charTwo = vice;
   }
 });
 
@@ -968,6 +968,8 @@ const aggroAICollisionDetect = function ({ rectangle1, rectangle2 }) {
 };
 
 const attackCollisionDetect = function (attacker, target) {
+  attacker.status = 'player'
+  target.status = 'ai'
   if (
     attackDetect({ rectangle1: attacker, rectangle2: target }) &&
     attacker.isAttacking &&
@@ -1341,7 +1343,7 @@ const movement = function (player1, player2) {
 
   if (keys.ArrowLeft.pressed && player2.position.x >= 100) {
     player2.velocity.x = -3;
-    player2.switchSprite("ArrowLeft");
+    player2.switchSprite("revrun");
   } else if (keys.ArrowLeft.pressed && player2.position.x <= 100) {
     background.velocity.x += 0.002;
     background2.velocity.x += 0.002;
@@ -1440,6 +1442,8 @@ function animateVS() {
 
   // Add player movement
   movement(charOne, charTwo);
+  attackCollisionDetect(charOne, charTwo);
+  attackCollisionDetect(charTwo, charOne);
   // backgroundScroll.update();
   // major.calculateDistanceBetween(kiba)
   // Collision Detection - Player 1

@@ -442,7 +442,7 @@ class Player extends Sprite {
   }
 
   takehit() {
-    this.health -= 0.2;
+    this.health -= 2;
 
     if (this.health <= 0) {
       this.switchSprite("death");
@@ -495,7 +495,7 @@ class AI extends Player {
   }
 
   takehit() {
-    this.health -= 0.2;
+    this.health -= 2;
     this.setState(states.HIT_LEFT);
     console.log("yep");
   }
