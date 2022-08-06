@@ -8,6 +8,29 @@ body {
     font-family: 'Press Start 2P', cursive;
 }
 
+.box {
+    background: goldenrod;
+    width: 300px;
+    height: 300px;
+    margin: 30px auto;
+    transition: all 1s linear;
+    display: block;
+  }
+  
+.hidden {
+display: none;
+}
+
+.visuallyhidden {
+opacity: 0;
+}
+
+button {
+display: block;
+margin: 0 auto;
+}
+
+
 #wrapper {
     position: relative;
     display: inline-block;

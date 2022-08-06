@@ -1,5 +1,12 @@
 console.log("connected");
 
+const menu = document.getElementById('menu')
+const btn = document.querySelector('start-btn');
+
+btn.addEventListener('click', function () {
+  box.classList.toggle('hidden');
+}, false);
+
 // Grabbing the canvas and setting/grabbing the context
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
@@ -812,18 +819,18 @@ const movement = function (player1, player2) {
           player2.switchSprite('revfall')
       }
     
-      // AI test Movement
-    //   if (keys.j.pressed && major.lastKey === "j") {
-    //     major.velocity.x = -3;
-    //     major.switchSprite("revrun");
-    //   } else if (keys.l.pressed && major.lastKey === "l") {
-    //     major.velocity.x = 3;
-    //     major.switchSprite("run");
-    //   } else if (major.lastKey === "j") {
-    //     major.switchSprite("revidle");
-    //   } else {
-    //     major.switchSprite("idle");
-    //   }
+      // Enemy test Movement
+      if (keys.j.pressed && major.lastKey === "j") {
+        major.velocity.x = -3;
+        major.switchSprite("revrun");
+      } else if (keys.l.pressed && major.lastKey === "l") {
+        major.velocity.x = 3;
+        major.switchSprite("run");
+      } else if (major.lastKey === "j") {
+        major.switchSprite("revidle");
+      } else {
+        major.switchSprite("idle");
+      }
     
     //   if (major.velocity.y < 0 && major.isFacing === "right") {
     //     major.switchSprite("jump");
