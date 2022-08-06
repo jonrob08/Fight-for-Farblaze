@@ -142,3 +142,8 @@ Creator: https://brullov.itch.io
 
 4 Elements of game design - Challenge, Choice, Change, Chance
 
+Add Audio
+Add Second Attack
+Add Reset Button
+Add Second and Third Stages
+
