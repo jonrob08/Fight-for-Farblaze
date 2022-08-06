@@ -75,6 +75,7 @@ let quadrant2 = {
   height: canvas.height,
 };
 
+// Game Objects
 // Creating Backgrounds
 const background = new Sprite({
   position: {
