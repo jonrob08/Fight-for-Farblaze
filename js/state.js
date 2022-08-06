@@ -145,18 +145,18 @@ class Attacking extends State {
     }
 
     if (this.ai.framesCur === this.ai.framesAmt - 1) {
-      if (this.attackCounter > 3) {
+    //   if (this.attackCounter > 3) {
         if (this.direction == "left") {
           this.ai.setState(states.JUMPING_LEFT);
         } else {
           this.ai.setState(states.JUMPING_RIGHT);
         }
-      } else {
+    //   } else {
         this.ai.isAttacking = true;
       }
     }
   }
-}
+// }
 
 class Jumping extends State {
   constructor(ai, direction) {

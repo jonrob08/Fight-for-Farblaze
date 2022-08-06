@@ -11,8 +11,9 @@ canvas.height = 576;
 // Filling in the canvas background with a black rectangle
 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+// Global Variables
 const wrapper = document.querySelector("#wrapper");
-const cSS = document.querySelector("#character-select");
+const charSelectScreen = document.querySelector("#character-select");
 const selectKiba = document.querySelector("#select-kiba");
 const selectMajor = document.querySelector("#select-major");
 const selectNeji = document.querySelector("#select-neji");
@@ -27,24 +28,32 @@ const storyTwoP = document.querySelector("#startmenu-btn3");
 const restart = document.querySelector("#restart");
 const aiHealth = document.querySelector("#ai-current-health");
 
-wrapper.style.display = "none";
-cSS.style.display = "none";
+// Setting canvas gravity
+const gravity = 0.08;
 
+// Initializing Game and Character Select Screen to display:none
+wrapper.style.display = "none";
+charSelectScreen.style.display = "none";
+
+// characterSelectStart() is an onclick function used by the Main Menu "VS Mode" button
 function characterSelectStart() {
   mainmenu.style.display = "none";
-  cSS.style.display = "block";
+  charSelectScreen.style.display = "block";
 }
 
+// gameStart() is an onclick function used by the Character Select Screen "FIGHT!!!" button
 function gameStart() {
-  cSS.style.display = "none";
+  charSelectScreen.style.display = "none";
   wrapper.style.display = "block";
 }
 
+// storyMode() is an onclick function used by the Main Menu "Story Mode" buttons
 function storyMode() {
   mainmenu.style.display = "none";
   wrapper.style.display = "block";
 }
 
+// restartGame() is an onclick function that restarts the game after a winner has been determined
 function restartGame() {
   mainmenu.style.display = "block";
   wrapper.style.display = "none";
@@ -66,10 +75,7 @@ let quadrant2 = {
   height: canvas.height,
 };
 
-// Setting canvas gravity
-const gravity = 0.08;
-
-// Creating Background
+// Creating Backgrounds
 const background = new Sprite({
   position: {
     x: 0,
@@ -138,7 +144,7 @@ const shop = new Sprite({
   framesAmt: 6,
 });
 
-// Creating Player One
+// Creating Kiba
 const kiba = new Player({
   position: {
     x: 0,
@@ -251,7 +257,7 @@ const kiba = new Player({
 
 console.log(kiba);
 
-// Creating Player Two
+// Creating Neji
 const neji = new Player({
   position: {
     x: 150,
@@ -362,6 +368,7 @@ const neji = new Player({
   characterName: "Neji",
 });
 
+// Creating Renji
 const renji = new Player({
   position: {
     x: 150,
@@ -472,7 +479,7 @@ const renji = new Player({
   characterName: "Renji",
 });
 
-// Creating Enemy
+// Creating Major
 const major = new AI({
   position: {
     x: 700,
@@ -591,6 +598,7 @@ const major = new AI({
   },
 });
 
+// Creating Vice
 const vice = new AI({
   position: {
     x: 600,
@@ -709,6 +717,7 @@ const vice = new AI({
   },
 });
 
+// Creating Sora
 const sora = new AI({
   position: {
     x: 600,
@@ -882,6 +891,8 @@ selectVice.addEventListener("click", () => {
   }
 });
 
+
+// Begin VS Mode
 beginBattleBtn.addEventListener("click", () => {
   if (charOne === null || charTwo === null) {
     return;
@@ -890,16 +901,17 @@ beginBattleBtn.addEventListener("click", () => {
   }
 });
 
+// Begin Story Mode (1P)
 storyOneP.addEventListener("click", () => {
   animateStoryOneP();
 });
 
+// Begin Story Mode (2P)
 storyTwoP.addEventListener("click", () => {
   animateStoryTwoP();
 });
 
 // Setting up Key monitor
-
 const keys = {
   // P1
   a: {
@@ -925,6 +937,9 @@ const keys = {
     pressed: false,
   },
   ArrowUp: {
+    pressed: false,
+  },
+  ArrowDown: {
     pressed: false,
   },
   // Testing Enemy Movement
@@ -1155,7 +1170,7 @@ function decreaseTimer(player1, player2) {
 
   // End the game based on time
   if (timer === 0) {
-    if (player2.health === player1.health) {
+    if (player1.health === player2.health) {
       document.getElementById("results").innerHTML = "<button id='restart' onclick='restartGame()'>Tie??</button>";
     } else if (player1.health < player2.health) {
       document.getElementById("results").innerHTML = `<button id='restart' onclick='restartGame()'>${player2.characterName} Wins! </button>`;
@@ -1172,6 +1187,8 @@ function winnerByCombat(player1, player2) {
 }
 
 const movement = function (player1, player2) {
+
+  
   window.addEventListener("keydown", (e) => {
     if (!player1.dead) {
       switch (e.key) {
@@ -1317,24 +1334,24 @@ const movement = function (player1, player2) {
 
   // Player 1 Movement
 
-  if (keys.a.pressed && player1.position.x >= 100) {
+  if (keys.a.pressed && player1.position.x >= 20) {
     player1.velocity.x = -3;
     player1.switchSprite("revrun");
-  } else if (keys.a.pressed && player1.position.x <= 100) {
-    background.velocity.x += 0.002;
-    background2.velocity.x += 0.002;
-    background3.velocity.x += 0.002;
-    shop.velocity.x += 0.002;
+  } else if (keys.a.pressed && player1.position.x <= 20) {
+    background.velocity.x += 0.02;
+    background2.velocity.x += 0.02;
+    background3.velocity.x += 0.02;
+    shop.velocity.x += 0.02;
     // backgroundScroll.velocity.x += .001
     player1.switchSprite("revrun");
   } else if (keys.d.pressed && player1.position.x < 700) {
     player1.velocity.x = 3;
     player1.switchSprite("run");
   } else if (keys.d.pressed && player1.position.x >= 700) {
-    background.velocity.x -= 0.002;
-    background2.velocity.x -= 0.002;
-    background3.velocity.x -= 0.002;
-    shop.velocity.x -= 0.002;
+    background.velocity.x -= 0.02;
+    background2.velocity.x -= 0.02;
+    background3.velocity.x -= 0.02;
+    shop.velocity.x -= 0.02;
     // backgroundScroll.velocity.x -= .001
     player1.switchSprite("run");
   } else if (player1.lastKey === "a") {
@@ -1417,6 +1434,8 @@ const movement = function (player1, player2) {
 
 };
 
+
+
 /** Animate function - This recursive function "animates" the canvas in our browser window by calling itself and refreshes the frame by 
 
     -Reference: https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame
@@ -1483,6 +1502,7 @@ function animateStoryOneP() {
   background2.update();
   background3.update();
   // if (background.position.x)
+  
   // Draw shop
   shop.update();
   // Draw and animate player 1
@@ -1627,3 +1647,4 @@ function animateStoryTwoP() {
 }
 
 decreaseTimer(kiba, major);
+

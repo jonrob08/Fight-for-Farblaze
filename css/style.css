@@ -118,6 +118,7 @@ width: 100%
     position: absolute;
 }
 
+
 #select-neji img{
     width: 125px;
     height: 125px;
@@ -135,6 +136,10 @@ width: 100%
     top: 400px;
     position: absolute;
 }
+
+#select-kiba img:hover, #select-neji img:hover, #select-renji img:hover{
+    border: 10px solid black 
+    }
 
 #select-major img{
     width: 125px;
@@ -162,6 +167,10 @@ width: 100%
     top: 400px;
     position: absolute;
 }
+
+#select-major img:hover, #select-sora img:hover, #select-vice img:hover{
+    border: 10px solid rgb(255, 255, 255) 
+    }
 
 .hidden {
 display: none;
