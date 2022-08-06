@@ -31,14 +31,18 @@
 class Sprite {
   constructor({
     position,
+    width,
+    height,
+    velocity,
     imageSrc,
     scale = 1,
     framesAmt = 1,
     offset = { x: 0, y: 0 },
   }) {
     this.position = position;
-    this.height = 150;
-    this.width = 50;
+    this.velocity = velocity;
+    this.height = height;
+    this.width = width;
     this.image = new Image();
     this.image.src = imageSrc;
     this.scale = scale;
@@ -86,7 +90,10 @@ class Sprite {
   update() {
     this.draw();
     this.animateFrames();
-  }
+ 
+      this.position.x += this.velocity.x
+
+ }
 }
 
 /**
@@ -281,6 +288,7 @@ class Player extends Sprite {
   }
 
   switchSprite(sprite) {
+    // console.log(sprite)
      // Animation override - Death
      if (this.image === this.sprites.death.image) {
      if (this.framesCur === this.sprites.death.framesAmt - 1) 
@@ -307,14 +315,14 @@ class Player extends Sprite {
         this.image === this.sprites.takehitflash.image &&
         this.framesCur < this.sprites.takehitflash.framesAmt - 1
       ) {
-        this.velocity.x = 5
+        this.velocity.x = 1
         return;
       } else if 
       (
         this.image === this.sprites.revtakehitflash.image &&
         this.framesCur < this.sprites.revtakehitflash.framesAmt - 1
       ) {
-        this.velocity.x = -5
+        this.velocity.x = -1
         return;
       } 
 
@@ -449,7 +457,7 @@ class Player extends Sprite {
   }
 
   takehit() {
-    this.health -= 1
+    this.health -= .2
     
     if (this.health <= 0) {
         this.switchSprite('death')
@@ -460,41 +468,39 @@ class Player extends Sprite {
     }
   }
 }
-let distance = 0
+
+// let distance = 0
 class AI extends Player {
     
     constructor(position){
         super(position)
-        this.states = [new StandingLeft(this), new StandingRight(this)]
-        this.currentState = this.states[0]
+        this.states = [
+          new Standing(this, 'left'), 
+        new Standing(this, 'right'), 
+        new Running(this, 'left'), 
+        new Running(this, 'right'), 
+        new Attacking(this, 'left'), 
+        new Attacking(this, 'right'),
+        new Jumping(this, 'left'), 
+        new Jumping(this, 'right'),
+        new Hit(this, 'left'), 
+        new Hit(this, 'right')]
+        this.setState(states.STANDING_LEFT)
         this.isMoving = false
         this.isAttacking = false
         this.hasAttacked = false
     }
-    calculateDistanceBetween(player){
+
+    // calculateDistanceBetween(player){
        
-       let distanceBetween = player.position.x - this.position.x
-       if (distanceBetween < -50){
-        this.velocity.x -= 1
-       }
-    }
+    //    let distanceBetween = player.position.x - this.position.x
+    //    if (distanceBetween < -50 && player){
+    //     this.velocity.x -= 1
+    //    }
+    // }
 
-    attack() {
-        this.velocity.x = 0
-        this.isAttacking = true;
-        if (this.isAttacking === true && this.isFacing === "left") {
-          this.switchSprite("revattack1");
-          this.isAttacking = false;
-        } else if (this.isAttacking === true && this.isFacing === "right") {
-            this.switchSprite("attack1");
-            this.isAttacking = false;
-        }
-  
-        console.log('hit once')
-      }
-
-      updateState(ai, player) {
-        this.currentState.handleInput(ai, player)
+      updateState(player) {
+        this.currentState.update(player)
         this.draw();
       }
       
@@ -503,30 +509,29 @@ class AI extends Player {
         this.currentState.enter();
       }
 
-      standingLeft(player){
-        if (this.velocity.x === 0 && player.position.x < this.position.x) {
-            this.isFacing = 'left'
-            this.switchSprite('revidle')
-          }
-        }
-      standingRight(player){
-        if (this.velocity.x === 0 && player.position.x > this.position.x) {
-            this.isFacing = 'right'
-            this.switchSprite('idle')
-          }
-        }
-        moveToPlayer(player){
-            this.calculateDistanceBetween(player)
-            if (this.position.x > player.hitBox.position.x) {
-                this.velocity.x -1
-        }}
+      takehit() {
+        this.health -= .2
+        this.setState(states.HIT_LEFT)
+        console.log('yep')
+      }
 
-    //  async aiUpdate() {
-    //     await this.standingLeft(kiba)
-    //     this.standingRight(kiba)
-    //     this.moveToPlayer(kiba)
-        
-    // }  
+      // standingLeft(player){
+      //   if (this.velocity.x === 0 && player.position.x < this.position.x) {
+      //       this.isFacing = 'left'
+      //       this.switchSprite('revidle')
+      //     }
+      //   }
+      // standingRight(player){
+      //   if (this.velocity.x === 0 && player.position.x > this.position.x) {
+      //       this.isFacing = 'right'
+      //       this.switchSprite('idle')
+      //     }
+      //   }
+        // moveToPlayer(player){
+        //     this.calculateDistanceBetween(player)
+        //     if (this.position.x > player.hitBox.position.x) {
+        //         this.velocity.x -1
+        // }}
 }
 
 
