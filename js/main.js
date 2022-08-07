@@ -1381,7 +1381,6 @@ const movement = function (player1, player2) {
     background2.velocity.x += 0.002;
     background3.velocity.x += 0.002;
     shop.velocity.x += 0.002;
-    // backgroundScroll.velocity.x += .001
     player2.switchSprite("revrun");
   } else if (keys.ArrowRight.pressed && player2.position.x < 700) {
     player2.velocity.x = 3;
@@ -1391,7 +1390,6 @@ const movement = function (player1, player2) {
     background2.velocity.x -= 0.002;
     background3.velocity.x -= 0.002;
     shop.velocity.x -= 0.002;
-    // backgroundScroll.velocity.x -= .001
     player2.switchSprite("run");
   } else if (player2.lastKey === "a") {
     player2.switchSprite("revidle");
@@ -1408,31 +1406,6 @@ const movement = function (player1, player2) {
   } else if (player2.velocity.y > 0 && player2.isFacing === "left") {
     player2.switchSprite("revfall");
   }
-
-  // Enemy test Movement
-  // if (keys.j.pressed && major.lastKey === "j") {
-  //   major.velocity.x = -3;
-  //   major.switchSprite("revrun");
-  // } else if (keys.l.pressed && major.lastKey === "l") {
-  //   major.velocity.x = 3;
-  //   major.switchSprite("run");
-  // } else if (major.lastKey === "j") {
-  //   major.switchSprite("revidle");
-  // } else {
-  //   major.switchSprite("idle");
-  // }
-
-  //   if (major.velocity.y < 0 && major.isFacing === "right") {
-  //     major.switchSprite("jump");
-  //   } else if (major.velocity.y < 0 && major.isFacing === "left") {
-  //     major.switchSprite("revjump");
-  //   } else if (major.velocity.y > 0 && major.isFacing === "right") {
-  //     major.switchSprite("fall");
-  //   } else if (major.velocity.y > 0 && major.isFacing === "left") {
-  //     major.switchSprite("revfall");
-  //   }
-
-
 };
 
 
@@ -1462,33 +1435,14 @@ function animateVS() {
   charTwo.update();
   charTwo.status = "ai";
 
-  // for (const enemy of enemies){
-  //   if(!enemy.dead)
-  //   enemy.status = 'ai'
-  //   enemy.updateState(charOne)
-  //   enemy.updateState(charTwo)
-  //   enemy.update()
-  //   // console.log(enemies[0])
-  // }
-
   // Add player movement
   movement(charOne, charTwo);
   attackCollisionDetect(charOne, charTwo);
   attackCollisionDetect(charTwo, charOne);
-  // backgroundScroll.update();
-  // major.calculateDistanceBetween(kiba)
-  // Collision Detection - Player 1
-  // rectCollisionDetect(neji, kiba, major)
-  // Collision Detection - Player 1
-  //  attackCollisionDetect(kiba, major)
-  // Collision Detection - Player 2
-  //  attackCollisionDetect(major, kiba)
-
-  // Collision Detection - Player 2
 
   // End the game based on health:
   winnerByCombat(charOne, charTwo)
-  // winnerByCombat(enemies, charOne)
+
 }
 
 function animateStoryOneP() {
@@ -1546,11 +1500,7 @@ function animateStoryOneP() {
 
   // Add player movement
   movement(kiba, neji);
-  // backgroundScroll.update();
-  // major.calculateDistanceBetween(kiba)
-  // Collision Detection - Player 1
-  // rectCollisionDetect(neji, kiba, major)
-  // Collision Detection - Player 1
+
    attackCollisionDetect(kiba, vice)
    attackCollisionDetect(kiba, sora)
    attackCollisionDetect(kiba, major)

@@ -212,34 +212,5 @@ class Hit extends State {
     if (this.time > 0.6) {
       this.ai.setState(states.STANDING_LEFT);
     }
-
-    // if (this.direction == "left") {
-    //     if (player.position.x > this.ai.position.x) {
-    //         this.ai.setState(states.RUNNING_RIGHT)
-    //     }
-    // } else {
-    //     if (player.position.x < this.ai.position.x) {
-    //         this.ai.setState(states.RUNNING_LEFT)
-    //     }
-    // }
-
-    // if (this.direction == "left" && this.ai.position.x <= player.position.x + 30 ){
-    //     this.ai.setState(states.ATTACKING_LEFT)
-    // } else if (this.direction == "right" && this.ai.position.x >= player.position.x - 100 )
-    //  {
-    //     this.ai.setState(states.ATTACKING_RIGHT)
-    // }
   }
-
-  // takehit() {
-  //     this.ai.health -= 1
-
-  //     if (this.ai.health <= 0) {
-  //         this.ai.switchSprite('death')
-  //     } else if (this.ai.isFacing==='left'){
-  //         this.ai.switchSprite('revtakehitflash')
-  //     } else if (this.ai.isFacing==='right'){
-  //         this.ai.switchSprite('takehitflash')
-  //     }
-  //   }
 }

@@ -454,7 +454,6 @@ class Player extends Sprite {
   }
 }
 
-// let distance = 0
 class AI extends Player {
   constructor(position) {
     super(position);
@@ -476,14 +475,6 @@ class AI extends Player {
     this.hasAttacked = false;
   }
 
-  // calculateDistanceBetween(player){
-
-  //    let distanceBetween = player.position.x - this.position.x
-  //    if (distanceBetween < -50 && player){
-  //     this.velocity.x -= 1
-  //    }
-  // }
-
   updateState(player) {
     this.currentState.update(player);
     this.draw();
@@ -495,26 +486,8 @@ class AI extends Player {
   }
 
   takehit() {
-    this.health -= 2;
+    this.health -= 50;
     this.setState(states.HIT_LEFT);
     console.log("yep");
   }
-
-  // standingLeft(player){
-  //   if (this.velocity.x === 0 && player.position.x < this.position.x) {
-  //       this.isFacing = 'left'
-  //       this.switchSprite('revidle')
-  //     }
-  //   }
-  // standingRight(player){
-  //   if (this.velocity.x === 0 && player.position.x > this.position.x) {
-  //       this.isFacing = 'right'
-  //       this.switchSprite('idle')
-  //     }
-  //   }
-  // moveToPlayer(player){
-  //     this.calculateDistanceBetween(player)
-  //     if (this.position.x > player.hitBox.position.x) {
-  //         this.velocity.x -1
-  // }}
 }
